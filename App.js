@@ -9,8 +9,10 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  TouchableOpacity
 } from 'react-native';
+import FBSDK, { LoginManager } from 'react-native-fbsdk';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -21,18 +23,32 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
+  _fbAuth() {
+   LoginManager.logInWithReadPermissions(['public_profile']).then(
+      function(result) {
+         if (result.isCancelled) {
+            console.log('Login cancelled');
+         } else {
+           console.log('Login success with permissions: '
+           +result.grantedPermissions.toString());
+         }
+      },
+      function(error) {
+        console.log('Login fail with error: ' + error);
+      }
+   );
+  }
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
           Welcome to whatsMyFood !
         </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+        <TouchableOpacity onPress={this._fbAuth}>
+          <Text>
+            Login with Facebook
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }
