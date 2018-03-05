@@ -1,0 +1,14 @@
+{
+  "presets": [
+    "nodify-core/babel",
+    [
+      "env",
+      {
+        "targets": {
+          "node": "6.10"
+        },
+        "modules": false
+      }
+    ]
+  ]
+}
