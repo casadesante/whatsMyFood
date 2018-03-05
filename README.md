@@ -1,7 +1,7 @@
 # whatsMyFood
 A mobile app to remember your fav food at each restaurant you eat. 
 
-### Contributing
+### Contributing: 
 This repo uses [Commitzen](https://www.npmjs.com/package/commitizen) to make the commits more readable and understandable. **cz-conventional-changelog** commitzen adapter is added at the root's `package.json`. 
 
 Install commitzen globally by running `npm install commitizen -g`.
