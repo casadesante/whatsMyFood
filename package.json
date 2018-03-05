@@ -1,0 +1,24 @@
+{
+  "name": "whatsmyfood",
+  "version": "0.0.1",
+  "description": "A mobile app to remember your fav food at each restaurant you eat.",
+  "main": "index.js",
+  "scripts": {
+    "commit": "git-cz"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sharathvignesh/whatsMyFood.git"
+  },
+  "author": "Sharath Vignesh, Suresh Murali, Lakshman Diwaakar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sharathvignesh/whatsMyFood/issues"
+  },
+  "homepage": "https://github.com/sharathvignesh/whatsMyFood#readme"
+}
