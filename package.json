@@ -4,44 +4,46 @@
   "description": "A mobile app to remember your fav food at each restaurant you eat.",
   "main": "index.js",
   "scripts": {
-    "commit": "git cz"
+    "commit": "git-cz"
   },
   "config": {
     "commitizen": {
-      "path": "cz-emoji",
+      "path": "emoji-cz",
     "emoji-cz": {
       "types": {
-        "Fix": {
-          "emoji": "🐞"
-        },
         "Feat": {
-          "emoji": "✨"
+          "emoji": "✨",
+          "description": "A new feature"
+        },
+        "Fix": {
+          "emoji": "🐛",
+          "description": "A bug fix"
         },
         "Docs": {
-          "emoji": "📚"
+          "emoji": "📚",
+          "description": "Documentation only changes"
         },
         "Style": {
-          "emoji": "🎨"
+          "emoji": "🎨",
+          "description": "Changes that do not affect the meaning of the code"
         },
         "Refactor": {
-          "emoji": "🔨"
+          "emoji": "🔨",
+          "description": "A code change that neither fixes a bug nor adds a feature"
         },
         "Perf": {
-          "emoji": "🐎",
-          "name": "Performance"
+          "emoji": "🚀",
+          "description": "A code change that improves performance"
         },
         "Test": {
-          "emoji": "🚨"
-        },
-        "Chore": {
-          "emoji": "🔩 ",
-          "description": "Other changes that don't modify src or test files"
+          "emoji": "🚨",
+          "description": "Adding missing tests or correcting existing tests"
         }
-      },
-      "format": "[emoji] [name]: [subject]"
+     },
+     "format": "[emoji] [name]: [subject]"
     }
-  }
-  },
+   }
+ },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sharathvignesh/whatsMyFood.git"
