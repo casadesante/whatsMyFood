@@ -6,6 +6,8 @@ This repo uses [Commitzen](https://www.npmjs.com/package/commitizen) to make the
 
 Install commitzen globally by running `npm install commitizen -g`.
 
+Install commitzen's plugin named emoji-cz by running `npm install emoji-cz -g`
+
 #### Commit workflow:
 
 - Add your files using `git add` or `git add .`
