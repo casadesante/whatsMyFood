@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "firebase": "^4.10.1",
+    "prop-types": "^15.6.1",
     "react": "16.2.0",
     "react-native": "0.53.3",
     "react-native-fbsdk": "^0.7.0"
