@@ -10,10 +10,10 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableHighlight,
+  Button
 } from 'react-native';
 
-import FBSDK, { LoginManager, AccessToken } from 'react-native-fbsdk';
+import FBSDK, { LoginManager, AccessToken, LoginButton } from 'react-native-fbsdk';
 import firebase from 'firebase';
 import Home from './Home';
 
@@ -73,12 +73,11 @@ export default class Signin extends Component {
         <Text style={styles.welcome}>
           Welcome to whatsMyFood
         </Text>
-        <TouchableHighlight
+        <Button
+          onPress={this._fbAuth.bind(this)}
+          title='Continue with fb'
           style={styles.button}
-          underlayColor='white'
-          onPress={this._fbAuth.bind(this)}>
-            <Text style={styles.buttonText}> Login </Text>
-        </TouchableHighlight>
+        />
       </View>
     );
   }
@@ -104,18 +103,12 @@ const styles = StyleSheet.create({
   button: {
     height: 45,
     flexDirection: 'row',
-    backgroundColor: 'white',
-    borderColor: 'white',
+    backgroundColor: '#4267B2',
     borderWidth: 1,
     borderRadius: 8,
     marginBottom: 10,
     marginTop: 10,
     alignSelf: 'stretch',
     justifyContent: 'center'
-  },
-  buttonText: {
-    fontSize: 18,
-    color: '#111',
-    alignSelf: 'center'
-  },
+  }
 });
