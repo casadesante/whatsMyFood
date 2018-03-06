@@ -42,7 +42,7 @@ export default class App extends Component<Props> {
              AccessToken.getCurrentAccessToken().then((accessTokenData) => {
                 const credential = firebase.auth.FacebookAuthProvider.credential(accessTokenData.accessToken)
                 firebase.auth().signInWithCredential(credential).then((result) => {
-                   // Promise was succesful
+                   console.log({result: result, credential: credential});
                 }, (error) => {
                    // Promise was rejected
                    console.log(error)

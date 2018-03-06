@@ -1,0 +1,29 @@
+{
+  "name": "google-nodejs",
+  "version": "0.1.0",
+  "description": "",
+  "main": "build/dist.js",
+  "scripts": {
+    "dev": "nodify dev",
+    "build": "nodify build",
+    "start": "npm run build && node ./build/main",
+    "deploy": "nodify build && sls deploy -vvvv",
+    "commit": "git-cz"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "author": "Lakshman Diwaakar(lakshmantgld.github.io)",
+  "license": "MIT",
+  "dependencies": {
+    "serverless-google-cloudfunctions": "^1.1.1"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.6.1",
+    "nodify-core": "^4.0.5",
+    "rollup-plugin-babel-minify": "^3.1.2",
+    "rollup-plugin-node-resolve": "^3.0.0"
+  }
+}

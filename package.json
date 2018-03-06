@@ -1,24 +1,61 @@
 {
-  "name": "whatsMyFood",
+  "name": "whatsmyfood",
   "version": "0.0.1",
-  "private": true,
+  "description": "A mobile app to remember your fav food at each restaurant you eat.",
+  "main": "index.js",
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "commit": "git-cz"
   },
-  "dependencies": {
-    "firebase": "^4.10.1",
-    "react": "16.2.0",
-    "react-native": "0.53.3",
-    "react-native-fbsdk": "^0.7.0"
+  "config": {
+    "commitizen": {
+      "path": "emoji-cz",
+    "emoji-cz": {
+      "types": {
+        "Feat": {
+          "emoji": "✨",
+          "description": "A new feature"
+        },
+        "Fix": {
+          "emoji": "🐛",
+          "description": "A bug fix"
+        },
+        "Docs": {
+          "emoji": "📚",
+          "description": "Documentation only changes"
+        },
+        "Style": {
+          "emoji": "🎨",
+          "description": "Changes that do not affect the meaning of the code"
+        },
+        "Refactor": {
+          "emoji": "🔨",
+          "description": "A code change that neither fixes a bug nor adds a feature"
+        },
+        "Perf": {
+          "emoji": "🚀",
+          "description": "A code change that improves performance"
+        },
+        "Test": {
+          "emoji": "🚨",
+          "description": "Adding missing tests or correcting existing tests"
+        },
+        "Chore": {	
+          "emoji": "🔩",
+          "description": "Other changes that don't modify src or test files"	
+        }
+     },
+     "format": "[emoji] [name]: [subject]"
+    }
+   }
+ },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sharathvignesh/whatsMyFood.git"
   },
-  "devDependencies": {
-    "babel-jest": "22.4.1",
-    "babel-preset-react-native": "4.0.0",
-    "jest": "22.4.2",
-    "react-test-renderer": "16.2.0"
+  "author": "Sharath Vignesh, Suresh Murali, Lakshman Diwaakar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sharathvignesh/whatsMyFood/issues"
   },
-  "jest": {
-    "preset": "react-native"
-  }
+  "homepage": "https://github.com/sharathvignesh/whatsMyFood#readme"
 }
