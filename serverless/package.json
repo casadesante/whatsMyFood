@@ -14,7 +14,7 @@
     "commitizen": {
       "path": "cz-conventional-changelog"
     }
-  },  
+  },
   "author": "Lakshman Diwaakar(lakshmantgld.github.io)",
   "license": "MIT",
   "dependencies": {
