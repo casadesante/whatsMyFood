@@ -10,11 +10,6 @@
     "deploy": "nodify build && sls deploy -vvvv",
     "commit": "git-cz"
   },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
   "author": "Lakshman Diwaakar(lakshmantgld.github.io)",
   "license": "MIT",
   "dependencies": {
