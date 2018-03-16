@@ -2,23 +2,20 @@
   "name": "google-nodejs",
   "version": "0.1.0",
   "description": "",
-  "main": "build/dist.js",
+  "main": "src/index.js",
   "scripts": {
-    "dev": "nodify dev",
-    "build": "nodify build",
-    "start": "npm run build && node ./build/main",
-    "deploy": "nodify build && sls deploy -vvvv",
-    "commit": "git-cz"
+    "emulator": "functions start",
+    "local": "functions deploy http --trigger-http",
+    "logs": "functions logs read -l=100",
+    "clear": "functions logs clear",
+    "deploy": "sls deploy -vvvv"
   },
   "author": "Lakshman Diwaakar(lakshmantgld.github.io)",
   "license": "MIT",
   "dependencies": {
-    "serverless-google-cloudfunctions": "^1.1.1"
+    "firebase-admin": "^5.10.0"
   },
   "devDependencies": {
-    "babel-preset-env": "^1.6.1",
-    "nodify-core": "^4.0.5",
-    "rollup-plugin-babel-minify": "^3.1.2",
-    "rollup-plugin-node-resolve": "^3.0.0"
+    "serverless-google-cloudfunctions": "^1.1.1"
   }
 }
