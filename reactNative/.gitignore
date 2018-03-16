@@ -30,6 +30,10 @@ build/
 local.properties
 *.iml
 
+#ios
+ios/Index/*
+ios/whatsMyFood.xcodeproj/project.pbxproj
+
 # node.js
 #
 node_modules/
