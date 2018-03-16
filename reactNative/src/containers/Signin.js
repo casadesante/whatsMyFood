@@ -17,13 +17,6 @@ import FBSDK, { LoginManager, AccessToken, LoginButton } from 'react-native-fbsd
 import firebase from 'firebase';
 import Home from './Home';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
-
 var config = {
   apiKey: 'AIzaSyCaWFdW61qcpy-LAtdYJnSlJEuiqgkPegs',
   authDomain: 'whatsmyfood.firebaseapp.com/',
@@ -33,51 +26,41 @@ var config = {
 const firebaseRef = firebase.initializeApp(config)
 
 export default class Signin extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  _fbAuth = () => {
-    LoginManager.logInWithReadPermissions(['public_profile', 'email']).then(
-       (result) => {
-          if (result.isCancelled) {
-             alert('Login cancelled');
-          } else {
-
-             AccessToken.getCurrentAccessToken().then((accessTokenData) => {
-                const credential = firebase.auth.FacebookAuthProvider.credential(accessTokenData.accessToken)
-                firebase.auth().signInWithCredential(credential).then((result) => {
-                   console.log({result: result, credential: credential});
-                   this.props.navigator.push({
-                      component: Home,
-                      title: 'Home page'
-                    });
-                }, (error) => {
-                   // Promise was rejected
-                   console.log(error)
-                })
-             }, (error => {
-                console.log('Some error occured: ' + error)
-             }))
-          }
-       },
-       function(error) {
-          alert('Login fail with error: ' + error);
-       }
-    );
-  }
-
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
           Welcome to whatsMyFood
         </Text>
-        <Button
-          onPress={this._fbAuth.bind(this)}
-          title='Continue with fb'
-          style={styles.button}
-        />
+        <LoginButton
+          publishPermissions={["publish_actions"]}
+          onLoginFinished={
+            (error, result) => {
+              console.log(result);
+              if (error) {
+                alert("Login failed with error: " + result.error);
+              } else if (result.isCancelled) {
+                alert("Login was cancelled");
+              } else {
+                 AccessToken.getCurrentAccessToken().then((accessTokenData) => {
+                    const credential = firebase.auth.FacebookAuthProvider.credential(accessTokenData.accessToken)
+                    firebase.auth().signInWithCredential(credential).then((result) => {
+                       console.log({result: result, credential: credential});
+                       this.props.navigator.push({
+                          component: Home,
+                          title: 'Home page'
+                        });
+                    }, (error) => {
+                       // Promise was rejected
+                       console.log(error)
+                    })
+                 }, (error => {
+                    console.log('Some error occured: ' + error)
+                 }))
+              }
+            }
+          }
+          onLogoutFinished={() => alert("User logged out")}/>
       </View>
     );
   }
