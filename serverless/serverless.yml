@@ -17,11 +17,13 @@ package:
     - "**"
   include:
     - package.json
-    - build/dist.js
+    - src/**
 
 functions:
   first:
     handler: http
+    memorySize: 1024
+    timeout: 10s
     events:
       - http: whatsmyfood
 
