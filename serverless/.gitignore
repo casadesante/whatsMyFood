@@ -5,7 +5,7 @@ tmp
 .coveralls.yml
 
 # Google
-keyfile.json
+serviceAccount.json
 
 # Logs
 *.log
