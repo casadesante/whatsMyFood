@@ -16,14 +16,15 @@ import {
 import FBSDK, { LoginManager, AccessToken, LoginButton } from 'react-native-fbsdk';
 import firebase from 'firebase';
 import Home from './Home';
+import Config from 'react-native-config';
 
-var config = {
-  apiKey: 'AIzaSyCaWFdW61qcpy-LAtdYJnSlJEuiqgkPegs',
-  authDomain: 'whatsmyfood.firebaseapp.com/',
-  databaseURL: 'https://whatsmyfood.firebaseio.com/'
-}
+const config = {
+  apiKey: Config.API_KEY,
+  authDomain: Config.AUTH_DOMAIN,
+  databaseURL: Config.DB_URL
+};
 
-const firebaseRef = firebase.initializeApp(config)
+const firebaseRef = firebase.initializeApp(config);
 
 export default class Signin extends Component {
   render() {
@@ -52,10 +53,10 @@ export default class Signin extends Component {
                         });
                     }, (error) => {
                        // Promise was rejected
-                       console.log(error)
+                       console.log(error);
                     })
                  }, (error => {
-                    console.log('Some error occured: ' + error)
+                    console.log('Some error occured: ' + error);
                  }))
               }
             }
