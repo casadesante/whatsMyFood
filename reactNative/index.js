@@ -4,7 +4,8 @@ import {
   StyleSheet,
   Text,
   View,
-  NavigatorIOS
+  NavigatorIOS,
+  StatusBar
 } from 'react-native';
 import Signin from './src/containers/Signin';
 
@@ -16,15 +17,21 @@ var styles = StyleSheet.create({
 
 
 export default class whatsMyFood extends Component {
+  componentDidMount() {
+    StatusBar.setHidden(false);
+  }
+
   render() {
     return (
       <NavigatorIOS
         initialRoute={{
           component: Signin,
-          title: 'App\'s first page.'
-        }}
+          title: 'App\'s first page.',
+          navigationBarHidden: true
+       }}
         style={styles.container}
       />
+
     );
   }
 }

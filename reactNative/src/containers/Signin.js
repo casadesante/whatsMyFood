@@ -38,11 +38,13 @@ export default class Signin extends Component {
                <Image
                  source={require('../assets/img/logo.png')}
                  style={styles.logo}
+                 resizeMode="contain"
                 />
               <Text style={styles.welcome}>
-                whatsMyFood
+                WhatsMyFood
               </Text>
               <LoginButton
+                style={styles.fbButton}
                 publishPermissions={["publish_actions"]}
                 onLoginFinished={
                   (error, result) => {
@@ -96,11 +98,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   welcome: {
-    fontSize: 20,
+    fontSize: 30,
     textAlign: 'center',
     margin: 10,
+    color: 'white'
   },
   logo: {
-    opacity: 1
+    opacity: 1,
+    height: 180,
+    top: 100,
+    position: 'absolute'
   }
 });
