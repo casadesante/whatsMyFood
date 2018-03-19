@@ -21,3 +21,8 @@ Install commitzen's plugin named emoji-cz by running `npm install emoji-cz -g`
 ### Serverless:
 - Install functions emulator `npm install -g @google-cloud/functions-emulator` to test your functions locally.
 - Download the service account from firebase console and replace it with `serviceAccoun.copy.json`. Set the name to `serviceAccount.json`.
+
+### NoSQL Documentation:
+- [Users](https://github.com/sharathvignesh/whatsMyFood/blob/master/doc/db/noSQLSchema.md#users)
+- [Restaurants](https://github.com/sharathvignesh/whatsMyFood/blob/master/doc/db/noSQLSchema.md#restaurants)
+- [User-Restaurant-Menus](https://github.com/sharathvignesh/whatsMyFood/blob/master/doc/db/noSQLSchema.md#user-restaurant-menus)
