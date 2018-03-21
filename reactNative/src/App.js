@@ -7,8 +7,8 @@ import {
   NavigatorIOS,
   StatusBar
 } from 'react-native';
-import firebase from 'firebase';
 import Signin from './containers/Signin';
+import { isSignedIn } from './lib/Auth';
 
 var styles = StyleSheet.create({
   container:{
@@ -20,14 +20,12 @@ var styles = StyleSheet.create({
 export default class App extends Component {
 
   componentDidMount() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if(user) {
-        console.log('logged in');
-        console.log(user);
-      } else {
-        console.log('not logged in');
-      }
-    });
+    if(isSignedIn()) {
+      console.log('not logged innnn');
+    }
+    else {
+      console.log('not logged in');
+    }
   }
 
   render() {
