@@ -30,6 +30,9 @@ const config = {
 const firebaseRef = firebase.initializeApp(config);
 
 export default class Signin extends Component {
+  static navigationOptions = {
+          header: null
+  };
   render() {
     return (
           <ImageBackground source={require('../assets/img/stockPic.png')} style={styles.backgroundImage}>
@@ -62,10 +65,7 @@ export default class Signin extends Component {
                             const credential = firebase.auth.FacebookAuthProvider.credential(accessTokenData.accessToken)
                             firebase.auth().signInWithCredential(credential).then((result) => {
                                console.log({result: result, credential: credential});
-                               this.props.navigator.push({
-                                  component: Home,
-                                  title: 'Home page'
-                                });
+                               this.props.navigation.navigate('Home');
                             }, (error) => {
                                // Promise was rejected
                                console.log(error);

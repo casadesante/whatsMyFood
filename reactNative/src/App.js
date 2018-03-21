@@ -7,8 +7,10 @@ import {
   NavigatorIOS,
   StatusBar
 } from 'react-native';
+import { createRootNavigator } from './Routes';
 import Signin from './containers/Signin';
 import { isSignedIn } from './lib/Auth';
+import firebase from 'firebase';
 
 var styles = StyleSheet.create({
   container:{
@@ -18,27 +20,28 @@ var styles = StyleSheet.create({
 
 
 export default class App extends Component {
-
-  componentDidMount() {
-    if(isSignedIn()) {
-      console.log('not logged innnn');
-    }
-    else {
-      console.log('not logged in');
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      signedIn: false
+    };
   }
 
-  render() {
-    return (
-      <NavigatorIOS
-        initialRoute={{
-          component: Signin,
-          title: 'App\'s first page.',
-          navigationBarHidden: true
-       }}
-        style={styles.container}
-      />
+  componentDidMount() {
+    isSignedIn()
+    .then((res) => {
+      this.setState({signedIn: res});
+    })
+  }
 
+
+  render() {
+    const signedIn = this.state.signedIn;
+    console.log(signedIn);
+    const Layout = createRootNavigator(signedIn);
+
+    return (
+      <Layout />
     );
   }
 }
