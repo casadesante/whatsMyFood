@@ -5,12 +5,12 @@ import {
   View,
 } from 'react-native';
 
-export default class Home extends Component {
+export default class Search extends Component {
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Home page!
+          Search !
         </Text>
       </View>
     );

@@ -1,8 +1,11 @@
 import React from 'react';
-import { TabNavigator, StackNavigator } from 'react-navigation';
+import { StackNavigator, createBottomTabNavigator, TabNavigator, SwitchNavigator } from 'react-navigation';
 
 import Signin from './containers/Signin';
 import Home from './containers/Home';
+import Newentry from './containers/Newentry';
+import Search from './containers/Search';
+import Profile from './containers/Profile';
 
 export const SignedOut = StackNavigator({
   SignIn: {
@@ -13,19 +16,31 @@ export const SignedOut = StackNavigator({
   }
 });
 
-export const SignedIn = StackNavigator({
-  Home: {
-    screen: Home,
-    navigationOptions: {
-      title: "Home page",
+export const SignedIn = TabNavigator(
+  {
+    Home: {
+      screen: Home,
+      path: '',
+    },
+    Newentry: {
+      screen: Newentry,
+      path: '',
+    },
+    Search: {
+      screen: Search,
+      path: '',
+    },
+    Profile: {
+      screen: Profile,
+      path: '',
     }
-   }
-  });
+  }
+);
 
 
 export const createRootNavigator = (signedIn = false) => {
   console.log(signedIn);
-  return StackNavigator(
+  return SwitchNavigator(
     {
       SignedIn: {
         screen: SignedIn,
