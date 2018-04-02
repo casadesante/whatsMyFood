@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "rm ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json"
   },
   "dependencies": {
+    "@expo/vector-icons": "^6.3.1",
     "firebase": "^4.10.1",
     "prop-types": "^15.6.1",
     "react": "16.2.0",
@@ -15,6 +17,7 @@
     "react-native-easy-grid": "^0.1.17",
     "react-native-fbsdk": "^0.7.0",
     "react-native-linear-gradient": "^2.4.0",
+    "react-native-vector-icons": "^4.5.0",
     "react-navigation": "^1.5.8"
   },
   "devDependencies": {
