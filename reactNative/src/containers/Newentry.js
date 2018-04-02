@@ -3,22 +3,15 @@ import {
   StyleSheet,
   Text,
   View,
-  Button
 } from 'react-native';
 
-export default class Home extends Component {
-    //if restaurant list is empty, show add button else show the list of restaurants
+export default class Newentry extends Component {
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Add Restaurant !
+          New entry !
         </Text>
-          <Button
-              onPress={() => this.props.navigation.navigate('Newentry')}
-              title="Add"
-              color="#841584"
-          />
       </View>
     );
   }

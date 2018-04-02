@@ -76,7 +76,12 @@ export default class Signin extends Component {
                       }
                     }
                   }
-                  onLogoutFinished={() => alert("User logged out")}/>
+                  onLogoutFinished={
+                    () => {
+                      // delete id from Firebase ? 
+                      alert("User logged out");
+                    }
+                  }/>
               </Row>
               <Row size={15}>
                 <Text style={{color: 'white'}}>
