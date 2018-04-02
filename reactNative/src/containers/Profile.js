@@ -10,7 +10,7 @@ export default class Profile extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          New entry !
+          Profile
         </Text>
       </View>
     );
