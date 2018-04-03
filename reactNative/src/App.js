@@ -23,15 +23,15 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      signedIn: false
+      signedIn: true
     };
   }
 
   componentDidMount() {
-    isSignedIn()
-    .then((res) => {
-      this.setState({signedIn: res});
-    })
+    // isSignedIn()
+    // .then((res) => {
+    //   this.setState({signedIn: res});
+    // })
   }
 
 

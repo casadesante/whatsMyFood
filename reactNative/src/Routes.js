@@ -1,5 +1,6 @@
 import React from 'react';
-import { StackNavigator, createBottomTabNavigator, TabNavigator, SwitchNavigator } from 'react-navigation';
+import { StackNavigator, createBottomTabNavigator, TabBarBottom, TabNavigator, SwitchNavigator } from 'react-navigation';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Signin from './containers/Signin';
 import Home from './containers/Home';
@@ -34,9 +35,37 @@ export const SignedIn = TabNavigator(
       screen: Profile,
       path: '',
     }
-  }
-);
+  },
+    {
+        navigationOptions: ({ navigation }) => ({
+            tabBarIcon: ({ focused, tintColor }) => {
+                const { routeName } = navigation.state;
+                let iconName;
+                if (routeName === 'Home') {
+                    iconName = `ios-home${focused ? '' : '-outline'}`;
+                } else if (routeName === 'Newentry') {
+                    iconName = `md-add${focused ? '' : ''}`;
+                } else if (routeName === 'Search') {
+                    iconName = `ios-search${focused ? '' : '-outline'}`;
+                } else if (routeName === 'Profile') {
+                    iconName = `ios-contact${focused ? '' : '-outline'}`;
+                }
 
+                // You can return any component that you like here! We usually use an
+                // icon component from react-native-vector-icons
+                return  <Ionicons name={iconName} size={25} color={tintColor} />;
+            },
+        }),
+        tabBarComponent: TabBarBottom,
+        tabBarPosition: 'bottom',
+        tabBarOptions: {
+            activeTintColor: 'tomato',
+            inactiveTintColor: 'gray',
+        },
+        animationEnabled: false,
+        swipeEnabled: false,
+    }
+);
 
 export const createRootNavigator = (signedIn = false) => {
   console.log(signedIn);
