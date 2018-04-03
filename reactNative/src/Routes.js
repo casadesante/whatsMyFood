@@ -42,13 +42,13 @@ export const SignedIn = TabNavigator(
                 const { routeName } = navigation.state;
                 let iconName;
                 if (routeName === 'Home') {
-                    iconName = `md-home${focused ? '' : ''}`;
+                    iconName = `ios-home${focused ? '' : '-outline'}`;
                 } else if (routeName === 'Newentry') {
                     iconName = `md-add${focused ? '' : ''}`;
                 } else if (routeName === 'Search') {
                     iconName = `ios-search${focused ? '' : '-outline'}`;
                 } else if (routeName === 'Profile') {
-                    iconName = `ios-contact${focused ? '' : ''}`;
+                    iconName = `ios-contact${focused ? '' : '-outline'}`;
                 }
 
                 // You can return any component that you like here! We usually use an
