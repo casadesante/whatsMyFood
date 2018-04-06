@@ -31,8 +31,9 @@ const firebaseRef = firebase.initializeApp(config);
 
 export default class Signin extends Component {
   static navigationOptions = {
-          header: null
+      header: null
   };
+
   render() {
     return (
           <ImageBackground source={require('../assets/img/stockPic.png')} style={styles.backgroundImage}>

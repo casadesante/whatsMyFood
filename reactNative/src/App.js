@@ -12,12 +12,6 @@ import Signin from './containers/Signin';
 import { isSignedIn } from './lib/Auth';
 import firebase from 'firebase';
 
-var styles = StyleSheet.create({
-  container:{
-    flex: 1,
-  },
-});
-
 
 export default class App extends Component {
   constructor(props) {

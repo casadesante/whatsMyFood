@@ -11,16 +11,13 @@ import Profile from './containers/Profile';
 export const SignedOut = StackNavigator({
   SignIn: {
     screen: Signin,
-    navigationOptions: {
-      title: "Sign In"
-    }
   }
 });
 
 export const SignedIn = TabNavigator(
   {
     Home: {
-      screen: Home,
+      screen: StackNavigator({Home: {screen: Home}}),
       path: '',
     },
     Newentry: {
@@ -74,7 +71,7 @@ export const createRootNavigator = (signedIn = false) => {
       SignedIn: {
         screen: SignedIn,
         navigationOptions: {
-          gesturesEnabled: false
+          gesturesEnabled: false,
         }
       },
       SignedOut: {
@@ -85,7 +82,6 @@ export const createRootNavigator = (signedIn = false) => {
       }
     },
     {
-      headerMode: "none",
       initialRouteName: signedIn ? "SignedIn" : "SignedOut"
     }
   );
