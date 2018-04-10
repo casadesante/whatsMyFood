@@ -1,47 +1,27 @@
-import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-  NavigatorIOS,
-  StatusBar
-} from 'react-native';
-import { createRootNavigator } from './Routes';
-import Signin from './containers/Signin';
-import { isSignedIn } from './lib/Auth';
-import firebase from 'firebase';
+import React, { Component } from "react";
 
-var styles = StyleSheet.create({
-  container:{
-    flex: 1,
-  },
-});
-
+import { createRootNavigator } from "./Routes";
+import { isSignedIn } from "./lib/Auth";
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      signedIn: true
+      signedIn: false
     };
   }
 
   componentDidMount() {
-    // isSignedIn()
-    // .then((res) => {
-    //   this.setState({signedIn: res});
-    // })
+    isSignedIn().then(res => {
+      this.setState({ signedIn: res });
+    });
   }
-
 
   render() {
     const signedIn = this.state.signedIn;
     console.log(signedIn);
     const Layout = createRootNavigator(signedIn);
 
-    return (
-      <Layout />
-    );
+    return <Layout />;
   }
 }
