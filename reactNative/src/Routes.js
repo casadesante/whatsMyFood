@@ -27,7 +27,7 @@ export const SignedIn = TabNavigator(
       path: ""
     },
     Newentry: {
-      screen: Newentry,
+      screen: StackNavigator({ Newentry: { screen: Newentry } }),
       path: ""
     },
     Search: {
@@ -70,7 +70,7 @@ export const SignedIn = TabNavigator(
   }
 );
 
-export const createRootNavigator = (signedIn = false) => {
+export const createRootNavigator = signedIn => {
   console.log(signedIn);
   return SwitchNavigator(
     {
