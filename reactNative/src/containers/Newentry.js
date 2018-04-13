@@ -3,15 +3,18 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
   Button,
   StatusBar,
-  TextInput
+  TouchableOpacity
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import { Row, Grid } from "react-native-easy-grid";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import EvilIcons from "react-native-vector-icons/EvilIcons";
+
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
+
+import Header from "../componenets/Header";
+import Textbox from "../componenets/Textbox";
 
 export default class Newentry extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -37,76 +40,56 @@ export default class Newentry extends Component {
     this.props.navigation.setParams({ save: this.saveDetails });
   }
 
+  onPress = () => {
+    alert("on pressed");
+  };
+
   render() {
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
         <Grid>
-          <Row
-            style={{
-              backgroundColor: "rgb(255, 68, 68)",
-              height: 44
-            }}
-          >
-            <Text style={styles.addText}>Add restaurant</Text>
-          </Row>
-          <View style={styles.searchSection}>
-            <Icon
-              name="restaurant"
-              style={styles.searchIcon}
-              size={23}
-              color="rgb(105, 105, 105)"
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Restaurant name"
-              placeholderTextColor="rgb(144, 144, 144)"
-            />
-          </View>
+          <Header text="Add restaurant" />
+          <Textbox icon="restaurant" placeholder="Restaurant name" />
           <View style={styles.optionalText}>
-            <Text
-              style={{
-                fontcolor: "rgb(105, 105, 105)",
-                fontSize: 20,
-                letterSpacing: 0.5
-              }}
-            >
-              Optional
-            </Text>
+            <Text style={styles.optional}>Optional</Text>
           </View>
-          <View style={styles.searchSection}>
-            <EvilIcons
-              name="location"
-              style={styles.searchIcon}
-              size={23}
-              color="rgb(105, 105, 105)"
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Restaurant location"
-              placeholderTextColor="rgb(144, 144, 144)"
-            />
-          </View>
-          <Row style={{ padding: 40 }}>
-            <View style={{ flex: 1 }}>
-              <LinearGradient
-                style={{ height: 200, borderRadius: 10 }}
-                colors={["rgb(255, 152, 99)", "rgb(253, 89, 89)"]}
-              >
-                <SimpleLineIcons
-                  style={{
-                    paddingTop: 70,
-                    alignSelf: "center"
-                  }}
-                  name="camera"
-                  size={40}
-                  color="white"
-                />
-                <Text style={{ color: "white", textAlign: "center" }}>
-                  Add photo
-                </Text>
-              </LinearGradient>
+          <Textbox icon="location" placeholder="Restaurant location" />
+          <Row>
+            <View>
+              <Image
+                source={require("../assets/img/tgif.png")}
+                resizeMode="cover"
+                style={{
+                  marginTop: 40,
+                  marginLeft: 40,
+                  height: 200,
+                  width: 300,
+                  borderRadius: 10
+                }}
+              />
             </View>
+            {/*<View style={{ flex: 1, padding: 40 }}>*/}
+            {/*<TouchableOpacity onPress={this.onPress}>*/}
+            {/*<LinearGradient*/}
+            {/*style={{ height: 200, borderRadius: 10 }}*/}
+            {/*colors={["rgb(255, 152, 99)", "rgb(253, 89, 89)"]}*/}
+            {/*>*/}
+            {/*<SimpleLineIcons*/}
+            {/*style={{*/}
+            {/*paddingTop: 70,*/}
+            {/*alignSelf: "center"*/}
+            {/*}}*/}
+            {/*name="camera"*/}
+            {/*size={40}*/}
+            {/*color="white"*/}
+            {/*/>*/}
+            {/*<Text style={{ color: "white", textAlign: "center" }}>*/}
+            {/*Add photo*/}
+            {/*</Text>*/}
+            {/*</LinearGradient>*/}
+            {/*</TouchableOpacity>*/}
+            {/*</View>*/}
           </Row>
         </Grid>
       </View>
@@ -115,49 +98,17 @@ export default class Newentry extends Component {
 }
 
 const styles = StyleSheet.create({
-  searchSection: {
-    flexDirection: "row",
-    borderBottomColor: "rgb(188, 187, 193)",
-    borderBottomWidth: 0.5
-  },
   optionalText: {
     padding: 20,
     backgroundColor: "rgb(249, 249, 249)"
   },
-  searchIcon: {
-    padding: 15
-  },
-  input: {
-    flex: 1,
-    backgroundColor: "white",
-    color: "#424242",
-    fontSize: 20
-  },
-  addText: {
-    color: "white",
-    fontSize: 33,
-    fontWeight: "bold",
-    letterSpacing: 0.5,
-    marginLeft: 15
+  optional: {
+    color: "rgb(105, 105, 105)",
+    fontSize: 20,
+    letterSpacing: 0.5
   },
   container: {
     flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
     backgroundColor: "white"
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10
-  },
-  instructions: {
-    textAlign: "center",
-    color: "#333333",
-    marginBottom: 5
-  },
-  headerSave: {
-    color: "white",
-    marginLeft: 5
   }
 });
