@@ -1,13 +1,13 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import { createRootNavigator } from "./Routes";
-import { isSignedIn } from "./lib/Auth";
+import { createRootNavigator } from './Routes';
+import { isSignedIn } from './lib/Auth';
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      signedIn: true
+      signedIn: true,
     };
   }
 
