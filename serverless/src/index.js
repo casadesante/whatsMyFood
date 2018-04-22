@@ -1,19 +1,35 @@
-'use strict';
+"use strict";
+//merge confict -1 
+//dev-mmpf
+//var admin = require("firebase-admin");
 
-var admin = require('firebase-admin');
-var serviceAccount = require('./serviceAccount.json');
+//var serviceAccount = require("./serviceAccount.json");
+
+//master
+//var admin = require('firebase-admin');
+//var serviceAccount = require('./serviceAccount.json');
 
 // Initialzing the firebase with the appropriate service Account.  
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
+//merge confict -2
 
+//dev-mmpf
+//exports.http = (request, response) => {
+//  console.log("====================================");
+//  console.log("Printing request");
+//  console.log("====================================");
+//  response.status(200).send("Hello World!");
+// };
+
+//master
 // Validating the firebase ID token attached with each request.
-const validateFirebaseIdToken = (request) =>
-new Promise((resolve, reject) => {
-  console.log('====================================');
-  console.log('Headers:' +  JSON.stringify(request.headers));
-  console.log('====================================');
+//const validateFirebaseIdToken = (request) =>
+//new Promise((resolve, reject) => {
+//  console.log('====================================');
+//  console.log('Headers:' +  JSON.stringify(request.headers));
+//  console.log('====================================');
 
   let idToken;
   if (request.headers.authorization && request.headers.authorization.startsWith('Bearer ')) {
