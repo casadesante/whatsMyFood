@@ -44,7 +44,7 @@ export default class Newentry extends Component {
   };
 
   saveDetails = () => {
-    this.props.navigation.navigate('Addfood');
+    alert('Save');
   };
 
   componentDidMount() {
@@ -56,8 +56,8 @@ export default class Newentry extends Component {
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
         <Grid>
-          <Header text="Add restaurant" />
-          <Textbox icon="restaurant" placeholder="Restaurant name" />
+          <Header text="Add food" />
+          <Textbox icon="restaurant" placeholder="Food name" />
           <View style={styles.optionalText}>
             <Text style={styles.optional}>Optional</Text>
           </View>
