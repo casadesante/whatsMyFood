@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, StatusBar } from 'react-native';
 import { Row, Grid } from 'react-native-easy-grid';
+import Emoji from 'react-native-emoji';
 
 import Header from '../componenets/Header';
 import Textbox from '../componenets/Textbox';
@@ -11,6 +12,10 @@ const styles = StyleSheet.create({
   optionalText: {
     padding: 20,
     backgroundColor: 'rgb(249, 249, 249)',
+  },
+  emoji: {
+    padding: 20,
+    backgroundColor: 'white',
   },
   optional: {
     color: 'rgb(105, 105, 105)',
@@ -60,6 +65,18 @@ export default class Newentry extends Component {
         <Grid>
           <Header text="Add food" />
           <Textbox icon="restaurant-menu" placeholder="Food name" />
+          <View style={styles.emoji}>
+            <Text style={{ color: 'rgb(105, 105, 105)' }}>
+              Pick one of them
+            </Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ fontSize: 40, padding: 10 }}>🤢</Text>
+              <Text style={{ fontSize: 40, padding: 10 }}>🙅</Text>
+              <Text style={{ fontSize: 40, padding: 10 }}>😐</Text>
+              <Text style={{ fontSize: 40, padding: 10 }}>👌</Text>
+              <Text style={{ fontSize: 40, padding: 10 }}>😍</Text>
+            </View>
+          </View>
           <View style={styles.optionalText}>
             <Text style={styles.optional}>Optional</Text>
           </View>
