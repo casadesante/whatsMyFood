@@ -33,6 +33,7 @@ export default class Newentry extends Component {
       headerTitleStyle: {
         color: 'white',
       },
+      headerBackTitle: 'Back',
       headerRight: (
         <Button color="white" title="Save" onPress={() => params.save()} />
       ),

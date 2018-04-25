@@ -27,9 +27,11 @@ export default class Newentry extends Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     return {
+      title: "T.G.I. Friday's", // Add restaurant title from props here
       headerStyle: {
         backgroundColor: 'rgb(255, 68, 68)',
       },
+      headerTintColor: 'white',
       headerTitleStyle: {
         color: 'white',
       },
@@ -57,11 +59,10 @@ export default class Newentry extends Component {
         <StatusBar barStyle="light-content" />
         <Grid>
           <Header text="Add food" />
-          <Textbox icon="restaurant" placeholder="Food name" />
+          <Textbox icon="restaurant-menu" placeholder="Food name" />
           <View style={styles.optionalText}>
             <Text style={styles.optional}>Optional</Text>
           </View>
-          <Textbox icon="location" placeholder="Restaurant location" />
           <Row>
             {/*<View>*/}
             {/*<Imageupload />*/}
