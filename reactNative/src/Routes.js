@@ -11,6 +11,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Signin from './containers/Signin';
 import Home from './containers/Home';
 import Newentry from './containers/Newentry';
+import Addfood from './containers/Addfood';
 import Search from './containers/Search';
 import Profile from './containers/Profile';
 
@@ -27,7 +28,10 @@ export const SignedIn = TabNavigator(
       path: '',
     },
     Newentry: {
-      screen: StackNavigator({ Newentry: { screen: Newentry } }),
+      screen: StackNavigator({
+        Newentry: { screen: Newentry },
+        Addfood: { screen: Addfood },
+      }),
       path: '',
     },
     Search: {
