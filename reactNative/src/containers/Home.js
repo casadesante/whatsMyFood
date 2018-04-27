@@ -5,7 +5,10 @@ import {
   View,
   Image,
   TouchableHighlight,
+  FlatList,
 } from 'react-native';
+import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
+import Restaurantlist from '../componenets/Restaurantlist';
 
 export default class Home extends Component {
   static navigationOptions = {
@@ -14,19 +17,40 @@ export default class Home extends Component {
       backgroundColor: 'white',
     },
   };
-  //if restaurant list is empty, show add button else show the list of restaurants
+
+  state = {
+    empty: false,
+  };
+
+  componentDidMount() {
+    console.log(helper.generateRestaurants());
+  }
+
+  // if restaurant list is empty, show add button else show the list of restaurants
   render() {
+    const restaurantList = helper.generateRestaurants();
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Add your first restaurant and dish !</Text>
-        <TouchableHighlight
-          onPress={() => this.props.navigation.navigate('Newentry')}
-        >
-          <Image
-            source={require('../assets/img/add.png')}
-            style={styles.logo}
-          />
-        </TouchableHighlight>
+      <View>
+        {this.state.empty ? (
+          <View style={styles.container}>
+            <Text style={styles.welcome}>
+              Add your first restaurant and dish !
+            </Text>
+            <TouchableHighlight
+              onPress={() => this.props.navigation.navigate('Newentry')}
+            >
+              <Image
+                source={require('../assets/img/add.png')}
+                style={styles.logo}
+              />
+            </TouchableHighlight>
+          </View>
+        ) : (
+          <View style={styles.container}>
+            <Text style={{ marginTop: 50 }}>Restaurant list</Text>
+            <Restaurantlist list={restaurantList} />
+          </View>
+        )}
       </View>
     );
   }
