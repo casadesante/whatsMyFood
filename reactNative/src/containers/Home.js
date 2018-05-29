@@ -6,7 +6,7 @@ import {
   Image,
   ScrollView,
   TouchableHighlight,
-  FlatList,
+  StatusBar,
 } from 'react-native';
 import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
 import Restaurant from '../componenets/Restaurant';
@@ -36,8 +36,15 @@ export default class Home extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar barStyle="dark-content" />
         {this.state.empty ? (
-          <View>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: '20%',
+            }}
+          >
             <Text style={styles.welcome}>
               Add your first restaurant and dish !
             </Text>

@@ -39,7 +39,7 @@ export const SignedIn = TabNavigator(
       path: '',
     },
     Profile: {
-      screen: Profile,
+      screen: StackNavigator({ Profile: { screen: Profile } }),
       path: '',
     },
   },
