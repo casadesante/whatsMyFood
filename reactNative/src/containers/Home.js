@@ -4,17 +4,23 @@ import {
   Text,
   View,
   Image,
+  ScrollView,
   TouchableHighlight,
   FlatList,
 } from 'react-native';
 import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
-import Restaurantlist from '../componenets/Restaurantlist';
+import Restaurant from '../componenets/Restaurant';
 
 export default class Home extends Component {
   static navigationOptions = {
     title: 'Home',
     headerStyle: {
       backgroundColor: 'white',
+      shadowColor: 'rgba(222, 222, 222, 0.5)',
+      shadowOpacity: 1,
+      shadowOffset: {
+        height: 0.5,
+      },
     },
   };
 
@@ -28,11 +34,10 @@ export default class Home extends Component {
 
   // if restaurant list is empty, show add button else show the list of restaurants
   render() {
-    const restaurantList = helper.generateRestaurants();
     return (
-      <View>
+      <View style={styles.container}>
         {this.state.empty ? (
-          <View style={styles.container}>
+          <View>
             <Text style={styles.welcome}>
               Add your first restaurant and dish !
             </Text>
@@ -46,9 +51,22 @@ export default class Home extends Component {
             </TouchableHighlight>
           </View>
         ) : (
-          <View style={styles.container}>
-            <Text style={{ marginTop: 50 }}>Restaurant list</Text>
-            <Restaurantlist list={restaurantList} />
+          <View style={{ padding: 20 }}>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                fontSize: 30,
+              }}
+            >
+              Restaurants
+            </Text>
+            <ScrollView>
+              {helper.generateRestaurants().map(x => (
+                <View key={x.key}>
+                  <Restaurant restaurant={x} />
+                </View>
+              ))}
+            </ScrollView>
           </View>
         )}
       </View>
@@ -59,8 +77,6 @@ export default class Home extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: 'white',
   },
   welcome: {

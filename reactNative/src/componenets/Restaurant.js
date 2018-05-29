@@ -1,37 +1,49 @@
 import React from 'react';
-import { View, Text, FlatList, ListView, StyleSheet } from 'react-native';
+import { Text, View, ImageBackground, StyleSheet } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
-const Restaurantlist = props => {
-  const list = props.list;
+const Restaurant = props => {
+  const list = props.restaurant;
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={[
-          { key: 'Devin' },
-          { key: 'Jackson' },
-          { key: 'James' },
-          { key: 'Joel' },
-          { key: 'John' },
-          { key: 'Jillian' },
-          { key: 'Jimmy' },
-          { key: 'Julie' },
-        ]}
-        renderItem={({ item }) => <Text style={styles.item}>{item.key}</Text>}
-      />
-      <Text>{list[0].name}</Text>
-    </View>
+    <ImageBackground
+      style={styles.backgroundImage}
+      imageStyle={{ borderRadius: 10 }}
+      source={{
+        uri: list.img,
+      }}
+      resizeMode="cover"
+    >
+      <LinearGradient
+        colors={['rgba(0, 0, 0, 0.45)', 'rgba(0, 0, 0, 0.45)']}
+        style={styles.linearGradient}
+      >
+        <View style={styles.details}>
+          <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 35 }}>
+            {list.name}
+          </Text>
+          <Text style={{ color: 'white', fontWeight: 'bold' }}>
+            {list.distance} kms away
+          </Text>
+        </View>
+      </LinearGradient>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  linearGradient: {
     flex: 1,
-    paddingTop: 22,
+    borderRadius: 10,
   },
-  item: {
-    fontSize: 18,
-    height: 44,
+  backgroundImage: {
+    marginTop: 20,
+    height: 195,
+  },
+  details: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
-export default Restaurantlist;
+export default Restaurant;
