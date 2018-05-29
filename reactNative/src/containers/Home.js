@@ -4,29 +4,78 @@ import {
   Text,
   View,
   Image,
+  ScrollView,
   TouchableHighlight,
+  StatusBar,
 } from 'react-native';
+import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
+import Restaurant from '../componenets/Restaurant';
 
 export default class Home extends Component {
   static navigationOptions = {
     title: 'Home',
     headerStyle: {
       backgroundColor: 'white',
+      shadowColor: 'rgba(222, 222, 222, 0.5)',
+      shadowOpacity: 1,
+      shadowOffset: {
+        height: 0.5,
+      },
     },
   };
-  //if restaurant list is empty, show add button else show the list of restaurants
+
+  state = {
+    empty: false,
+  };
+
+  componentDidMount() {
+    console.log(helper.generateRestaurants());
+  }
+
+  // if restaurant list is empty, show add button else show the list of restaurants
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Add your first restaurant and dish !</Text>
-        <TouchableHighlight
-          onPress={() => this.props.navigation.navigate('Newentry')}
-        >
-          <Image
-            source={require('../assets/img/add.png')}
-            style={styles.logo}
-          />
-        </TouchableHighlight>
+        <StatusBar barStyle="dark-content" />
+        {this.state.empty ? (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: '20%',
+            }}
+          >
+            <Text style={styles.welcome}>
+              Add your first restaurant and dish !
+            </Text>
+            <TouchableHighlight
+              onPress={() => this.props.navigation.navigate('Newentry')}
+            >
+              <Image
+                source={require('../assets/img/add.png')}
+                style={styles.logo}
+              />
+            </TouchableHighlight>
+          </View>
+        ) : (
+          <View style={{ padding: 20 }}>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                fontSize: 30,
+              }}
+            >
+              Restaurants
+            </Text>
+            <ScrollView>
+              {helper.generateRestaurants().map(x => (
+                <View key={x.key}>
+                  <Restaurant restaurant={x} />
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+        )}
       </View>
     );
   }
@@ -35,8 +84,6 @@ export default class Home extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: 'white',
   },
   welcome: {
