@@ -4,6 +4,7 @@ import { Row, Grid } from 'react-native-easy-grid';
 
 import Header from '../componenets/Header';
 import Textbox from '../componenets/Textbox';
+import firebase from '../lib/FirebaseClient';
 import Imageupload from '../componenets/Imageupload';
 import Imageuploader from '../componenets/Imageuploader';
 
@@ -59,6 +60,43 @@ export default class Newentry extends Component {
     };
   };
 
+  state = {
+    uploaded: false,
+    url: '',
+  };
+
+  uploadImage(uri, mime = 'application/octet-stream') {
+    return new Promise((resolve, reject) => {
+      const uploadUri = uri.replace('file://', '');
+      let uploadBlob = null;
+
+      const imageRef = firebase
+        .storage()
+        .ref('images')
+        .child('image_001');
+
+      fs
+        .readFile(uploadUri, 'base64')
+        .then(data => {
+          return Blob.build(data, { type: `${mime};BASE64` });
+        })
+        .then(blob => {
+          uploadBlob = blob;
+          return imageRef.put(blob, { contentType: mime });
+        })
+        .then(() => {
+          uploadBlob.close();
+          return imageRef.getDownloadURL();
+        })
+        .then(url => {
+          resolve(url);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
   getImage = () => {
     ImagePicker.showImagePicker(options, response => {
       console.log('Response = ', response);
@@ -71,6 +109,12 @@ export default class Newentry extends Component {
         console.log('User tapped custom button: ', response.customButton);
       } else {
         console.log(response.uri);
+        this.uploadImage(response.uri)
+          .then(url => {
+            this.setState({ uploaded: true, url: url });
+            console.log(url);
+          })
+          .catch(error => console.log(error));
       }
     });
   };
@@ -84,6 +128,7 @@ export default class Newentry extends Component {
   }
 
   render() {
+    console.log(this.state.uploaded);
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
@@ -95,12 +140,15 @@ export default class Newentry extends Component {
           </View>
           <Textbox icon="location" placeholder="Restaurant location" />
           <Row>
-            {/*<View>*/}
-            {/*<Imageupload />*/}
-            {/*</View>*/}
-            <View style={{ flex: 1, padding: 40 }}>
-              <Imageuploader upload={this.getImage} />
-            </View>
+            {this.state.uploaded ? (
+              <View>
+                <Imageupload url={this.state.url} />
+              </View>
+            ) : (
+              <View style={{ flex: 1, padding: 40 }}>
+                <Imageuploader upload={this.getImage} />
+              </View>
+            )}
           </Row>
         </Grid>
       </View>
