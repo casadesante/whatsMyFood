@@ -7,6 +7,16 @@ import Textbox from '../componenets/Textbox';
 import Imageupload from '../componenets/Imageupload';
 import Imageuploader from '../componenets/Imageuploader';
 
+import RNFetchBlob from 'react-native-fetch-blob';
+
+var ImagePicker = require('react-native-image-picker');
+
+// Prepare Blob support
+const Blob = RNFetchBlob.polyfill.Blob;
+const fs = RNFetchBlob.fs;
+window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+window.Blob = Blob;
+
 const styles = StyleSheet.create({
   optionalText: {
     padding: 20,
@@ -22,6 +32,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
 });
+
+var options = {
+  title: 'Select Avatar',
+  customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+  storageOptions: {
+    skipBackup: true,
+    path: 'images',
+  },
+};
 
 export default class Newentry extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -40,8 +59,20 @@ export default class Newentry extends Component {
     };
   };
 
-  onPress = () => {
-    alert('pressed');
+  getImage = () => {
+    ImagePicker.showImagePicker(options, response => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        console.log(response.uri);
+      }
+    });
   };
 
   saveDetails = () => {
@@ -68,7 +99,7 @@ export default class Newentry extends Component {
             {/*<Imageupload />*/}
             {/*</View>*/}
             <View style={{ flex: 1, padding: 40 }}>
-              <Imageuploader upload={this.onPress} />
+              <Imageuploader upload={this.getImage} />
             </View>
           </Row>
         </Grid>
