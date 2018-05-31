@@ -26,26 +26,23 @@ export default class Profile extends Component {
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
-        <Grid>
-          <View
-            style={{
-              height: 250,
-              backgroundColor: 'rgb(248, 248, 248)',
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Image
-              source={require('../assets/img/profile.jpg')}
-              style={styles.profileImage}
-            />
-            <Text style={{ fontWeight: 'bold', fontSize: 30, marginTop: 20 }}>
-              Jane Austen
-            </Text>
-          </View>
-        </Grid>
-        <View style={{ marginBottom: 200 }}>
+        <View
+          style={{
+            height: 250,
+            backgroundColor: 'rgb(248, 248, 248)',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Image
+            source={require('../assets/img/profile.jpg')}
+            style={styles.profileImage}
+          />
+          <Text style={{ fontWeight: 'bold', fontSize: 30, marginTop: 20 }}>
+            Jane Austen
+          </Text>
+        </View>
+        <View>
           {list.map((item, i) => (
             <ListItem
               onPress={() => {
