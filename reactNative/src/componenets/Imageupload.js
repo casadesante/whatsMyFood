@@ -5,7 +5,9 @@ const Imageupload = params => {
   console.log(params.url);
   return (
     <Image
-      source={require('../assets/img/tgif.png')}
+      source={{
+        uri: params.url,
+      }}
       resizeMode="cover"
       style={{
         marginTop: 40,

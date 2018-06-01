@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, StatusBar } from 'react-native';
 import { Row, Grid } from 'react-native-easy-grid';
+import Config from 'react-native-config';
 
 import Header from '../componenets/Header';
 import Textbox from '../componenets/Textbox';
@@ -70,9 +71,10 @@ export default class Newentry extends Component {
       const uploadUri = uri.replace('file://', '');
       let uploadBlob = null;
 
+      const user = firebase.auth().currentUser;
       const imageRef = firebase
         .storage()
-        .ref('images')
+        .ref(user + '/images/')
         .child('image_001');
 
       fs
@@ -128,6 +130,7 @@ export default class Newentry extends Component {
   }
 
   render() {
+    console.log(Config);
     console.log(this.state.uploaded);
     return (
       <View style={styles.container}>

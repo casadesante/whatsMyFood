@@ -11,7 +11,7 @@ const config = {
   apiKey: Config.API_KEY,
   authDomain: Config.AUTH_DOMAIN,
   databaseURL: Config.DB_URL,
-  storageBucket: Config.STORAGE_BUCKET,
+  storageBucket: 'gs://whatsmyfood.appspot.com',
 };
 
 const firebaseRef = firebase.initializeApp(config);

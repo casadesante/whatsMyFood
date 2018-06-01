@@ -2,13 +2,13 @@ import * as firebase from 'firebase';
 import Config from 'react-native-config';
 
 // Initialize Firebase
-const firebaseConfig = {
+const config = {
   apiKey: Config.API_KEY,
   authDomain: Config.AUTH_DOMAIN,
   databaseURL: Config.DB_URL,
-  storageBucket: Config.STORAGE_BUCKET,
+  storageBucket: 'gs://whatsmyfood.appspot.com',
 };
 
 export default (!firebase.apps.length
-  ? firebase.initializeApp(firebaseConfig)
+  ? firebase.initializeApp(config)
   : firebase.app());
