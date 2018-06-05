@@ -32,6 +32,11 @@ export default class Home extends Component {
     console.log(helper.generateRestaurants());
   }
 
+  getRestaurant = name => {
+    console.log(name);
+    alert(name + ' tapped');
+  };
+
   // if restaurant list is empty, show add button else show the list of restaurants
   render() {
     return (
@@ -70,7 +75,10 @@ export default class Home extends Component {
             <ScrollView>
               {helper.generateRestaurants().map(x => (
                 <View key={x.key}>
-                  <Restaurant restaurant={x} />
+                  <Restaurant
+                    goToRestaurant={name => this.getRestaurant}
+                    restaurant={x}
+                  />
                 </View>
               ))}
             </ScrollView>

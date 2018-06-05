@@ -14,6 +14,7 @@ import Newentry from './containers/Newentry';
 import Addfood from './containers/Addfood';
 import Search from './containers/Search';
 import Profile from './containers/Profile';
+import Restaurant from './containers/Restaurant';
 
 export const SignedOut = StackNavigator({
   SignIn: {
@@ -24,7 +25,10 @@ export const SignedOut = StackNavigator({
 export const SignedIn = TabNavigator(
   {
     Home: {
-      screen: StackNavigator({ Home: { screen: Home } }),
+      screen: StackNavigator({
+        Home: { screen: Home },
+        Restaurant: { screen: Restaurant },
+      }),
       path: '',
     },
     Newentry: {
