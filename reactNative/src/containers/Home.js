@@ -32,6 +32,10 @@ export default class Home extends Component {
     console.log(helper.generateRestaurants());
   }
 
+  getRestaurant = id => {
+    this.props.navigation.navigate('Restaurant', { id: id });
+  };
+
   // if restaurant list is empty, show add button else show the list of restaurants
   render() {
     return (
@@ -69,8 +73,11 @@ export default class Home extends Component {
             </Text>
             <ScrollView>
               {helper.generateRestaurants().map(x => (
-                <View key={x.key}>
-                  <Restaurant restaurant={x} />
+                <View key={x.id}>
+                  <Restaurant
+                    goToRestaurant={this.getRestaurant}
+                    restaurant={x}
+                  />
                 </View>
               ))}
             </ScrollView>

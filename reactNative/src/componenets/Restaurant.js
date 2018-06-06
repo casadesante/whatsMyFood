@@ -1,32 +1,44 @@
 import React from 'react';
-import { Text, View, ImageBackground, StyleSheet } from 'react-native';
+import {
+  Text,
+  View,
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const Restaurant = props => {
   const list = props.restaurant;
   return (
-    <ImageBackground
-      style={styles.backgroundImage}
-      imageStyle={{ borderRadius: 10 }}
-      source={{
-        uri: list.img,
+    <TouchableOpacity
+      onPress={() => {
+        props.goToRestaurant(list.id);
       }}
-      resizeMode="cover"
     >
-      <LinearGradient
-        colors={['rgba(0, 0, 0, 0.45)', 'rgba(0, 0, 0, 0.45)']}
-        style={styles.linearGradient}
+      <ImageBackground
+        style={styles.backgroundImage}
+        imageStyle={{ borderRadius: 10 }}
+        source={{
+          uri: list.img,
+        }}
+        resizeMode="cover"
       >
-        <View style={styles.details}>
-          <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 35 }}>
-            {list.name}
-          </Text>
-          <Text style={{ color: 'white', fontWeight: 'bold' }}>
-            {list.distance} kms away
-          </Text>
-        </View>
-      </LinearGradient>
-    </ImageBackground>
+        <LinearGradient
+          colors={['rgba(0, 0, 0, 0.45)', 'rgba(0, 0, 0, 0.45)']}
+          style={styles.linearGradient}
+        >
+          <View style={styles.details}>
+            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 35 }}>
+              {list.name}
+            </Text>
+            <Text style={{ color: 'white', fontWeight: 'bold' }}>
+              {list.distance} kms away
+            </Text>
+          </View>
+        </LinearGradient>
+      </ImageBackground>
+    </TouchableOpacity>
   );
 };
 
