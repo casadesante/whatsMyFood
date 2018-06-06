@@ -3,9 +3,11 @@ import { StyleSheet, Text, View } from 'react-native';
 
 export default class Restaurant extends Component {
   render() {
+    const { navigation } = this.props;
+    const restaurantId = navigation.getParam('id');
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Restaurant page !</Text>
+        <Text style={styles.welcome}>Restaurant page !{restaurantId}</Text>
       </View>
     );
   }

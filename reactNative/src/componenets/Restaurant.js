@@ -11,7 +11,11 @@ import LinearGradient from 'react-native-linear-gradient';
 const Restaurant = props => {
   const list = props.restaurant;
   return (
-    <TouchableOpacity onPress={props.goToRestaurant(list.name)}>
+    <TouchableOpacity
+      onPress={() => {
+        props.goToRestaurant(list.id);
+      }}
+    >
       <ImageBackground
         style={styles.backgroundImage}
         imageStyle={{ borderRadius: 10 }}
