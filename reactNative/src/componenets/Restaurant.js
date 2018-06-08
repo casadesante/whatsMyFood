@@ -13,7 +13,7 @@ const Restaurant = props => {
   return (
     <TouchableOpacity
       onPress={() => {
-        props.goToRestaurant(list.id);
+        props.goToRestaurant(list.id, list.name);
       }}
     >
       <ImageBackground

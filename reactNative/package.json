@@ -25,6 +25,7 @@
     "react-native-image-picker": "^0.26.10",
     "react-native-linear-gradient": "^2.4.0",
     "react-native-parallax-header": "^1.0.6",
+    "react-native-simple-card-view": "^0.3.0",
     "react-native-sticky-header-footer-scroll-view": "^2.1.3",
     "react-native-vector-icons": "^4.5.0",
     "react-navigation": "^1.5.8"

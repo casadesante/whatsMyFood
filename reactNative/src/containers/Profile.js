@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
-import { Row, Grid } from 'react-native-easy-grid';
 import { ListItem } from 'react-native-elements';
 
 export default class Profile extends Component {
