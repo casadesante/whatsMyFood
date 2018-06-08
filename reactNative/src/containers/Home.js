@@ -32,8 +32,8 @@ export default class Home extends Component {
     console.log(helper.generateRestaurants());
   }
 
-  getRestaurant = id => {
-    this.props.navigation.navigate('Restaurant', { id: id });
+  getRestaurant = (id, name) => {
+    this.props.navigation.navigate('Restaurant', { id: id, name: name });
   };
 
   // if restaurant list is empty, show add button else show the list of restaurants

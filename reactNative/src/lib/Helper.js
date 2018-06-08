@@ -45,6 +45,36 @@ const generateRestaurants = (params = {}) => {
   return list;
 };
 
+const getFoodItems = (params = {}) => {
+  const list = {
+    fav: [
+      {
+        name: 'Biriyani',
+        img: 'https://dealocx.files.wordpress.com/2015/05/dealocx-blog-07.jpg',
+      },
+      {
+        name: 'Manchurian',
+        img:
+          'https://2.bp.blogspot.com/-V0Fr_ufTp3c/WN6slehrp5I/AAAAAAAADIE/mv-x1LH3EXAKtz2DQ3DiX045cbnxR2M3wCLcB/s1600/egg%2Bmanchurian%2Brecipe.JPG',
+      },
+      {
+        name: 'Naan',
+        img:
+          'https://img.taste.com.au/ta1YxQuo/taste/2016/11/garlic-naan-102871-1.jpeg',
+      },
+    ],
+    good: [
+      {
+        name: 'Samosa',
+        img:
+          'https://media-cdn.tripadvisor.com/media/photo-s/0b/fe/b7/84/samossa.jpg',
+      },
+    ],
+  };
+  return list;
+};
+
 module.exports = {
   generateRestaurants,
+  getFoodItems,
 };
