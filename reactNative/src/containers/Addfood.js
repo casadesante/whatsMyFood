@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, StatusBar } from 'react-native';
 import { Row, Grid } from 'react-native-easy-grid';
-import Emoji from 'react-native-emoji';
 
 import Header from '../componenets/Header';
 import Textbox from '../componenets/Textbox';
