@@ -70,6 +70,7 @@ export const SignedIn = TabNavigator(
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
     tabBarOptions: {
+      showLabel: false,
       activeTintColor: 'tomato',
       inactiveTintColor: 'gray',
     },
