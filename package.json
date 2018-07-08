@@ -57,5 +57,9 @@
   "bugs": {
     "url": "https://github.com/sharathvignesh/whatsMyFood/issues"
   },
-  "homepage": "https://github.com/sharathvignesh/whatsMyFood#readme"
+  "homepage": "https://github.com/sharathvignesh/whatsMyFood#readme",
+  "devDependencies": {
+    "commitizen": "^2.10.1",
+    "emoji-cz": "^0.3.0"
+  }
 }
