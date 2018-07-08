@@ -9,3 +9,4 @@ whatsMyFood.iml
 workspace.xml
 node_modules/
 .env
+.idea/*
