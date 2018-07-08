@@ -9,45 +9,45 @@
   "config": {
     "commitizen": {
       "path": "emoji-cz",
-    "emoji-cz": {
-      "types": {
-        "Feat": {
-          "emoji": "✨",
-          "description": "A new feature"
+      "emoji-cz": {
+        "types": {
+          "Feat": {
+            "emoji": "✨",
+            "description": "A new feature"
+          },
+          "Fix": {
+            "emoji": "🐛",
+            "description": "A bug fix"
+          },
+          "Docs": {
+            "emoji": "📚",
+            "description": "Documentation only changes"
+          },
+          "Style": {
+            "emoji": "🎨",
+            "description": "Changes that do not affect the meaning of the code"
+          },
+          "Refactor": {
+            "emoji": "🔨",
+            "description": "A code change that neither fixes a bug nor adds a feature"
+          },
+          "Perf": {
+            "emoji": "🚀",
+            "description": "A code change that improves performance"
+          },
+          "Test": {
+            "emoji": "🚨",
+            "description": "Adding missing tests or correcting existing tests"
+          },
+          "Chore": {
+            "emoji": "🔩",
+            "description": "Other changes that don't modify src or test files"
+          }
         },
-        "Fix": {
-          "emoji": "🐛",
-          "description": "A bug fix"
-        },
-        "Docs": {
-          "emoji": "📚",
-          "description": "Documentation only changes"
-        },
-        "Style": {
-          "emoji": "🎨",
-          "description": "Changes that do not affect the meaning of the code"
-        },
-        "Refactor": {
-          "emoji": "🔨",
-          "description": "A code change that neither fixes a bug nor adds a feature"
-        },
-        "Perf": {
-          "emoji": "🚀",
-          "description": "A code change that improves performance"
-        },
-        "Test": {
-          "emoji": "🚨",
-          "description": "Adding missing tests or correcting existing tests"
-        },
-        "Chore": {	
-          "emoji": "🔩",
-          "description": "Other changes that don't modify src or test files"	
-        }
-     },
-     "format": "[emoji] [name]: [subject]"
+        "format": "[emoji] [name]: [subject]"
+      }
     }
-   }
- },
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sharathvignesh/whatsMyFood.git"

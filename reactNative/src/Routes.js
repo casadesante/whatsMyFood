@@ -1,10 +1,8 @@
 import React from 'react';
 import {
-  StackNavigator,
+  createStackNavigator,
   createBottomTabNavigator,
-  TabBarBottom,
-  TabNavigator,
-  SwitchNavigator,
+  createSwitchNavigator,
 } from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -16,23 +14,23 @@ import Search from './containers/Search';
 import Profile from './containers/Profile';
 import Restaurant from './containers/Restaurant';
 
-export const SignedOut = StackNavigator({
+export const SignedOut = createStackNavigator({
   SignIn: {
     screen: Signin,
   },
 });
 
-export const SignedIn = TabNavigator(
+export const SignedIn = createBottomTabNavigator(
   {
     Home: {
-      screen: StackNavigator({
+      screen: createStackNavigator({
         Home: { screen: Home },
         Restaurant: { screen: Restaurant },
       }),
       path: '',
     },
     Newentry: {
-      screen: StackNavigator({
+      screen: createStackNavigator({
         Newentry: { screen: Newentry },
         Addfood: { screen: Addfood },
       }),
@@ -43,7 +41,7 @@ export const SignedIn = TabNavigator(
       path: '',
     },
     Profile: {
-      screen: StackNavigator({ Profile: { screen: Profile } }),
+      screen: createStackNavigator({ Profile: { screen: Profile } }),
       path: '',
     },
   },
@@ -67,8 +65,6 @@ export const SignedIn = TabNavigator(
         return <Ionicons name={iconName} size={25} color={tintColor} />;
       },
     }),
-    tabBarComponent: TabBarBottom,
-    tabBarPosition: 'bottom',
     tabBarOptions: {
       showLabel: false,
       activeTintColor: 'tomato',
@@ -79,9 +75,9 @@ export const SignedIn = TabNavigator(
   },
 );
 
-export const createRootNavigator = signedIn => {
+export const createRootNavigator = (signedIn) => {
   console.log(signedIn);
-  return SwitchNavigator(
+  return createSwitchNavigator(
     {
       SignedIn: {
         screen: SignedIn,
