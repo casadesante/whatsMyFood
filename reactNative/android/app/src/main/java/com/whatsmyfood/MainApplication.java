@@ -12,6 +12,34 @@ import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import org.reactnative.camera.RNCameraPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
+import com.imagepicker.ImagePickerPackage;
+import com.RNFetchBlob.RNFetchBlobPackage;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
+import org.reactnative.camera.RNCameraPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.BV.LinearGradient.LinearGradientPackage;
+import com.imagepicker.ImagePickerPackage;
+import com.RNFetchBlob.RNFetchBlobPackage;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
+import org.reactnative.camera.RNCameraPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.BV.LinearGradient.LinearGradientPackage;
+import com.imagepicker.ImagePickerPackage;
+import com.RNFetchBlob.RNFetchBlobPackage;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
+import org.reactnative.camera.RNCameraPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.BV.LinearGradient.LinearGradientPackage;
+import com.imagepicker.ImagePickerPackage;
+import com.RNFetchBlob.RNFetchBlobPackage;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
+import org.reactnative.camera.RNCameraPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.BV.LinearGradient.LinearGradientPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
@@ -50,6 +78,34 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new VectorIconsPackage(),
+            new LinearGradientPackage(),
+            new ImagePickerPackage(),
+            new RNFetchBlobPackage(),
+            new FBSDKPackage(),
+            new ReactNativeConfigPackage(),
+            new RNCameraPackage(),
+            new VectorIconsPackage(),
+            new LinearGradientPackage(),
+            new ImagePickerPackage(),
+            new RNFetchBlobPackage(),
+            new FBSDKPackage(),
+            new ReactNativeConfigPackage(),
+            new RNCameraPackage(),
+            new VectorIconsPackage(),
+            new LinearGradientPackage(),
+            new ImagePickerPackage(),
+            new RNFetchBlobPackage(),
+            new FBSDKPackage(),
+            new ReactNativeConfigPackage(),
+            new RNCameraPackage(),
+            new VectorIconsPackage(),
+            new LinearGradientPackage(),
+            new ImagePickerPackage(),
+            new RNFetchBlobPackage(),
+            new FBSDKPackage(),
+            new ReactNativeConfigPackage(),
+            new RNCameraPackage(),
             new VectorIconsPackage(),
             new LinearGradientPackage(),
             new ImagePickerPackage(),

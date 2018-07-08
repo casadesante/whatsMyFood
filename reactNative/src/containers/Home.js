@@ -68,6 +68,7 @@ export default class Home extends Component {
           <View style={{ padding: 20 }}>
             <Text
               style={{
+                fontFamily: "SFProDisplay-Regular",
                 fontWeight: 'bold',
                 fontSize: 30,
               }}
