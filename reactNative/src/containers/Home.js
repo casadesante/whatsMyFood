@@ -8,6 +8,8 @@ import {
   TouchableHighlight,
   StatusBar,
 } from 'react-native';
+import PropTypes from 'prop-types';
+
 import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
 import Restaurant from '../componenets/Restaurant';
 
@@ -33,15 +35,18 @@ export default class Home extends Component {
   }
 
   getRestaurant = (id, name) => {
-    this.props.navigation.navigate('Restaurant', { id: id, name: name });
+    const { navigation } = this.props;
+    navigation.navigate('Restaurant', { id, name });
   };
 
   // if restaurant list is empty, show add button else show the list of restaurants
   render() {
+    const { navigation } = this.props;
+    const { empty } = this.state;
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
-        {this.state.empty ? (
+        {empty ? (
           <View
             style={{
               justifyContent: 'center',
@@ -52,9 +57,7 @@ export default class Home extends Component {
             <Text style={styles.welcome}>
               Add your first restaurant and dish !
             </Text>
-            <TouchableHighlight
-              onPress={() => this.props.navigation.navigate('Newentry')}
-            >
+            <TouchableHighlight onPress={() => navigation.navigate('Newentry')}>
               <Image
                 source={require('../assets/img/add.png')}
                 style={styles.logo}
@@ -110,3 +113,9 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
 });
+
+Home.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};

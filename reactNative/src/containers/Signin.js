@@ -14,13 +14,17 @@ const config = {
   storageBucket: 'gs://whatsmyfood.appspot.com',
 };
 
-const firebaseRef = firebase.initializeApp(config);
+// const firebaseRef = firebase.initializeApp(config);
 
 export default class Signin extends Component {
   static navigationOptions = {
     header: null,
   };
-
+  componentDidMount() {
+    if (!firebase.apps.length) {
+      firebase.initializeApp(config);
+    }
+  }
   render() {
     return (
       <ImageBackground

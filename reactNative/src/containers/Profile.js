@@ -9,15 +9,19 @@ export default class Profile extends Component {
       backgroundColor: 'rgb(248, 248, 248)',
     },
   };
+
   render() {
     const list = [
       {
+        id: 1,
         title: 'Terms and conditions',
       },
       {
+        id: 2,
         title: 'Third party software list',
       },
       {
+        id: 3,
         title: 'Report a problem',
       },
     ];
@@ -42,12 +46,12 @@ export default class Profile extends Component {
           </Text>
         </View>
         <View>
-          {list.map((item, i) => (
+          {list.map(item => (
             <ListItem
               onPress={() => {
                 alert(item.title);
               }}
-              key={i}
+              key={item.id}
               title={item.title}
             />
           ))}

@@ -5,6 +5,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import FoodItems from '../componenets/FoodItems';
 import helper from '../lib/Helper';
+import PropTypes from 'prop-types';
+import Newentry from './Newentry';
 
 export default class Restaurant extends Component {
   static navigationOptions = {
@@ -33,8 +35,10 @@ export default class Restaurant extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props.navigation.state);
+    const { navigation } = this.props;
+    console.log(navigation.state);
   }
+
   render() {
     const { navigation } = this.props;
     const foodItems = helper.getFoodItems();
@@ -104,3 +108,9 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
 });
+
+Restaurant.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};

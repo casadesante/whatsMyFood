@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, StatusBar } from 'react-native';
 import { Row, Grid } from 'react-native-easy-grid';
+import PropTypes from 'prop-types';
 
 import Header from '../componenets/Header';
 import Textbox from '../componenets/Textbox';
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Newentry extends Component {
+export default class Addfood extends Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     return {
@@ -45,6 +46,11 @@ export default class Newentry extends Component {
     };
   };
 
+  componentDidMount() {
+    const { navigation } = this.props;
+    navigation.setParams({ save: this.saveDetails });
+  }
+
   onPress = () => {
     alert('pressed');
   };
@@ -52,10 +58,6 @@ export default class Newentry extends Component {
   saveDetails = () => {
     alert('Save');
   };
-
-  componentDidMount() {
-    this.props.navigation.setParams({ save: this.saveDetails });
-  }
 
   render() {
     return (
@@ -92,3 +94,9 @@ export default class Newentry extends Component {
     );
   }
 }
+
+Addfood.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
