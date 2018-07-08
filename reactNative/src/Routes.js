@@ -5,6 +5,9 @@ import {
   createSwitchNavigator,
 } from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Material from 'react-native-vector-icons/MaterialIcons';
+import PropTypes from 'prop-types';
+import colors from './lib/Colors';
 
 import Signin from './containers/Signin';
 import Home from './containers/Home';
@@ -20,6 +23,31 @@ export const SignedOut = createStackNavigator({
   },
 });
 
+const HomeTabBarIcon = ({ tintColor }) => (
+  <Material name="home" size={35} color={tintColor} />
+);
+HomeTabBarIcon.propTypes = {
+  tintColor: PropTypes.string.isRequired,
+};
+const NewEntryTabBarIcon = ({ tintColor }) => (
+  <Material name="add" size={37} color={tintColor} />
+);
+NewEntryTabBarIcon.propTypes = {
+  tintColor: PropTypes.string.isRequired,
+};
+const SearchTabBarIcon = ({ tintColor }) => (
+  <Ionicons name="ios-search" size={35} color={tintColor} />
+);
+SearchTabBarIcon.propTypes = {
+  tintColor: PropTypes.string.isRequired,
+};
+const ProfileTabBarIcon = ({ tintColor }) => (
+  <Ionicons name="ios-contact" size={35} color={tintColor} />
+);
+ProfileTabBarIcon.propTypes = {
+  tintColor: PropTypes.string.isRequired,
+};
+
 export const SignedIn = createBottomTabNavigator(
   {
     Home: {
@@ -28,6 +56,10 @@ export const SignedIn = createBottomTabNavigator(
         Restaurant: { screen: Restaurant },
       }),
       path: '',
+      navigationOptions: {
+        tabBarIcon: HomeTabBarIcon,
+        title: 'WhatsMyFood',
+      },
     },
     Newentry: {
       screen: createStackNavigator({
@@ -35,40 +67,33 @@ export const SignedIn = createBottomTabNavigator(
         Addfood: { screen: Addfood },
       }),
       path: '',
+      navigationOptions: {
+        tabBarIcon: NewEntryTabBarIcon
+      },
     },
     Search: {
       screen: Search,
       path: '',
+      navigationOptions: {
+        tabBarIcon: SearchTabBarIcon
+      },
     },
     Profile: {
       screen: createStackNavigator({ Profile: { screen: Profile } }),
       path: '',
+      navigationOptions: {
+        tabBarIcon: ProfileTabBarIcon
+      },
     },
   },
   {
-    navigationOptions: ({ navigation }) => ({
-      tabBarIcon: ({ focused, tintColor }) => {
-        const { routeName } = navigation.state;
-        let iconName;
-        if (routeName === 'Home') {
-          iconName = `ios-home${focused ? '' : '-outline'}`;
-        } else if (routeName === 'Newentry') {
-          iconName = `md-add${focused ? '' : ''}`;
-        } else if (routeName === 'Search') {
-          iconName = `ios-search${focused ? '' : '-outline'}`;
-        } else if (routeName === 'Profile') {
-          iconName = `ios-contact${focused ? '' : '-outline'}`;
-        }
-
-        // You can return any component that you like here! We usually use an
-        // icon component from react-native-vector-icons
-        return <Ionicons name={iconName} size={25} color={tintColor} />;
-      },
-    }),
     tabBarOptions: {
       showLabel: false,
-      activeTintColor: 'tomato',
-      inactiveTintColor: 'gray',
+      activeTintColor: colors.coral,
+      inactiveTintColor: '#979797',
+      style: {
+        backgroundColor: "#f8f8f8",
+      },
     },
     animationEnabled: false,
     swipeEnabled: false,
