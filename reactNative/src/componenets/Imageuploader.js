@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import PropTypes from 'prop-types';
 
 const Imageuploader = ({ upload }) => (
   <TouchableOpacity onPress={() => upload()}>
@@ -23,4 +24,8 @@ const Imageuploader = ({ upload }) => (
   </TouchableOpacity>
 );
 
+Imageuploader.propTypes = {
+  // eslint-disable-next-line react/require-default-props
+  upload: PropTypes.func,
+};
 export default Imageuploader;
