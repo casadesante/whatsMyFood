@@ -50,6 +50,7 @@ export default class Newentry extends Component {
     return {
       headerStyle: {
         backgroundColor: 'rgb(255, 68, 68)',
+        borderBottomWidth:0,
       },
       headerTitleStyle: {
         color: 'white',

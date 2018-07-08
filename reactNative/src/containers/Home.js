@@ -18,11 +18,7 @@ export default class Home extends Component {
     title: 'Home',
     headerStyle: {
       backgroundColor: 'white',
-      shadowColor: 'rgba(222, 222, 222, 0.5)',
-      shadowOpacity: 1,
-      shadowOffset: {
-        height: 0.5,
-      },
+      borderBottomWidth:0,
     },
   };
 
