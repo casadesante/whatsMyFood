@@ -1,12 +1,13 @@
 import React from 'react';
 import {
-  StackNavigator,
+  createStackNavigator,
   createBottomTabNavigator,
-  TabBarBottom,
-  TabNavigator,
-  SwitchNavigator,
+  createSwitchNavigator,
 } from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Material from 'react-native-vector-icons/MaterialIcons';
+import PropTypes from 'prop-types';
+import colors from './lib/Colors';
 
 import Signin from './containers/Signin';
 import Home from './containers/Home';
@@ -16,72 +17,92 @@ import Search from './containers/Search';
 import Profile from './containers/Profile';
 import Restaurant from './containers/Restaurant';
 
-export const SignedOut = StackNavigator({
+export const SignedOut = createStackNavigator({
   SignIn: {
     screen: Signin,
   },
 });
 
-export const SignedIn = TabNavigator(
+const HomeTabBarIcon = ({ tintColor }) => (
+  <Material name="home" size={35} color={tintColor} />
+);
+HomeTabBarIcon.propTypes = {
+  tintColor: PropTypes.string.isRequired,
+};
+const NewEntryTabBarIcon = ({ tintColor }) => (
+  <Material name="add" size={37} color={tintColor} />
+);
+NewEntryTabBarIcon.propTypes = {
+  tintColor: PropTypes.string.isRequired,
+};
+const SearchTabBarIcon = ({ tintColor }) => (
+  <Ionicons name="ios-search" size={35} color={tintColor} />
+);
+SearchTabBarIcon.propTypes = {
+  tintColor: PropTypes.string.isRequired,
+};
+const ProfileTabBarIcon = ({ tintColor }) => (
+  <Ionicons name="ios-contact" size={35} color={tintColor} />
+);
+ProfileTabBarIcon.propTypes = {
+  tintColor: PropTypes.string.isRequired,
+};
+
+export const SignedIn = createBottomTabNavigator(
   {
     Home: {
-      screen: StackNavigator({
+      screen: createStackNavigator({
         Home: { screen: Home },
         Restaurant: { screen: Restaurant },
       }),
       path: '',
+      navigationOptions: {
+        tabBarIcon: HomeTabBarIcon,
+        title: 'WhatsMyFood',
+      },
     },
     Newentry: {
-      screen: StackNavigator({
+      screen: createStackNavigator({
         Newentry: { screen: Newentry },
         Addfood: { screen: Addfood },
       }),
       path: '',
+      navigationOptions: {
+        tabBarIcon: NewEntryTabBarIcon
+      },
     },
     Search: {
       screen: Search,
       path: '',
+      navigationOptions: {
+        tabBarIcon: SearchTabBarIcon
+      },
     },
     Profile: {
-      screen: StackNavigator({ Profile: { screen: Profile } }),
+      screen: createStackNavigator({ Profile: { screen: Profile } }),
       path: '',
+      navigationOptions: {
+        tabBarIcon: ProfileTabBarIcon
+      },
     },
   },
   {
-    navigationOptions: ({ navigation }) => ({
-      tabBarIcon: ({ focused, tintColor }) => {
-        const { routeName } = navigation.state;
-        let iconName;
-        if (routeName === 'Home') {
-          iconName = `ios-home${focused ? '' : '-outline'}`;
-        } else if (routeName === 'Newentry') {
-          iconName = `md-add${focused ? '' : ''}`;
-        } else if (routeName === 'Search') {
-          iconName = `ios-search${focused ? '' : '-outline'}`;
-        } else if (routeName === 'Profile') {
-          iconName = `ios-contact${focused ? '' : '-outline'}`;
-        }
-
-        // You can return any component that you like here! We usually use an
-        // icon component from react-native-vector-icons
-        return <Ionicons name={iconName} size={25} color={tintColor} />;
-      },
-    }),
-    tabBarComponent: TabBarBottom,
-    tabBarPosition: 'bottom',
     tabBarOptions: {
       showLabel: false,
-      activeTintColor: 'tomato',
-      inactiveTintColor: 'gray',
+      activeTintColor: colors.coral,
+      inactiveTintColor: '#979797',
+      style: {
+        backgroundColor: "#f8f8f8",
+      },
     },
     animationEnabled: false,
     swipeEnabled: false,
   },
 );
 
-export const createRootNavigator = signedIn => {
+export const createRootNavigator = (signedIn) => {
   console.log(signedIn);
-  return SwitchNavigator(
+  return createSwitchNavigator(
     {
       SignedIn: {
         screen: SignedIn,

@@ -33,7 +33,7 @@ $ react-native link react-native-fbsdk
 
 * Click `Build settings` and search for `Framework Search Paths` and add the path to your FacebookSDK that you downloaded above. Below is the reference image.
 
-![FacebookSDK link](https://tppr.s3.amazonaws.com/uploads/ace607e5d16cfd47bfed0a5be84ec638.png)
+![FacebookSDK link](assets/xcode.png)
 
 * Now run the app.
 ```bash

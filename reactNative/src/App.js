@@ -11,14 +11,14 @@ export default class App extends Component {
     };
   }
 
-  // componentDidMount() {
-  //   isSignedIn().then(res => {
-  //     this.setState({ signedIn: res });
-  //   });
-  // }
+  componentDidMount() {
+    isSignedIn().then(res => {
+      this.setState({ signedIn: res });
+    });
+  }
 
   render() {
-    const signedIn = this.state.signedIn;
+    const { signedIn } = this.state;
     console.log(signedIn);
     const Layout = createRootNavigator(signedIn);
 
