@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, StatusBar } from 'react-native';
+import {
+  StyleSheet, Text, View, Button, StatusBar,
+} from 'react-native';
 import { Row, Grid } from 'react-native-easy-grid';
 import Config from 'react-native-config';
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -70,7 +72,7 @@ export default class Newentry extends Component {
   }
 
   getImage = () => {
-    ImagePicker.showImagePicker(options, response => {
+    ImagePicker.showImagePicker(options, (response) => {
       console.log('Response = ', response);
 
       if (response.didCancel) {
@@ -82,7 +84,7 @@ export default class Newentry extends Component {
       } else {
         console.log(response.uri);
         this.uploadImage(response.uri)
-          .then(url => {
+          .then((url) => {
             this.setState({ uploaded: true, url });
             console.log(url);
           })
@@ -110,7 +112,7 @@ export default class Newentry extends Component {
       fs
         .readFile(uploadUri, 'base64')
         .then(data => Blob.build(data, { type: `${mime};BASE64` }))
-        .then(blob => {
+        .then((blob) => {
           uploadBlob = blob;
           return imageRef.put(blob, { contentType: mime });
         })
@@ -118,10 +120,10 @@ export default class Newentry extends Component {
           uploadBlob.close();
           return imageRef.getDownloadURL();
         })
-        .then(url => {
+        .then((url) => {
           resolve(url);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });

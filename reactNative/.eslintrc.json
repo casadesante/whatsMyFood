@@ -1,10 +1,10 @@
 {
     "env": {
-        "node": true, // this is the best starting point
-        "browser": true, // for react web
-        "es6": true // enables es6 features
+        "node": true, 
+        "browser": true, 
+        "es6": true 
     },
-    "parser": "babel-eslint", // needed to make babel stuff work properly
+    "parser": "babel-eslint",
     "extends": ["airbnb", "prettier"],
     "rules": {
       "react/jsx-filename-extension": "off",
