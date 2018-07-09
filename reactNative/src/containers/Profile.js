@@ -7,6 +7,7 @@ export default class Profile extends Component {
     title: 'Profile',
     headerStyle: {
       backgroundColor: 'rgb(248, 248, 248)',
+      borderBottomWidth:0,
     },
   };
 
