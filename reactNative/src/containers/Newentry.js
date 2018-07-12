@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   StyleSheet, Text, View, Button, StatusBar,
 } from 'react-native';
-import { Row, Grid } from 'react-native-easy-grid';
 import Config from 'react-native-config';
 import RNFetchBlob from 'react-native-fetch-blob';
 import * as ImagePicker from 'react-native-image-picker';
@@ -13,6 +12,7 @@ import Textbox from '../componenets/Textbox';
 import firebase from '../lib/FirebaseClient';
 import Imageupload from '../componenets/Imageupload';
 import Imageuploader from '../componenets/Imageuploader';
+import { heightPercentageToDP } from '../lib/Responsive';
 
 // Prepare Blob support
 const [Blob, fs] = [RNFetchBlob.polyfill.Blob, RNFetchBlob.fs];
@@ -33,6 +33,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
+  imageUploaderLayout: {
+    display: 'flex',
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: heightPercentageToDP('1.97%'),
+  },
 });
 
 const options = {
@@ -50,7 +57,7 @@ export default class Newentry extends Component {
     return {
       headerStyle: {
         backgroundColor: 'rgb(255, 68, 68)',
-        borderBottomWidth:0,
+        borderBottomWidth: 0,
       },
       headerTitleStyle: {
         color: 'white',
@@ -99,36 +106,34 @@ export default class Newentry extends Component {
     navigation.navigate('Addfood');
   };
 
-  uploadImage(uri, mime = 'application/octet-stream') {
-    return new Promise((resolve, reject) => {
-      const uploadUri = uri.replace('file://', '');
-      let uploadBlob = null;
+  uploadImage = (uri, mime = 'application/octet-stream') => new Promise((resolve, reject) => {
+    const uploadUri = uri.replace('file://', '');
+    let uploadBlob = null;
 
-      const user = firebase.auth().currentUser;
-      const imageRef = firebase
-        .storage()
-        .ref(`${user}/images/`)
-        .child('image_001');
+    const user = firebase.auth().currentUser;
+    const imageRef = firebase
+      .storage()
+      .ref(`${user}/images/`)
+      .child('image_001');
 
-      fs
-        .readFile(uploadUri, 'base64')
-        .then(data => Blob.build(data, { type: `${mime};BASE64` }))
-        .then((blob) => {
-          uploadBlob = blob;
-          return imageRef.put(blob, { contentType: mime });
-        })
-        .then(() => {
-          uploadBlob.close();
-          return imageRef.getDownloadURL();
-        })
-        .then((url) => {
-          resolve(url);
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
-  }
+    fs
+      .readFile(uploadUri, 'base64')
+      .then(data => Blob.build(data, { type: `${mime};BASE64` }))
+      .then((blob) => {
+        uploadBlob = blob;
+        return imageRef.put(blob, { contentType: mime });
+      })
+      .then(() => {
+        uploadBlob.close();
+        return imageRef.getDownloadURL();
+      })
+      .then((url) => {
+        resolve(url);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  })
 
   render() {
     const { uploaded, url } = this.state;
@@ -137,25 +142,23 @@ export default class Newentry extends Component {
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
-        <Grid>
-          <Header text="Add restaurant" />
-          <Textbox icon="restaurant" placeholder="Restaurant name" />
-          <View style={styles.optionalText}>
-            <Text style={styles.optional}>Optional</Text>
-          </View>
-          <Textbox icon="location" placeholder="Restaurant location" />
-          <Row>
-            {uploaded ? (
-              <View>
-                <Imageupload url={url} />
-              </View>
-            ) : (
-              <View style={{ flex: 1, padding: 40 }}>
-                <Imageuploader upload={this.getImage} />
-              </View>
-            )}
-          </Row>
-        </Grid>
+        <Header text="Add restaurant" />
+        <Textbox icon="restaurant" placeholder="Restaurant name" />
+        <View style={styles.optionalText}>
+          <Text style={styles.optional}>Optional</Text>
+        </View>
+        <Textbox icon="location" placeholder="Restaurant location" />
+        <View>
+          {uploaded ? (
+            <View>
+              <Imageupload url={url} />
+            </View>
+          ) : (
+            <View style={styles.imageUploaderLayout}>
+              <Imageuploader upload={this.getImage} />
+            </View>
+          )}
+        </View>
       </View>
     );
   }
