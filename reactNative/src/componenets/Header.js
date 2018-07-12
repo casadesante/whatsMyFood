@@ -1,30 +1,33 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { Row } from 'react-native-easy-grid';
+import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import colors from '../lib/Colors';
+import {
+  widthPercentageToDP,
+  heightPercentageToDP,
+} from '../lib/Responsive';
 
 const styles = StyleSheet.create({
   addText: {
     color: 'white',
+    fontFamily: 'SFProDisplay-Bold',
     fontSize: 33,
     fontWeight: 'bold',
-    letterSpacing: 0.5,
-    marginLeft: 15,
+    letterSpacing: 0.41,
+    marginLeft: widthPercentageToDP('4%'),
+    marginBottom: heightPercentageToDP('1.35%'),
+  },
+  background: {
+    backgroundColor: colors.coral,
   },
 });
 
-const Header = props => {
+const Header = (props) => {
   const { text } = props;
   return (
-    <Row
-      style={{
-        backgroundColor: colors.coral,
-        height: 44,
-      }}
-    >
+    <View style={styles.background}>
       <Text style={styles.addText}>{text}</Text>
-    </Row>
+    </View>
   );
 };
 
