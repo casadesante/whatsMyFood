@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { Row } from 'react-native-easy-grid';
 import PropTypes from 'prop-types';
+import colors from '../lib/Colors';
 
 const styles = StyleSheet.create({
   addText: {
@@ -18,7 +19,7 @@ const Header = props => {
   return (
     <Row
       style={{
-        backgroundColor: 'rgb(255, 68, 68)',
+        backgroundColor: colors.coral,
         height: 44,
       }}
     >
