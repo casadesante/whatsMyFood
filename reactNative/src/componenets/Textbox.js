@@ -1,17 +1,22 @@
 import React from 'react';
 import { StyleSheet, View, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import PropTypes from 'prop-types';
+import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
 
 const styles = StyleSheet.create({
   searchSection: {
+    display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
     borderBottomColor: 'rgb(188, 187, 193)',
     borderBottomWidth: 0.5,
+    height: heightPercentageToDP('8%'),
   },
   searchIcon: {
-    padding: 15,
+    marginLeft: widthPercentageToDP('4.27%'),
+    marginRight: widthPercentageToDP('2.93%'),
   },
   input: {
     flex: 1,
@@ -21,15 +26,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const Textbox = props => {
+const Textbox = (props) => {
   const { icon, placeholder } = props;
   return (
     <View style={styles.searchSection}>
       {icon === 'location' ? (
-        <EvilIcons
-          name={icon}
+        <SimpleLineIcons
+          name="location-pin"
           style={styles.searchIcon}
-          size={23}
+          size={21}
           color="rgb(105, 105, 105)"
         />
       ) : (
