@@ -18,7 +18,7 @@ export default class Home extends Component {
     title: 'Home',
     headerStyle: {
       backgroundColor: 'white',
-      borderBottomWidth:0,
+      borderBottomWidth: 0,
     },
   };
 
@@ -64,7 +64,7 @@ export default class Home extends Component {
           <View style={{ padding: 20 }}>
             <Text
               style={{
-                fontFamily: "SFProDisplay-Regular",
+                fontFamily: 'SFProDisplay-Regular',
                 fontWeight: 'bold',
                 fontSize: 30,
               }}

@@ -18,7 +18,7 @@ export default class Restaurant extends Component {
       left: 0,
       elevation: 0,
       shadowColor: 'transparent',
-      borderBottomWidth:0,
+      borderBottomWidth: 0,
       backgroundColor: 'transparent',
       shadowRadius: 0,
       shadowOffset: {

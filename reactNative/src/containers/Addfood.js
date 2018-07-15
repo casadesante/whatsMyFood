@@ -35,7 +35,7 @@ export default class Addfood extends Component {
       title: "T.G.I. Friday's", // Add restaurant title from props here
       headerStyle: {
         backgroundColor: 'rgb(255, 68, 68)',
-        borderBottomWidth:0,
+        borderBottomWidth: 0,
       },
       headerTintColor: 'white',
       headerTitleStyle: {

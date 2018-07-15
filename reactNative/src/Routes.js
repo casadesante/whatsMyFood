@@ -68,21 +68,21 @@ export const SignedIn = createBottomTabNavigator(
       }),
       path: '',
       navigationOptions: {
-        tabBarIcon: NewEntryTabBarIcon
+        tabBarIcon: NewEntryTabBarIcon,
       },
     },
     Search: {
       screen: Search,
       path: '',
       navigationOptions: {
-        tabBarIcon: SearchTabBarIcon
+        tabBarIcon: SearchTabBarIcon,
       },
     },
     Profile: {
       screen: createStackNavigator({ Profile: { screen: Profile } }),
       path: '',
       navigationOptions: {
-        tabBarIcon: ProfileTabBarIcon
+        tabBarIcon: ProfileTabBarIcon,
       },
     },
   },
@@ -92,7 +92,7 @@ export const SignedIn = createBottomTabNavigator(
       activeTintColor: colors.coral,
       inactiveTintColor: '#979797',
       style: {
-        backgroundColor: "#f8f8f8",
+        backgroundColor: '#f8f8f8',
       },
     },
     animationEnabled: false,
@@ -100,7 +100,7 @@ export const SignedIn = createBottomTabNavigator(
   },
 );
 
-export const createRootNavigator = (signedIn) => {
+export const createRootNavigator = signedIn => {
   console.log(signedIn);
   return createSwitchNavigator(
     {

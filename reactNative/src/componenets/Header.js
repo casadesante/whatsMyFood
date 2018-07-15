@@ -2,10 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import colors from '../lib/Colors';
-import {
-  widthPercentageToDP,
-  heightPercentageToDP,
-} from '../lib/Responsive';
+import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 
 const styles = StyleSheet.create({
   addText: {
@@ -22,7 +19,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Header = (props) => {
+const Header = props => {
   const { text } = props;
   return (
     <View style={styles.background}>

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet, Text, View, Button, StatusBar,
-} from 'react-native';
+import { StyleSheet, Text, View, Button, StatusBar } from 'react-native';
 import Config from 'react-native-config';
 import RNFetchBlob from 'react-native-fetch-blob';
 import * as ImagePicker from 'react-native-image-picker';
@@ -80,7 +78,7 @@ export default class Newentry extends Component {
   }
 
   getImage = () => {
-    ImagePicker.showImagePicker(options, (response) => {
+    ImagePicker.showImagePicker(options, response => {
       console.log('Response = ', response);
 
       if (response.didCancel) {
@@ -92,7 +90,7 @@ export default class Newentry extends Component {
       } else {
         console.log(response.uri);
         this.uploadImage(response.uri)
-          .then((url) => {
+          .then(url => {
             this.setState({ uploaded: true, url });
             console.log(url);
           })
@@ -106,34 +104,35 @@ export default class Newentry extends Component {
     navigation.navigate('Addfood');
   };
 
-  uploadImage = (uri, mime = 'application/octet-stream') => new Promise((resolve, reject) => {
-    const uploadUri = uri.replace('file://', '');
-    let uploadBlob = null;
+  uploadImage = (uri, mime = 'application/octet-stream') =>
+    new Promise((resolve, reject) => {
+      const uploadUri = uri.replace('file://', '');
+      let uploadBlob = null;
 
-    const user = firebase.auth().currentUser;
-    const imageRef = firebase
-      .storage()
-      .ref(`${user}/images/`)
-      .child('image_001');
+      const user = firebase.auth().currentUser;
+      const imageRef = firebase
+        .storage()
+        .ref(`${user}/images/`)
+        .child('image_001');
 
-    fs
-      .readFile(uploadUri, 'base64')
-      .then(data => Blob.build(data, { type: `${mime};BASE64` }))
-      .then((blob) => {
-        uploadBlob = blob;
-        return imageRef.put(blob, { contentType: mime });
-      })
-      .then(() => {
-        uploadBlob.close();
-        return imageRef.getDownloadURL();
-      })
-      .then((url) => {
-        resolve(url);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  })
+      fs
+        .readFile(uploadUri, 'base64')
+        .then(data => Blob.build(data, { type: `${mime};BASE64` }))
+        .then(blob => {
+          uploadBlob = blob;
+          return imageRef.put(blob, { contentType: mime });
+        })
+        .then(() => {
+          uploadBlob.close();
+          return imageRef.getDownloadURL();
+        })
+        .then(url => {
+          resolve(url);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
 
   render() {
     const { uploaded, url } = this.state;
