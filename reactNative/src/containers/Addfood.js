@@ -1,44 +1,22 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet, Text, View, Button, StatusBar,
+  StyleSheet, View, Button, StatusBar,
 } from 'react-native';
 import { Row, Grid } from 'react-native-easy-grid';
 import PropTypes from 'prop-types';
 
-import RF from 'react-native-responsive-fontsize';
 import Header from '../components/Header';
 import Textbox from '../components/Textbox';
 // import Imageupload from '../components/Imageupload';
 import Imageuploader from '../components/Imageuploader';
-import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
+import { heightPercentageToDP } from '../lib/Responsive';
 import Optional from '../components/Optional';
+import EmojiPicker from '../components/EmojiPicker';
 
 const styles = StyleSheet.create({
   optionalText: {
     padding: 20,
     backgroundColor: 'rgb(249, 249, 249)',
-  },
-  emojiPicker: {
-    paddingTop: heightPercentageToDP('1.25%'),
-    paddingLeft: widthPercentageToDP('4.27%'),
-    paddingRight: widthPercentageToDP('4.27%'),
-    backgroundColor: 'white',
-    borderBottomColor: 'rgb(188, 187, 193)',
-    borderBottomWidth: 0.5,
-  },
-  emojiPickerLabel: {
-    color: '#696969',
-    fontFamily: 'SFProText-Regular',
-    fontSize: RF(2.5),
-  },
-  emojiList: {
-    marginTop: heightPercentageToDP('1.85%'),
-    marginBottom: heightPercentageToDP('1.85%'),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  emojiStyle: {
-    fontSize: RF(5.5),
   },
   optional: {
     color: 'rgb(105, 105, 105)',
@@ -97,18 +75,7 @@ export default class Addfood extends Component {
         <Grid>
           <Header text="Add food" />
           <Textbox icon="restaurant-menu" placeholder="Food name" />
-          <View style={styles.emojiPicker}>
-            <Text style={styles.emojiPickerLabel}>
-              Pick one of them
-            </Text>
-            <View style={styles.emojiList}>
-              <Text style={styles.emojiStyle}>🤢</Text>
-              <Text style={styles.emojiStyle}>🙅</Text>
-              <Text style={styles.emojiStyle}>😐</Text>
-              <Text style={styles.emojiStyle}>👌</Text>
-              <Text style={styles.emojiStyle}>😍</Text>
-            </View>
-          </View>
+          <EmojiPicker />
           <Optional />
           <Row>
             {/* <View> */}
