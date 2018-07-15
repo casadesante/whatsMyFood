@@ -7,12 +7,13 @@ import RNFetchBlob from 'react-native-fetch-blob';
 import * as ImagePicker from 'react-native-image-picker';
 import PropTypes from 'prop-types';
 
+import RF from 'react-native-responsive-fontsize';
 import Header from '../componenets/Header';
 import Textbox from '../componenets/Textbox';
 import firebase from '../lib/FirebaseClient';
 import Imageupload from '../componenets/Imageupload';
 import Imageuploader from '../componenets/Imageuploader';
-import { heightPercentageToDP } from '../lib/Responsive';
+import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 
 // Prepare Blob support
 const [Blob, fs] = [RNFetchBlob.polyfill.Blob, RNFetchBlob.fs];
@@ -21,12 +22,14 @@ window.Blob = Blob;
 
 const styles = StyleSheet.create({
   optionalText: {
-    padding: 20,
+    paddingLeft: widthPercentageToDP('4.27%'),
+    paddingTop: heightPercentageToDP('1.85%'),
+    paddingBottom: heightPercentageToDP('1.85%'),
     backgroundColor: 'rgb(249, 249, 249)',
   },
   optional: {
     color: 'rgb(105, 105, 105)',
-    fontSize: 20,
+    fontSize: RF(3.2),
     letterSpacing: 0.5,
   },
   container: {
