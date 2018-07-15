@@ -5,11 +5,13 @@ import {
   View,
   TouchableOpacity,
   StatusBar,
+  Keyboard,
 } from 'react-native';
 import Config from 'react-native-config';
 import RNFetchBlob from 'react-native-fetch-blob';
 import * as ImagePicker from 'react-native-image-picker';
 import PropTypes from 'prop-types';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 
 import RF from 'react-native-responsive-fontsize';
 import Header from '../componenets/Header';
@@ -159,22 +161,24 @@ export default class Newentry extends Component {
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
         <Header text="Add restaurant" />
-        <Textbox icon="restaurant" placeholder="Restaurant name" />
-        <View style={styles.optionalText}>
-          <Text style={styles.optional}>Optional</Text>
-        </View>
-        <Textbox icon="location" placeholder="Restaurant location" />
-        <View>
-          {uploaded ? (
-            <View>
-              <Imageupload url={url} />
-            </View>
-          ) : (
-            <View style={styles.imageUploaderLayout}>
-              <Imageuploader upload={this.getImage} />
-            </View>
-          )}
-        </View>
+        <KeyboardAwareScrollView scrollEnabled={false} onPress={Keyboard.dismiss()}>
+          <Textbox icon="restaurant" placeholder="Restaurant name" />
+          <View style={styles.optionalText}>
+            <Text style={styles.optional}>Optional</Text>
+          </View>
+          <Textbox icon="location" placeholder="Restaurant location" />
+          <View>
+            {uploaded ? (
+              <View>
+                <Imageupload url={url} />
+              </View>
+            ) : (
+              <View style={styles.imageUploaderLayout}>
+                <Imageuploader upload={this.getImage} />
+              </View>
+            )}
+          </View>
+        </KeyboardAwareScrollView>
       </View>
     );
   }
