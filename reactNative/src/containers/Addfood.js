@@ -11,6 +11,7 @@ import Textbox from '../componenets/Textbox';
 // import Imageupload from '../componenets/Imageupload';
 import Imageuploader from '../componenets/Imageuploader';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
+import Optional from '../componenets/Optional';
 
 const styles = StyleSheet.create({
   optionalText: {
@@ -18,10 +19,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(249, 249, 249)',
   },
   emojiPicker: {
-    marginTop: heightPercentageToDP('1.25%'),
-    marginLeft: widthPercentageToDP('4.27%'),
-    marginRight: widthPercentageToDP('4.27%'),
+    paddingTop: heightPercentageToDP('1.25%'),
+    paddingLeft: widthPercentageToDP('4.27%'),
+    paddingRight: widthPercentageToDP('4.27%'),
     backgroundColor: 'white',
+    borderBottomColor: 'rgb(188, 187, 193)',
+    borderBottomWidth: 0.5,
   },
   emojiPickerLabel: {
     color: '#696969',
@@ -99,9 +102,7 @@ export default class Addfood extends Component {
               <Text style={styles.emojiStyle}>😍</Text>
             </View>
           </View>
-          <View style={styles.optionalText}>
-            <Text style={styles.optional}>Optional</Text>
-          </View>
+          <Optional />
           <Row>
             {/* <View> */}
             {/* <Imageupload /> */}

@@ -20,6 +20,7 @@ import firebase from '../lib/FirebaseClient';
 import Imageupload from '../componenets/Imageupload';
 import Imageuploader from '../componenets/Imageuploader';
 import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
+import Optional from '../componenets/Optional';
 
 // Prepare Blob support
 const [Blob, fs] = [RNFetchBlob.polyfill.Blob, RNFetchBlob.fs];
@@ -27,17 +28,6 @@ window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
 window.Blob = Blob;
 
 const styles = StyleSheet.create({
-  optionalText: {
-    paddingLeft: widthPercentageToDP('4.27%'),
-    paddingTop: heightPercentageToDP('1.85%'),
-    paddingBottom: heightPercentageToDP('1.85%'),
-    backgroundColor: 'rgb(249, 249, 249)',
-  },
-  optional: {
-    color: 'rgb(105, 105, 105)',
-    fontSize: RF(3.2),
-    letterSpacing: 0.5,
-  },
   container: {
     flex: 1,
     backgroundColor: 'white',
@@ -163,9 +153,7 @@ export default class Newentry extends Component {
         <Header text="Add restaurant" />
         <KeyboardAwareScrollView scrollEnabled={false} onPress={Keyboard.dismiss()}>
           <Textbox icon="restaurant" placeholder="Restaurant name" />
-          <View style={styles.optionalText}>
-            <Text style={styles.optional}>Optional</Text>
-          </View>
+          <Optional />
           <Textbox icon="location" placeholder="Restaurant location" />
           <View>
             {uploaded ? (
