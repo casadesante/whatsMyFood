@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: heightPercentageToDP('1.97%'),
+    marginTop: heightPercentageToDP('2.97%'),
   },
 });
 
