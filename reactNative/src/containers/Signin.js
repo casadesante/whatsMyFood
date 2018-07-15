@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, Image, ImageBackground } from 'react-native';
+import {
+  StyleSheet, Text, Image, ImageBackground,
+} from 'react-native';
 import { AccessToken, LoginButton } from 'react-native-fbsdk';
 import LinearGradient from 'react-native-linear-gradient';
 import { Row, Grid } from 'react-native-easy-grid';
 import Config from 'react-native-config';
 import firebase from 'firebase';
-import Home from './Home';
 
 const config = {
   apiKey: Config.API_KEY,
@@ -20,11 +21,13 @@ export default class Signin extends Component {
   static navigationOptions = {
     header: null,
   };
+
   componentDidMount() {
     if (!firebase.apps.length) {
       firebase.initializeApp(config);
     }
   }
+
   render() {
     return (
       <ImageBackground
@@ -60,7 +63,7 @@ export default class Signin extends Component {
                 onLoginFinished={(error, result) => {
                   console.log(result);
                   if (error) {
-                    alert('Login failed with error: ' + result.error);
+                    alert(`Login failed with error: ${result.error}`);
                   } else if (result.isCancelled) {
                     alert('Login was cancelled');
                   } else {
@@ -75,8 +78,8 @@ export default class Signin extends Component {
                           .then(
                             result => {
                               console.log({
-                                result: result,
-                                credential: credential,
+                                result,
+                                credential,
                               });
                               this.props.navigation.navigate('Home');
                             },
@@ -87,7 +90,7 @@ export default class Signin extends Component {
                           );
                       },
                       error => {
-                        console.log('Some error occured: ' + error);
+                        console.log(`Some error occured: ${error}`);
                       },
                     );
                   }
