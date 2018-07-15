@@ -10,6 +10,7 @@ import Header from '../componenets/Header';
 import Textbox from '../componenets/Textbox';
 // import Imageupload from '../componenets/Imageupload';
 import Imageuploader from '../componenets/Imageuploader';
+import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
 
 const styles = StyleSheet.create({
   optionalText: {
@@ -17,13 +18,24 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(249, 249, 249)',
   },
   emojiPicker: {
-    padding: 20,
+    marginTop: heightPercentageToDP('1.25%'),
+    marginLeft: widthPercentageToDP('4.27%'),
+    marginRight: widthPercentageToDP('4.27%'),
     backgroundColor: 'white',
   },
   emojiPickerLabel: {
     color: '#696969',
     fontFamily: 'SFProText-Regular',
     fontSize: RF(2.5),
+  },
+  emojiList: {
+    marginTop: heightPercentageToDP('1.85%'),
+    marginBottom: heightPercentageToDP('1.85%'),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  emojiStyle: {
+    fontSize: RF(5.5),
   },
   optional: {
     color: 'rgb(105, 105, 105)',
@@ -79,12 +91,12 @@ export default class Addfood extends Component {
             <Text style={styles.emojiPickerLabel}>
               Pick one of them
             </Text>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={{ fontSize: 40, padding: 10 }}>🤢</Text>
-              <Text style={{ fontSize: 40, padding: 10 }}>🙅</Text>
-              <Text style={{ fontSize: 40, padding: 10 }}>😐</Text>
-              <Text style={{ fontSize: 40, padding: 10 }}>👌</Text>
-              <Text style={{ fontSize: 40, padding: 10 }}>😍</Text>
+            <View style={styles.emojiList}>
+              <Text style={styles.emojiStyle}>🤢</Text>
+              <Text style={styles.emojiStyle}>🙅</Text>
+              <Text style={styles.emojiStyle}>😐</Text>
+              <Text style={styles.emojiStyle}>👌</Text>
+              <Text style={styles.emojiStyle}>😍</Text>
             </View>
           </View>
           <View style={styles.optionalText}>
