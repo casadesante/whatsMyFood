@@ -12,6 +12,8 @@
       "react/jsx-one-expression-per-line": "off",
       "jsx-a11y/accessible-emoji": "off",
       "no-use-before-define": "off",
-      "arrow-parens": "off"
+      "arrow-parens": "off",
+      "global-require": "off",
+      "no-alert": "off"
     }
 }
