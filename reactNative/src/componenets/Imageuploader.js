@@ -3,9 +3,7 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import PropTypes from 'prop-types';
-import {
-  heightPercentageToDP,
-} from '../lib/Responsive';
+import { heightPercentageToDP } from '../lib/Responsive';
 
 const styles = StyleSheet.create({
   gradientBox: {
