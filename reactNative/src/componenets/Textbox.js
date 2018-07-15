@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Textbox = (props) => {
+const Textbox = props => {
   const { icon, placeholder } = props;
   return (
     <View style={styles.searchSection}>
