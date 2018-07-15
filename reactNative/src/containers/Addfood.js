@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, StatusBar } from 'react-native';
+import {
+  StyleSheet, Text, View, Button, StatusBar,
+} from 'react-native';
 import { Row, Grid } from 'react-native-easy-grid';
 import PropTypes from 'prop-types';
 
