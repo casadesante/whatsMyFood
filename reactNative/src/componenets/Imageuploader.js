@@ -4,9 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import PropTypes from 'prop-types';
 import RF from 'react-native-responsive-fontsize';
-import {
-  widthPercentageToDP,
-} from '../lib/Responsive';
+import { widthPercentageToDP } from '../lib/Responsive';
 
 const styles = StyleSheet.create({
   gradientBox: {

@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet, Text, View, TouchableOpacity, StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 import Config from 'react-native-config';
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -43,7 +47,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: heightPercentageToDP('2.97%'),
   },
-
 });
 
 const options = {
@@ -69,7 +72,15 @@ export default class Newentry extends Component {
       headerBackTitle: 'Back',
       headerRight: (
         <TouchableOpacity onPress={() => params.save()}>
-          <Text style={{ fontSize: RF(3), color: '#FFFFFF', paddingRight: widthPercentageToDP('2.7%') }}>Save</Text>
+          <Text
+            style={{
+              fontSize: RF(3),
+              color: '#FFFFFF',
+              paddingRight: widthPercentageToDP('2.7%'),
+            }}
+          >
+            Save
+          </Text>
         </TouchableOpacity>
       ),
     };

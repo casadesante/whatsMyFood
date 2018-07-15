@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import colors from '../lib/Colors';
 import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 
-
 const styles = StyleSheet.create({
   addText: {
     color: 'white',
