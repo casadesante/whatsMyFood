@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, StatusBar } from 'react-native';
+import {
+  StyleSheet, Text, View, TouchableOpacity, StatusBar,
+} from 'react-native';
 import Config from 'react-native-config';
 import RNFetchBlob from 'react-native-fetch-blob';
 import * as ImagePicker from 'react-native-image-picker';
 import PropTypes from 'prop-types';
 
+import RF from 'react-native-responsive-fontsize';
 import Header from '../componenets/Header';
 import Textbox from '../componenets/Textbox';
 import firebase from '../lib/FirebaseClient';
 import Imageupload from '../componenets/Imageupload';
 import Imageuploader from '../componenets/Imageuploader';
-import { heightPercentageToDP } from '../lib/Responsive';
+import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 
 // Prepare Blob support
 const [Blob, fs] = [RNFetchBlob.polyfill.Blob, RNFetchBlob.fs];
@@ -19,12 +22,14 @@ window.Blob = Blob;
 
 const styles = StyleSheet.create({
   optionalText: {
-    padding: 20,
+    paddingLeft: widthPercentageToDP('4.27%'),
+    paddingTop: heightPercentageToDP('1.85%'),
+    paddingBottom: heightPercentageToDP('1.85%'),
     backgroundColor: 'rgb(249, 249, 249)',
   },
   optional: {
     color: 'rgb(105, 105, 105)',
-    fontSize: 20,
+    fontSize: RF(3.2),
     letterSpacing: 0.5,
   },
   container: {
@@ -36,8 +41,9 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: heightPercentageToDP('1.97%'),
+    marginTop: heightPercentageToDP('2.97%'),
   },
+
 });
 
 const options = {
@@ -62,7 +68,9 @@ export default class Newentry extends Component {
       },
       headerBackTitle: 'Back',
       headerRight: (
-        <Button color="white" title="Save" onPress={() => params.save()} />
+        <TouchableOpacity onPress={() => params.save()}>
+          <Text style={{ fontSize: RF(3), color: '#FFFFFF', paddingRight: widthPercentageToDP('2.7%') }}>Save</Text>
+        </TouchableOpacity>
       ),
     };
   };

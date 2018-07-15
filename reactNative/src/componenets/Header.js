@@ -1,14 +1,16 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import RF from 'react-native-responsive-fontsize';
 import PropTypes from 'prop-types';
 import colors from '../lib/Colors';
 import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
+
 
 const styles = StyleSheet.create({
   addText: {
     color: 'white',
     fontFamily: 'SFProDisplay-Bold',
-    fontSize: 33,
+    fontSize: RF(5),
     fontWeight: 'bold',
     letterSpacing: 0.41,
     marginLeft: widthPercentageToDP('4%'),

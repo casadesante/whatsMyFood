@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, StatusBar } from 'react-native';
+import {
+  StyleSheet, Text, View, Button, StatusBar,
+} from 'react-native';
 import { Row, Grid } from 'react-native-easy-grid';
 import PropTypes from 'prop-types';
 
 import Header from '../componenets/Header';
 import Textbox from '../componenets/Textbox';
-import Imageupload from '../componenets/Imageupload';
+// import Imageupload from '../componenets/Imageupload';
 import Imageuploader from '../componenets/Imageuploader';
 
 const styles = StyleSheet.create({
@@ -53,11 +55,11 @@ export default class Addfood extends Component {
   }
 
   onPress = () => {
-    alert('pressed');
+    console.log('pressed');
   };
 
   saveDetails = () => {
-    alert('Save');
+    console.log('Save');
   };
 
   render() {
@@ -83,9 +85,9 @@ export default class Addfood extends Component {
             <Text style={styles.optional}>Optional</Text>
           </View>
           <Row>
-            {/*<View>*/}
-            {/*<Imageupload />*/}
-            {/*</View>*/}
+            {/* <View> */}
+            {/* <Imageupload /> */}
+            {/* </View> */}
             <View style={{ flex: 1, padding: 40 }}>
               <Imageuploader upload={this.onPress} />
             </View>

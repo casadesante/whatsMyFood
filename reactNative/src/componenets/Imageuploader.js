@@ -3,12 +3,15 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import PropTypes from 'prop-types';
-import { heightPercentageToDP } from '../lib/Responsive';
+import RF from 'react-native-responsive-fontsize';
+import {
+  widthPercentageToDP,
+} from '../lib/Responsive';
 
 const styles = StyleSheet.create({
   gradientBox: {
-    height: heightPercentageToDP('22.29%'),
-    width: 16 * heightPercentageToDP('22.29%') / 9,
+    height: 9 * widthPercentageToDP('86.13%') / 16,
+    width: widthPercentageToDP('86.13%'),
     borderRadius: 10,
     display: 'flex',
     flexDirection: 'column',
@@ -23,6 +26,8 @@ const styles = StyleSheet.create({
   uploadText: {
     color: 'white',
     textAlign: 'center',
+    fontSize: RF(2.9),
+    marginTop: 3,
   },
 });
 const Imageuploader = ({ upload }) => (
@@ -34,7 +39,7 @@ const Imageuploader = ({ upload }) => (
       <SimpleLineIcons
         style={styles.cameraIcon}
         name="camera"
-        size={40}
+        size={RF(6)}
         color="white"
       />
       <Text style={styles.uploadText}>Add photo</Text>
