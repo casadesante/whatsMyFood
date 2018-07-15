@@ -45,6 +45,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     letterSpacing: 0.5,
   },
+  imageUploaderLayout: {
+    display: 'flex',
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: heightPercentageToDP('2.97%'),
+  },
   container: {
     flex: 1,
     backgroundColor: 'white',
@@ -107,7 +114,7 @@ export default class Addfood extends Component {
             {/* <View> */}
             {/* <Imageupload /> */}
             {/* </View> */}
-            <View style={{ flex: 1, padding: 40 }}>
+            <View style={styles.imageUploaderLayout}>
               <Imageuploader upload={this.onPress} />
             </View>
           </Row>
