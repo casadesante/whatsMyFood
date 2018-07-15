@@ -110,10 +110,9 @@ export default class Newentry extends Component {
       let uploadBlob = null;
 
       const user = firebase.auth().currentUser;
-      const imageRef = firebase
-        .storage()
-        .ref(`${user}/images/`)
-        .child('image_001');
+      const uid = user.uid;
+      console.log(uid);
+      const imageRef = firebase.storage().ref(`${uid}/images/image001.jpg`);
 
       fs
         .readFile(uploadUri, 'base64')
