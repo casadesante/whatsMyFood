@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { createRootNavigator } from './Routes';
-import { isSignedIn } from './lib/Auth';
+import isSignedIn from './lib/Auth';
 
 export default class App extends Component {
   constructor(props) {
