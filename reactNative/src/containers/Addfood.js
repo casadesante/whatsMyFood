@@ -5,6 +5,7 @@ import {
 import { Row, Grid } from 'react-native-easy-grid';
 import PropTypes from 'prop-types';
 
+import RF from 'react-native-responsive-fontsize';
 import Header from '../componenets/Header';
 import Textbox from '../componenets/Textbox';
 // import Imageupload from '../componenets/Imageupload';
@@ -15,9 +16,14 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: 'rgb(249, 249, 249)',
   },
-  emoji: {
+  emojiPicker: {
     padding: 20,
     backgroundColor: 'white',
+  },
+  emojiPickerLabel: {
+    color: '#696969',
+    fontFamily: 'SFProText-Regular',
+    fontSize: RF(2.5),
   },
   optional: {
     color: 'rgb(105, 105, 105)',
@@ -69,8 +75,8 @@ export default class Addfood extends Component {
         <Grid>
           <Header text="Add food" />
           <Textbox icon="restaurant-menu" placeholder="Food name" />
-          <View style={styles.emoji}>
-            <Text style={{ color: 'rgb(105, 105, 105)' }}>
+          <View style={styles.emojiPicker}>
+            <Text style={styles.emojiPickerLabel}>
               Pick one of them
             </Text>
             <View style={{ flexDirection: 'row' }}>
