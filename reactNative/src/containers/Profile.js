@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+// eslint-disable-next-line object-curly-newline
 import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
 import { ListItem } from 'react-native-elements';
+
+import { getProfileInfo } from '../lib/Auth';
 
 export default class Profile extends Component {
   static navigationOptions = {
@@ -9,6 +12,20 @@ export default class Profile extends Component {
       backgroundColor: 'rgb(248, 248, 248)',
       borderBottomWidth: 0,
     },
+  };
+
+  state = {
+    user: {
+      displayName: '',
+      photoURL: '',
+    },
+  };
+
+  componentDidMount = () => {
+    const user = getProfileInfo();
+    this.setState({ user }, function() {
+      console.log(this.state);
+    });
   };
 
   render() {
@@ -26,7 +43,7 @@ export default class Profile extends Component {
         title: 'Report a problem',
       },
     ];
-
+    const { user } = this.state;
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
@@ -39,11 +56,11 @@ export default class Profile extends Component {
           }}
         >
           <Image
-            source={require('../assets/img/profile.jpg')}
+            source={{ uri: `${user.photoURL}?height=500` }}
             style={styles.profileImage}
           />
           <Text style={{ fontWeight: 'bold', fontSize: 30, marginTop: 20 }}>
-            Jane Austen
+            {user.displayName}
           </Text>
         </View>
         <View>
