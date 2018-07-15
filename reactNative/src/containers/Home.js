@@ -11,7 +11,7 @@ import {
 import PropTypes from 'prop-types';
 
 import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
-import Restaurant from '../componenets/Restaurant';
+import Restaurant from '../components/Restaurant';
 
 export default class Home extends Component {
   static navigationOptions = {

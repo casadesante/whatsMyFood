@@ -6,12 +6,12 @@ import { Row, Grid } from 'react-native-easy-grid';
 import PropTypes from 'prop-types';
 
 import RF from 'react-native-responsive-fontsize';
-import Header from '../componenets/Header';
-import Textbox from '../componenets/Textbox';
-// import Imageupload from '../componenets/Imageupload';
-import Imageuploader from '../componenets/Imageuploader';
+import Header from '../components/Header';
+import Textbox from '../components/Textbox';
+// import Imageupload from '../components/Imageupload';
+import Imageuploader from '../components/Imageuploader';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
-import Optional from '../componenets/Optional';
+import Optional from '../components/Optional';
 
 const styles = StyleSheet.create({
   optionalText: {

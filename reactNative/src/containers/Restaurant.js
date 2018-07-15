@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import HeaderImageScrollView from 'react-native-image-header-scroll-view';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
-import FoodItems from '../componenets/FoodItems';
-import helper from '../lib/Helper';
+import {
+  StyleSheet, Text, View, StatusBar,
+} from 'react-native';
 import PropTypes from 'prop-types';
-import Newentry from './Newentry';
+import FoodItems from '../components/FoodItems';
+import helper from '../lib/Helper';
 
 export default class Restaurant extends Component {
   static navigationOptions = {
