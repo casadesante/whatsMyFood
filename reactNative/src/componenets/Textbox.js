@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     height: heightPercentageToDP('8%'),
   },
-  searchIcon: {
+  IconNextToLabel: {
     marginLeft: widthPercentageToDP('4.27%'),
     marginRight: widthPercentageToDP('2.93%'),
   },
@@ -35,14 +35,14 @@ const Textbox = (props) => {
       {icon === 'location' ? (
         <SimpleLineIcons
           name="location-pin"
-          style={styles.searchIcon}
+          style={styles.IconNextToLabel}
           size={RF(3.25)}
           color="rgb(105, 105, 105)"
         />
       ) : (
         <Icon
           name={icon}
-          style={styles.searchIcon}
+          style={styles.IconNextToLabel}
           size={RF(3.3)}
           color="rgb(105, 105, 105)"
         />
