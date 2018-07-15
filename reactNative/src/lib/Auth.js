@@ -21,3 +21,16 @@ export const getProfileInfo = () => {
   };
   return user;
 };
+
+export const logout = () => {
+  firebase
+    .auth()
+    .signOut()
+    .then(function() {
+      return true;
+    })
+    .catch(function(error) {
+      console.log(error);
+      return false;
+    });
+};

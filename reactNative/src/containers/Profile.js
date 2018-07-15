@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
 import { ListItem } from 'react-native-elements';
 
-import { getProfileInfo } from '../lib/Auth';
+import { getProfileInfo, logout } from '../lib/Auth';
+import Signin from './Signin';
 
 export default class Profile extends Component {
   static navigationOptions = {
@@ -26,6 +27,12 @@ export default class Profile extends Component {
     this.setState({ user }, function() {
       console.log(this.state);
     });
+  };
+
+  logout = () => {
+    const { navigation } = this.props;
+    const logoutSuccess = logout();
+    logoutSuccess ? navigation.navigate('Signin') : console.log('error');
   };
 
   render() {
@@ -73,6 +80,7 @@ export default class Profile extends Component {
               title={item.title}
             />
           ))}
+          <ListItem onPress={this.logout} title="Logout" />
         </View>
       </View>
     );
