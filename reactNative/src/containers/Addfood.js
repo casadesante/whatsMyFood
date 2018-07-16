@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet, View, Button, StatusBar,
-} from 'react-native';
+import { StyleSheet, View, Button, StatusBar } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Header from '../components/Header';
