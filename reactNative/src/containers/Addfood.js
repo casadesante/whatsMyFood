@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet, Text, View, Button, StatusBar,
-} from 'react-native';
+import { StyleSheet, Text, View, Button, StatusBar } from 'react-native';
 import { Row, Grid } from 'react-native-easy-grid';
 import PropTypes from 'prop-types';
 
@@ -98,9 +96,7 @@ export default class Addfood extends Component {
           <Header text="Add food" />
           <Textbox icon="restaurant-menu" placeholder="Food name" />
           <View style={styles.emojiPicker}>
-            <Text style={styles.emojiPickerLabel}>
-              Pick one of them
-            </Text>
+            <Text style={styles.emojiPickerLabel}>Pick one of them</Text>
             <View style={styles.emojiList}>
               <Text style={styles.emojiStyle}>🤢</Text>
               <Text style={styles.emojiStyle}>🙅</Text>

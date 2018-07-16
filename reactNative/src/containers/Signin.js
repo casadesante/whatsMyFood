@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet, Text, Image, ImageBackground,
-} from 'react-native';
+import { StyleSheet, Text, Image, ImageBackground } from 'react-native';
 import { AccessToken, LoginButton } from 'react-native-fbsdk';
 import LinearGradient from 'react-native-linear-gradient';
 import { Row, Grid } from 'react-native-easy-grid';
 import Config from 'react-native-config';
 import firebase from 'firebase';
+import PropTypes from 'prop-types';
 
 const config = {
   apiKey: Config.API_KEY,
@@ -29,6 +28,7 @@ export default class Signin extends Component {
   }
 
   render() {
+    const { navigation } = this.props;
     return (
       <ImageBackground
         source={require('../assets/img/stockPic.png')}
@@ -61,7 +61,6 @@ export default class Signin extends Component {
                 style={{ width: '88%', height: 45 }}
                 publishPermissions={['publish_actions']}
                 onLoginFinished={(error, result) => {
-                  console.log(result);
                   if (error) {
                     alert(`Login failed with error: ${result.error}`);
                   } else if (result.isCancelled) {
@@ -76,21 +75,17 @@ export default class Signin extends Component {
                           .auth()
                           .signInWithCredential(credential)
                           .then(
-                            result => {
-                              console.log({
-                                result,
-                                credential,
-                              });
-                              this.props.navigation.navigate('Home');
+                            () => {
+                              navigation.navigate('Home');
                             },
-                            error => {
-                              // Promise was rejected
-                              console.log(error);
+                            // eslint-disable-next-line no-unused-vars
+                            err => {
+                              alert('Error while loggin in');
                             },
                           );
                       },
-                      error => {
-                        console.log(`Some error occured: ${error}`);
+                      err => {
+                        alert(`Some error occured: ${err}`);
                       },
                     );
                   }
@@ -142,3 +137,9 @@ const styles = StyleSheet.create({
     height: 180,
   },
 });
+
+Signin.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
