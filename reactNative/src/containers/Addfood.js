@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   StyleSheet, View, Button, StatusBar,
 } from 'react-native';
-import { Row, Grid } from 'react-native-easy-grid';
 import PropTypes from 'prop-types';
 
 import Header from '../components/Header';
@@ -83,20 +82,18 @@ export default class Addfood extends Component {
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
-        <Grid>
-          <Header text="Add food" />
-          <Textbox icon="restaurant-menu" placeholder="Food name" />
-          <EmojiPicker onEmojiSelect={this.selectedEmoji} />
-          <Optional />
-          <Row>
-            {/* <View> */}
-            {/* <Imageupload /> */}
-            {/* </View> */}
-            <View style={styles.imageUploaderLayout}>
-              <Imageuploader upload={this.onPress} />
-            </View>
-          </Row>
-        </Grid>
+        <Header text="Add food" />
+        <Textbox icon="restaurant-menu" placeholder="Food name" />
+        <EmojiPicker onEmojiSelect={this.selectedEmoji} />
+        <Optional />
+        <View>
+          {/* <View> */}
+          {/* <Imageupload /> */}
+          {/* </View> */}
+          <View style={styles.imageUploaderLayout}>
+            <Imageuploader upload={this.onPress} />
+          </View>
+        </View>
       </View>
     );
   }
