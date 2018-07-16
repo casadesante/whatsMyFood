@@ -49,14 +49,15 @@ export default class EmojiPicker extends Component {
 
   emojiToggleStyle = (index, selectedrating) => {
     const emojiOpacity = (index === selectedrating) ? 1.0 : 0.3;
-    const emojiSize = (index === selectedrating) ? 6 : 5;
+    const emojiSize = (index === selectedrating) ? 1.3 : 1;
     const emojiPosition = (index === selectedrating) ? RF(0.01) : 0;
 
     return {
-      fontSize: RF(emojiSize),
+      fontSize: RF(5),
       opacity: emojiOpacity,
       position: 'absolute',
       top: emojiPosition,
+      transform: [{ scale: emojiSize }],
     };
   };
 
@@ -77,7 +78,9 @@ export default class EmojiPicker extends Component {
           {emojiList.map(option => (
             <View key={option.rating} style={styles.emojiContainer}>
               <Animatable.Text
-                transition={['opacity', 'fontSize']}
+                easing="ease-in-out-back"
+                duration={500}
+                transition={['opacity', 'scale']}
                 style={this.emojiToggleStyle(option.rating, selectedRating)}
                 onPress={() => this.toggleEmoji(option.rating, onEmojiSelect)}
               >
