@@ -55,6 +55,11 @@ export default class Addfood extends Component {
     };
   };
 
+  constructor() {
+    super();
+    this.state = { rating: 5 };
+  }
+
   componentDidMount() {
     const { navigation } = this.props;
     navigation.setParams({ save: this.saveDetails });
@@ -68,14 +73,20 @@ export default class Addfood extends Component {
     console.log('Save');
   };
 
+  selectedEmoji = (newRating) => {
+    this.setState({ rating: newRating });
+  }
+
   render() {
+    const { rating } = this.state;
+    console.log(`Selected rating: ${rating}`);
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
         <Grid>
           <Header text="Add food" />
           <Textbox icon="restaurant-menu" placeholder="Food name" />
-          <EmojiPicker />
+          <EmojiPicker onEmojiSelect={this.selectedEmoji} />
           <Optional />
           <Row>
             {/* <View> */}

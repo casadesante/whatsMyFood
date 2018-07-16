@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import RF from 'react-native-responsive-fontsize';
 import PropTypes from 'prop-types';
+import * as Animatable from 'react-native-animatable';
 import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 
 const emojiList = [
@@ -29,9 +30,14 @@ const styles = StyleSheet.create({
   },
   emojiSpacing: {
     marginTop: heightPercentageToDP('1.85%'),
-    marginBottom: heightPercentageToDP('1.85%'),
+    paddingBottom: heightPercentageToDP('2.85%'),
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  emojiContainer: {
+    position: 'relative',
+    height: RF(6),
+    width: RF(6),
   },
 });
 
@@ -43,15 +49,25 @@ export default class EmojiPicker extends Component {
 
   emojiToggleStyle = (index, selectedrating) => {
     const emojiOpacity = (index === selectedrating) ? 1.0 : 0.3;
+    const emojiSize = (index === selectedrating) ? 6 : 5;
+    const emojiPosition = (index === selectedrating) ? RF(0.01) : 0;
 
     return {
-      fontSize: RF(5.5),
+      fontSize: RF(emojiSize),
       opacity: emojiOpacity,
+      position: 'absolute',
+      top: emojiPosition,
     };
   };
 
+  toggleEmoji = (newRating, callback) => {
+    this.setState({ selectedRating: newRating });
+    callback(newRating);
+  }
+
   render() {
     const { selectedRating } = this.state;
+    const { onEmojiSelect } = this.props;
     return (
       <View style={styles.emojiPicker}>
         <Text style={styles.emojiPickerLabel}>
@@ -59,12 +75,15 @@ export default class EmojiPicker extends Component {
         </Text>
         <View style={styles.emojiSpacing}>
           {emojiList.map(option => (
-            <Text
-              key={option.rating}
-              style={this.emojiToggleStyle(option.rating, selectedRating)}
-            >
-              {option.emoji}
-            </Text>))}
+            <View key={option.rating} style={styles.emojiContainer}>
+              <Animatable.Text
+                transition={['opacity', 'fontSize']}
+                style={this.emojiToggleStyle(option.rating, selectedRating)}
+                onPress={() => this.toggleEmoji(option.rating, onEmojiSelect)}
+              >
+                {option.emoji}
+              </Animatable.Text>
+            </View>))}
         </View>
       </View>
     );
@@ -72,5 +91,5 @@ export default class EmojiPicker extends Component {
 }
 
 EmojiPicker.propTypes = {
-  onSelect: PropTypes.func,
+  onEmojiSelect: PropTypes.func.isRequired,
 };
