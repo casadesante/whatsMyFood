@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
 import { ListItem } from 'react-native-elements';
 
+import PropTypes from 'prop-types';
 import { getProfileInfo, logout } from '../lib/Auth';
 
 export default class Profile extends Component {
@@ -23,15 +24,21 @@ export default class Profile extends Component {
 
   componentDidMount = () => {
     const user = getProfileInfo();
-    this.setState({ user }, function () {
-      console.log(this.state);
-    });
+    this.setState({ user });
   };
 
   logout = () => {
     const { navigation } = this.props;
-    const logoutSuccess = logout();
-    logoutSuccess ? navigation.navigate('Signin') : console.log('error');
+    logout().then(res => {
+      if (res) {
+        navigation.navigate('SignedOut');
+      } else {
+        alert('Logout error');
+      }
+    });
+    // const logoutSuccess = logout();
+    // console.log(`logoutSuccess : ${logoutSuccess}`);
+    // logoutSuccess ? navigation.navigate('Signin') : console.log('error');
   };
 
   render() {
@@ -107,3 +114,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
+
+Profile.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
