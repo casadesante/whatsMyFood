@@ -85,7 +85,7 @@ export default class Newentry extends Component {
 
   componentDidMount() {
     const { navigation } = this.props;
-    navigation.setParams({ save: this.saveDetails });
+    navigation.setParams({ save: this.saveRestaurantForm });
   }
 
   getImage = () => {
@@ -110,7 +110,7 @@ export default class Newentry extends Component {
     });
   };
 
-  saveDetails = () => {
+  saveRestaurantForm = () => {
     const { navigation } = this.props;
     navigation.navigate('Addfood');
   };
@@ -119,9 +119,7 @@ export default class Newentry extends Component {
     new Promise((resolve, reject) => {
       const uploadUri = uri.replace('file://', '');
       let uploadBlob = null;
-      const { uid } = user;
-
-      const user = firebase.auth().currentUser;
+      const { uid } = firebase.auth().currentUser;
       console.log(uid);
       const imageRef = firebase.storage().ref(`${uid}/images/image001.jpg`);
 
@@ -146,8 +144,6 @@ export default class Newentry extends Component {
 
   render() {
     const { uploaded, url } = this.state;
-    console.log(Config);
-    console.log(uploaded);
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
@@ -158,6 +154,7 @@ export default class Newentry extends Component {
         >
           <Textbox icon="restaurant" placeholder="Restaurant name" />
           <Optional />
+          {/*Location must be fetched from google places or something*/}
           <Textbox icon="location" placeholder="Restaurant location" />
           <View>
             {uploaded ? (
