@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
 
 export default class Home extends Component {
   static navigationOptions = {
-    title: 'Home',
+    title: 'WhatsMyFood',
     headerStyle: {
       backgroundColor: 'white',
       borderBottomWidth: 0,
