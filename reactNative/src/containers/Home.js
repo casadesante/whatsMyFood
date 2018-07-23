@@ -7,8 +7,9 @@ import { StyleSheet,
   TouchableHighlight,
   StatusBar } from 'react-native';
 import PropTypes from 'prop-types';
-
 import RF from 'react-native-responsive-fontsize';
+import * as Animatable from 'react-native-animatable';
+
 import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
 import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 import Restaurant from '../components/Restaurant';
@@ -83,12 +84,14 @@ export default class Home extends Component {
             <Text style={styles.welcome}>
               Add your first restaurant and dish !
             </Text>
-            <TouchableHighlight style={styles.baseAddCircle} onPress={() => navigation.navigate('Newentry')}>
-              <Image
-                source={require('../assets/img/addIcon.png')}
-                style={styles.logo}
-              />
-            </TouchableHighlight>
+            <Animatable.View>
+              <TouchableHighlight style={styles.baseAddCircle} onPress={() => navigation.navigate('Newentry')}>
+                <Image
+                  source={require('../assets/img/addIcon.png')}
+                  style={styles.logo}
+                />
+              </TouchableHighlight>
+            </Animatable.View>
           </View>
         ) : (
           <View style={{ padding: 20 }}>
