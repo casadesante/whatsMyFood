@@ -8,8 +8,41 @@ import { StyleSheet,
   StatusBar } from 'react-native';
 import PropTypes from 'prop-types';
 
+import RF from 'react-native-responsive-fontsize';
 import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
+import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 import Restaurant from '../components/Restaurant';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  welcome: {
+    fontSize: RF(5),
+    marginTop: heightPercentageToDP('18%'),
+    textAlign: 'center',
+    marginLeft: widthPercentageToDP('13.77%'),
+    marginRight: widthPercentageToDP('13.77%'),
+    fontFamily: 'SFProText-Regular',
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+  },
+  logo: {
+    width: widthPercentageToDP('14.15%'),
+    height: heightPercentageToDP('6.53%'),
+    resizeMode: 'contain',
+  },
+  baseAddCircle: {
+    marginTop: heightPercentageToDP('10.96%'),
+    backgroundColor: '#FF4444',
+    padding: widthPercentageToDP('6.13%'),
+    borderRadius: 100,
+  },
+});
 
 export default class Home extends Component {
   static navigationOptions = {
@@ -45,15 +78,14 @@ export default class Home extends Component {
             style={{
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: '20%',
             }}
           >
             <Text style={styles.welcome}>
               Add your first restaurant and dish !
             </Text>
-            <TouchableHighlight onPress={() => navigation.navigate('Newentry')}>
+            <TouchableHighlight style={styles.baseAddCircle} onPress={() => navigation.navigate('Newentry')}>
               <Image
-                source={require('../assets/img/add.png')}
+                source={require('../assets/img/addIcon.png')}
                 style={styles.logo}
               />
             </TouchableHighlight>
@@ -85,29 +117,6 @@ export default class Home extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  welcome: {
-    fontSize: 40,
-    textAlign: 'center',
-    margin: 10,
-    padding: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  logo: {
-    marginTop: '20%',
-    height: 100,
-    resizeMode: 'contain',
-  },
-});
 
 Home.propTypes = {
   navigation: PropTypes.shape({
