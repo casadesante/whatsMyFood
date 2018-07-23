@@ -38,10 +38,26 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   baseAddCircle: {
+    position: 'absolute',
+    marginLeft: widthPercentageToDP('37.07%'),
     marginTop: heightPercentageToDP('10.96%'),
     backgroundColor: '#FF4444',
     padding: widthPercentageToDP('6.13%'),
     borderRadius: 100,
+  },
+  animCircle: {
+    position: 'absolute',
+    marginLeft: widthPercentageToDP('37.07%'),
+    marginTop: heightPercentageToDP('10.96%'),
+    backgroundColor: '#000000',
+    height: 99,
+    width: 99,
+    borderRadius: 100,
+  },
+  buttonContainer: {
+    position: 'relative',
+    width: widthPercentageToDP('100%'),
+    height: heightPercentageToDP('50%'),
   },
 });
 
@@ -84,14 +100,15 @@ export default class Home extends Component {
             <Text style={styles.welcome}>
               Add your first restaurant and dish !
             </Text>
-            <Animatable.View>
+            <View style={styles.buttonContainer}>
+              <Animatable.View style={styles.animCircle} />
               <TouchableHighlight style={styles.baseAddCircle} onPress={() => navigation.navigate('Newentry')}>
                 <Image
                   source={require('../assets/img/addIcon.png')}
                   style={styles.logo}
                 />
               </TouchableHighlight>
-            </Animatable.View>
+            </View>
           </View>
         ) : (
           <View style={{ padding: 20 }}>
