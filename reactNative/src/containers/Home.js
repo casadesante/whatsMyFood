@@ -39,25 +39,32 @@ const styles = StyleSheet.create({
   },
   baseAddCircle: {
     position: 'absolute',
-    marginLeft: widthPercentageToDP('37.07%'),
-    marginTop: heightPercentageToDP('10.96%'),
     backgroundColor: '#FF4444',
     padding: widthPercentageToDP('6.13%'),
     borderRadius: 100,
   },
   animCircle: {
     position: 'absolute',
-    marginLeft: widthPercentageToDP('37.07%'),
-    marginTop: heightPercentageToDP('10.96%'),
-    backgroundColor: '#000000',
-    height: 99,
-    width: 99,
+    margin: 'auto',
+    backgroundColor: 'rgba(255,68,68,0.15)',
+    height: heightPercentageToDP('12.19%'),
+    width: widthPercentageToDP('26.4%'),
+    borderRadius: 100,
+  },
+  animCircleBig: {
+    position: 'absolute',
+    margin: 'auto',
+    backgroundColor: 'rgba(255,68,68,0.15)',
+    height: heightPercentageToDP('12.19%'),
+    width: widthPercentageToDP('26.4%'),
     borderRadius: 100,
   },
   buttonContainer: {
     position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: widthPercentageToDP('100%'),
-    height: heightPercentageToDP('50%'),
+    height: heightPercentageToDP('40%'),
   },
 });
 
@@ -87,6 +94,37 @@ export default class Home extends Component {
   render() {
     const { navigation } = this.props;
     const { empty } = this.state;
+
+    const BigRipple = {
+      0: {
+        opacity: 1,
+        scale: 1,
+      },
+      0.5: {
+        opacity: 1,
+        scale: 1.5,
+      },
+      1: {
+        opacity: 0,
+        scale: 2,
+      },
+    };
+
+    const SmallRipple = {
+      0: {
+        opacity: 1,
+        scale: 1,
+      },
+      0.5: {
+        opacity: 1,
+        scale: 1.25,
+      },
+      1: {
+        opacity: 0,
+        scale: 1.5,
+      },
+    };
+
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
@@ -97,11 +135,12 @@ export default class Home extends Component {
               alignItems: 'center',
             }}
           >
-            <Text style={styles.welcome}>
+            <Animatable.Text animation="fadeInUp" style={styles.welcome}>
               Add your first restaurant and dish !
-            </Text>
+            </Animatable.Text>
             <View style={styles.buttonContainer}>
-              <Animatable.View style={styles.animCircle} />
+              <Animatable.View style={styles.animCircleBig} animation={BigRipple} duration={4000} iterationCount="infinite" />
+              <Animatable.View style={styles.animCircle} animation={SmallRipple} duration={3800} iterationDelay={200} iterationCount="infinite" />
               <TouchableHighlight style={styles.baseAddCircle} onPress={() => navigation.navigate('Newentry')}>
                 <Image
                   source={require('../assets/img/addIcon.png')}
