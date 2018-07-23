@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
+import { StyleSheet,
   Text,
   View,
   Image,
   ScrollView,
   TouchableHighlight,
-  StatusBar,
-} from 'react-native';
+  StatusBar } from 'react-native';
 import PropTypes from 'prop-types';
 
 import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
