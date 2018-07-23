@@ -21,7 +21,7 @@ export default class Home extends Component {
   };
 
   state = {
-    empty: false,
+    empty: true,
   };
 
   componentDidMount() {
