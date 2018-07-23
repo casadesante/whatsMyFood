@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: widthPercentageToDP('14.15%'),
-    height: heightPercentageToDP('6.53%'),
+    height: widthPercentageToDP('14.15%'),
     resizeMode: 'contain',
   },
   baseAddCircle: {
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     margin: 'auto',
     backgroundColor: 'rgba(255,68,68,0.15)',
-    height: heightPercentageToDP('12.19%'),
+    height: widthPercentageToDP('26.4%'),
     width: widthPercentageToDP('26.4%'),
     borderRadius: 100,
   },
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     margin: 'auto',
     backgroundColor: 'rgba(255,68,68,0.15)',
-    height: heightPercentageToDP('12.19%'),
+    height: widthPercentageToDP('26.4%'),
     width: widthPercentageToDP('26.4%'),
     borderRadius: 100,
   },
