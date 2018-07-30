@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, Image, ImageBackground, View } from 'react-native';
-import { AccessToken, LoginButton } from 'react-native-fbsdk';
 import LinearGradient from 'react-native-linear-gradient';
 import Config from 'react-native-config';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 import RF from '../../node_modules/react-native-responsive-fontsize';
+import FacebookLoginButton from '../components/FbLoginButton';
 
 const config = {
   apiKey: Config.API_KEY,
@@ -44,9 +44,8 @@ const styles = StyleSheet.create({
     height: widthPercentageToDP('47.5%'),
   },
   loginButton: {
-    width: widthPercentageToDP('89%'),
-    height: heightPercentageToDP('6.5%'),
-    marginTop: heightPercentageToDP('26%'),
+    marginTop: heightPercentageToDP('28%'),
+    marginBottom: heightPercentageToDP('6%'),
   },
 });
 
@@ -81,11 +80,11 @@ export default class Signin extends Component {
               style={styles.logo}
               resizeMode="contain"
             />
-            <Text style={styles.appTitle}>WHATS MY FOOD</Text>
+            <Text style={styles.appTitle}>WhatsMyFood</Text>
 
 
-            <LoginButton
-              style={styles.loginButton}
+            {/* <LoginButton
+
               publishPermissions={['publish_actions']}
               onLoginFinished={(error, result) => {
                 if (error) {
@@ -121,7 +120,10 @@ export default class Signin extends Component {
                 // delete id from Firebase ?
                 alert('User logged out');
               }}
-            />
+            /> */}
+            <View style={styles.loginButton}>
+              <FacebookLoginButton />
+            </View>
             <Text style={{ color: 'white' }}>
                 By signing up, I agree with WhatsMyFood’s{'\n'}
               <Text style={{ color: 'red' }}>
