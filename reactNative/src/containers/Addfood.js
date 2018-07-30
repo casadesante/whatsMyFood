@@ -70,9 +70,9 @@ export default class Addfood extends Component {
     console.log('Save');
   };
 
-  selectedEmoji = (newRating) => {
+  selectedEmoji = newRating => {
     this.setState({ rating: newRating });
-  }
+  };
 
   render() {
     const { rating } = this.state;

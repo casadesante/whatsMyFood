@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StatusBar,
   Keyboard,
+  ScrollView,
 } from 'react-native';
 import Config from 'react-native-config';
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -78,14 +79,18 @@ export default class Newentry extends Component {
     };
   };
 
-  state = {
-    uploaded: false,
-    url: '',
-  };
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      uploaded: false,
+      url: '',
+      name: '',
+      location: '',
+    };
+  }
   componentDidMount() {
     const { navigation } = this.props;
-    navigation.setParams({ save: this.saveDetails });
+    navigation.setParams({ save: this.saveRestaurantForm });
   }
 
   getImage = () => {
@@ -110,18 +115,17 @@ export default class Newentry extends Component {
     });
   };
 
-  saveDetails = () => {
+  saveRestaurantForm = () => {
     const { navigation } = this.props;
-    navigation.navigate('Addfood');
+    alert(JSON.stringify(this.state));
+    // navigation.navigate('Addfood');
   };
 
   uploadImage = (uri, mime = 'application/octet-stream') =>
     new Promise((resolve, reject) => {
       const uploadUri = uri.replace('file://', '');
       let uploadBlob = null;
-      const { uid } = user;
-
-      const user = firebase.auth().currentUser;
+      const { uid } = firebase.auth().currentUser;
       console.log(uid);
       const imageRef = firebase.storage().ref(`${uid}/images/image001.jpg`);
 
@@ -146,31 +150,45 @@ export default class Newentry extends Component {
 
   render() {
     const { uploaded, url } = this.state;
-    console.log(Config);
-    console.log(uploaded);
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
         <Header text="Add restaurant" />
-        <KeyboardAwareScrollView
-          scrollEnabled={false}
-          onPress={Keyboard.dismiss()}
-        >
-          <Textbox icon="restaurant" placeholder="Restaurant name" />
-          <Optional />
-          <Textbox icon="location" placeholder="Restaurant location" />
-          <View>
-            {uploaded ? (
-              <View>
-                <Imageupload url={url} />
-              </View>
-            ) : (
-              <View style={styles.imageUploaderLayout}>
-                <Imageuploader upload={this.getImage} />
-              </View>
-            )}
-          </View>
-        </KeyboardAwareScrollView>
+        {/*<KeyboardAwareScrollView*/}
+        {/*scrollEnabled={false}*/}
+        {/*onPress={Keyboard.dismiss()}*/}
+        {/*>*/}
+        <Textbox
+          icon="restaurant"
+          placeholder="Restaurant name"
+          changeText={name => {
+            this.setState({ name });
+          }}
+          text={this.state.name}
+          field="name"
+        />
+        <Optional />
+        {/*Location must be fetched from google places or something*/}
+        <Textbox
+          icon="location"
+          placeholder="Restaurant location"
+          changeText={location => {
+            this.setState({ location });
+          }}
+          field="location"
+        />
+        <View>
+          {uploaded ? (
+            <View>
+              <Imageupload url={url} />
+            </View>
+          ) : (
+            <View style={styles.imageUploaderLayout}>
+              <Imageuploader upload={this.getImage} />
+            </View>
+          )}
+        </View>
+        {/*</KeyboardAwareScrollView>*/}
       </View>
     );
   }

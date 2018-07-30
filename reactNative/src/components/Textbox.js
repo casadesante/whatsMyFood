@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 });
 
 const Textbox = props => {
-  const { icon, placeholder } = props;
+  const { icon, placeholder, text, changeText } = props;
   return (
     <View style={styles.searchSection}>
       {icon === 'location' ? (
@@ -51,6 +51,7 @@ const Textbox = props => {
         style={styles.input}
         placeholder={placeholder}
         placeholderTextColor="rgb(144, 144, 144)"
+        onChangeText={changeText}
       />
     </View>
   );
