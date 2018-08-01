@@ -1,7 +1,9 @@
 import React from 'react';
-import { createStackNavigator,
+import {
+  createStackNavigator,
   createBottomTabNavigator,
-  createSwitchNavigator } from 'react-navigation';
+  createSwitchNavigator,
+} from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Material from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';

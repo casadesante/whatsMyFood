@@ -117,8 +117,8 @@ export default class Newentry extends Component {
 
   saveRestaurantForm = () => {
     const { navigation } = this.props;
-    alert(JSON.stringify(this.state));
-    // navigation.navigate('Addfood');
+    // alert(JSON.stringify(this.state));
+    navigation.navigate('Addfood');
   };
 
   uploadImage = (uri, mime = 'application/octet-stream') =>
