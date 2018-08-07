@@ -1,19 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, Image, ImageBackground, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Config from 'react-native-config';
-import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 import RF from '../../node_modules/react-native-responsive-fontsize';
 import FacebookLoginButton from '../components/FbLoginButton';
-
-const config = {
-  apiKey: Config.API_KEY,
-  authDomain: Config.AUTH_DOMAIN,
-  databaseURL: Config.DB_URL,
-  storageBucket: 'gs://whatsmyfood.appspot.com',
-};
 
 const styles = StyleSheet.create({
   linearGradient: {
@@ -49,18 +40,10 @@ const styles = StyleSheet.create({
   },
 });
 
-// const firebaseRef = firebase.initializeApp(config);
-
 export default class Signin extends Component {
   static navigationOptions = {
     header: null,
   };
-
-  componentDidMount() {
-    if (!firebase.apps.length) {
-      firebase.initializeApp(config);
-    }
-  }
 
   render() {
     const { navigation } = this.props;
@@ -81,48 +64,8 @@ export default class Signin extends Component {
               resizeMode="contain"
             />
             <Text style={styles.appTitle}>WhatsMyFood</Text>
-
-
-            {/* <LoginButton
-
-              publishPermissions={['publish_actions']}
-              onLoginFinished={(error, result) => {
-                if (error) {
-                  alert(`Login failed with error: ${result.error}`);
-                } else if (result.isCancelled) {
-                  alert('Login was cancelled');
-                } else {
-                  AccessToken.getCurrentAccessToken().then(
-                    accessTokenData => {
-                      const credential = firebase.auth.FacebookAuthProvider.credential(
-                        accessTokenData.accessToken,
-                      );
-                      firebase
-                        .auth()
-                        .signInWithCredential(credential)
-                        .then(
-                          () => {
-                            navigation.navigate('Home');
-                          },
-                          // eslint-disable-next-line no-unused-vars
-                          err => {
-                            alert('Error while loggin in');
-                          },
-                        );
-                    },
-                    err => {
-                      alert(`Some error occured: ${err}`);
-                    },
-                  );
-                }
-              }}
-              onLogoutFinished={() => {
-                // delete id from Firebase ?
-                alert('User logged out');
-              }}
-            /> */}
             <View style={styles.loginButton}>
-              <FacebookLoginButton />
+              <FacebookLoginButton navigation={navigation} />
             </View>
             <Text style={{ color: 'white' }}>
                 By signing up, I agree with WhatsMyFood’s{'\n'}
