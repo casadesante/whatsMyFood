@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   loginButton: {
     width: widthPercentageToDP('89%'),
     height: heightPercentageToDP('6.5%'),
-    backgroundColor: '#3B5998',
+    backgroundColor: '#DA4733',
     borderRadius: heightPercentageToDP('6.5%') / 5,
     display: 'flex',
     flexDirection: 'row',
@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
   },
-  facebookLogo: {
-    marginLeft: widthPercentageToDP('1%'),
+  SNSlogo: {
+    marginLeft: widthPercentageToDP('0%'),
   },
   loadingSpinner: {
     marginRight: widthPercentageToDP('2%'),
@@ -44,12 +44,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: RF(2.5),
     fontFamily: 'SFProText-Light',
-    marginRight: widthPercentageToDP('12%'),
+    marginRight: widthPercentageToDP('15%'),
   },
 });
 
 
-class FacebookLoginButton extends Component {
+class GoogleLoginButton extends Component {
   constructor() {
     super();
     this.state = { FbLoginLoading: true };
@@ -62,7 +62,7 @@ class FacebookLoginButton extends Component {
     }
   }
 
-  facebookLogin = (navigation) => {
+  googleLogin = (navigation) => {
     async function AsyncLogin(self) {
       console.log('Login Manager code');
       let result;
@@ -119,7 +119,7 @@ class FacebookLoginButton extends Component {
     return (
       <TouchableOpacity
         style={[styles.loginButton, { marginTop: heightPercentageToDP(marginTopPercent) }]}
-        onPress={() => this.facebookLogin(navigation)}
+        onPress={() => this.googleLogin(navigation)}
       >
         { FbLoginLoading
           ? (
@@ -134,14 +134,14 @@ class FacebookLoginButton extends Component {
           : (
             <View style={styles.container}>
               <FontAwesome
-                name="facebook"
+                name="google-plus"
                 size={RF(3.5)}
-                style={styles.facebookLogo}
+                style={styles.SNSlogo}
                 color="#FFFFFF"
               />
               <Text
                 style={styles.label}
-              > Sign in with Facebook
+              > Sign in with Google
               </Text>
             </View>
           )
@@ -151,15 +151,15 @@ class FacebookLoginButton extends Component {
   }
 }
 
-export default FacebookLoginButton;
+export default GoogleLoginButton;
 
-FacebookLoginButton.propTypes = {
+GoogleLoginButton.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
   marginTopPercent: PropTypes.string,
 };
 
-FacebookLoginButton.defaultProps = {
+GoogleLoginButton.defaultProps = {
   marginTopPercent: '0%',
 };

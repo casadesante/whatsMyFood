@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 import RF from '../../node_modules/react-native-responsive-fontsize';
 import FacebookLoginButton from '../components/FbLoginButton';
+import GoogleLoginButton from '../components/GoogleLoginButton';
 
 const styles = StyleSheet.create({
   linearGradient: {
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     height: widthPercentageToDP('47.5%'),
   },
   loginButton: {
-    marginTop: heightPercentageToDP('28%'),
+    marginTop: heightPercentageToDP('20%'),
     marginBottom: heightPercentageToDP('6%'),
   },
   footerText: {
@@ -72,6 +73,7 @@ export default class Signin extends Component {
             <Text style={styles.appTitle}>WhatsMyFood</Text>
             <View style={styles.loginButton}>
               <FacebookLoginButton navigation={navigation} />
+              <GoogleLoginButton navigation={navigation} marginTopPercent="3%" />
             </View>
             <Text style={styles.footerText}>
                 By signing up, I agree with WhatsMyFood’s{'\n'}
