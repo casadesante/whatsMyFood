@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
+import { StyleSheet, ActivityIndicator, TouchableOpacity, Text, View } from 'react-native';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Config from 'react-native-config';
@@ -37,6 +37,9 @@ const styles = StyleSheet.create({
   facebookLogo: {
     marginLeft: widthPercentageToDP('1%'),
   },
+  loadingSpinner: {
+    marginRight: widthPercentageToDP('2%'),
+  },
   label: {
     color: 'white',
     fontSize: RF(2.5),
@@ -47,17 +50,24 @@ const styles = StyleSheet.create({
 
 
 class FacebookLoginButton extends Component {
+  constructor() {
+    super();
+    this.state = { FbLoginLoading: true };
+  }
+
   componentDidMount() {
+    this.setState({ FbLoginLoading: false });
     if (!firebase.apps.length) {
       firebase.initializeApp(config);
     }
   }
 
   facebookLogin = (navigation) => {
-    async function BM() {
+    async function BM(self) {
       console.log('Login Manager code');
       let result;
       try {
+        self.setState({ FbLoginLoading: true });
         LoginManager.setLoginBehavior('native');
         result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
       } catch (nativeError) {
@@ -73,6 +83,7 @@ class FacebookLoginButton extends Component {
 
 
       if (result.isCancelled) {
+        self.setState({ FbLoginLoading: false });
         alert('Login was cancelled');
       } else {
         AccessToken.getCurrentAccessToken().then(
@@ -99,25 +110,39 @@ class FacebookLoginButton extends Component {
         );
       }
     }
-    BM();
+    BM(this);
   }
 
   render() {
     const { navigation } = this.props;
+    const { FbLoginLoading } = this.state;
     return (
       <TouchableOpacity style={styles.loginButton} onPress={() => this.facebookLogin(navigation)}>
-        <View style={styles.container}>
-          <FontAwesome
-            name="facebook"
-            size={RF(3.5)}
-            style={styles.facebookLogo}
-            color="#FFFFFF"
-          />
-          <Text
-            style={styles.label}
-          > Sign in with Facebook
-          </Text>
-        </View>
+        { FbLoginLoading
+          ? (
+            <View style={[styles.container, { justifyContent: 'center' }]}>
+              <ActivityIndicator style={styles.loadingSpinner} size="small" color="#ffffff" />
+              <Text
+                style={[styles.label, { marginRight: 0 }]}
+              > Loading
+              </Text>
+            </View>
+          )
+          : (
+            <View style={styles.container}>
+              <FontAwesome
+                name="facebook"
+                size={RF(3.5)}
+                style={styles.facebookLogo}
+                color="#FFFFFF"
+              />
+              <Text
+                style={styles.label}
+              > Sign in with Facebook
+              </Text>
+            </View>
+          )
+      }
       </TouchableOpacity>
     );
   }
