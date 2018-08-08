@@ -79,15 +79,13 @@ export default class Newentry extends Component {
     };
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      uploaded: false,
-      url: '',
-      name: '',
-      location: '',
-    };
-  }
+  state = {
+    uploaded: false,
+    url: '',
+    name: '',
+    location: '',
+  };
+
   componentDidMount() {
     const { navigation } = this.props;
     navigation.setParams({ save: this.saveRestaurantForm });
@@ -118,7 +116,7 @@ export default class Newentry extends Component {
   saveRestaurantForm = () => {
     const { navigation } = this.props;
     // alert(JSON.stringify(this.state));
-    navigation.navigate('Addfood');
+    navigation.navigate('Addfood', { restaurantData: this.state });
   };
 
   uploadImage = (uri, mime = 'application/octet-stream') =>
