@@ -52,11 +52,11 @@ const styles = StyleSheet.create({
 class GoogleLoginButton extends Component {
   constructor() {
     super();
-    this.state = { FbLoginLoading: true };
+    this.state = { GoogleLoginLoading: true };
   }
 
   componentDidMount() {
-    this.setState({ FbLoginLoading: false });
+    this.setState({ GoogleLoginLoading: false });
     if (!firebase.apps.length) {
       firebase.initializeApp(config);
     }
@@ -67,7 +67,7 @@ class GoogleLoginButton extends Component {
       console.log('Login Manager code');
       let result;
       try {
-        self.setState({ FbLoginLoading: true });
+        self.setState({ GoogleLoginLoading: true });
         LoginManager.setLoginBehavior('native');
         result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
       } catch (nativeError) {
@@ -83,7 +83,7 @@ class GoogleLoginButton extends Component {
 
 
       if (result.isCancelled) {
-        self.setState({ FbLoginLoading: false });
+        self.setState({ GoogleLoginLoading: false });
         alert('Login was cancelled');
       } else {
         AccessToken.getCurrentAccessToken().then(
@@ -115,36 +115,37 @@ class GoogleLoginButton extends Component {
 
   render() {
     const { navigation, marginTopPercent } = this.props;
-    const { FbLoginLoading } = this.state;
+    const { GoogleLoginLoading } = this.state;
     return (
       <TouchableOpacity
         style={[styles.loginButton, { marginTop: heightPercentageToDP(marginTopPercent) }]}
         onPress={() => this.googleLogin(navigation)}
       >
-        { FbLoginLoading
-          ? (
-            <View style={[styles.container, { justifyContent: 'center' }]}>
-              <ActivityIndicator style={styles.loadingSpinner} size="small" color="#ffffff" />
-              <Text
-                style={[styles.label, { marginRight: 0 }]}
-              > Loading
-              </Text>
-            </View>
-          )
-          : (
-            <View style={styles.container}>
-              <FontAwesome
-                name="google-plus"
-                size={RF(3.5)}
-                style={styles.SNSlogo}
-                color="#FFFFFF"
-              />
-              <Text
-                style={styles.label}
-              > Sign in with Google
-              </Text>
-            </View>
-          )
+        { // Google login in process? Show loading spinner : else show sign in button
+          GoogleLoginLoading
+            ? (
+              <View style={[styles.container, { justifyContent: 'center' }]}>
+                <ActivityIndicator style={styles.loadingSpinner} size="small" color="#ffffff" />
+                <Text
+                  style={[styles.label, { marginRight: 0 }]}
+                > Loading
+                </Text>
+              </View>
+            )
+            : (
+              <View style={styles.container}>
+                <FontAwesome
+                  name="google-plus"
+                  size={RF(3.5)}
+                  style={styles.SNSlogo}
+                  color="#FFFFFF"
+                />
+                <Text
+                  style={styles.label}
+                > Sign in with Google
+                </Text>
+              </View>
+            )
       }
       </TouchableOpacity>
     );

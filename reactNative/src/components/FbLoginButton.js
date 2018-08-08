@@ -121,30 +121,31 @@ class FacebookLoginButton extends Component {
         style={[styles.loginButton, { marginTop: heightPercentageToDP(marginTopPercent) }]}
         onPress={() => this.facebookLogin(navigation)}
       >
-        { FbLoginLoading
-          ? (
-            <View style={[styles.container, { justifyContent: 'center' }]}>
-              <ActivityIndicator style={styles.loadingSpinner} size="small" color="#ffffff" />
-              <Text
-                style={[styles.label, { marginRight: 0 }]}
-              > Loading
-              </Text>
-            </View>
-          )
-          : (
-            <View style={styles.container}>
-              <FontAwesome
-                name="facebook"
-                size={RF(3.5)}
-                style={styles.facebookLogo}
-                color="#FFFFFF"
-              />
-              <Text
-                style={styles.label}
-              > Sign in with Facebook
-              </Text>
-            </View>
-          )
+        { // Facebook login in process? Show loading spinner : else show sign in button
+          FbLoginLoading
+            ? (
+              <View style={[styles.container, { justifyContent: 'center' }]}>
+                <ActivityIndicator style={styles.loadingSpinner} size="small" color="#ffffff" />
+                <Text
+                  style={[styles.label, { marginRight: 0 }]}
+                > Loading
+                </Text>
+              </View>
+            )
+            : (
+              <View style={styles.container}>
+                <FontAwesome
+                  name="facebook"
+                  size={RF(3.5)}
+                  style={styles.facebookLogo}
+                  color="#FFFFFF"
+                />
+                <Text
+                  style={styles.label}
+                > Sign in with Facebook
+                </Text>
+              </View>
+            )
       }
       </TouchableOpacity>
     );
