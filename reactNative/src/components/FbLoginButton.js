@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Config from 'react-native-config';
@@ -23,12 +23,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#3B5998',
     borderRadius: heightPercentageToDP('6.5%') / 5,
     display: 'flex',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  container: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  facebookLogo: {
+    marginLeft: widthPercentageToDP('1%'),
   },
   label: {
     color: 'white',
     fontSize: RF(2.5),
+    fontFamily: 'SFProText-Light',
+    marginRight: widthPercentageToDP('12%'),
   },
 });
 
@@ -93,15 +106,18 @@ class FacebookLoginButton extends Component {
     const { navigation } = this.props;
     return (
       <TouchableOpacity style={styles.loginButton} onPress={() => this.facebookLogin(navigation)}>
-        <FontAwesome
-          name="facebook"
-          size={RF(4)}
-          color="#FFFFFF"
-        />
-        <Text
-          style={styles.label}
-        > Sign in with FaceBook
-        </Text>
+        <View style={styles.container}>
+          <FontAwesome
+            name="facebook"
+            size={RF(3.5)}
+            style={styles.facebookLogo}
+            color="#FFFFFF"
+          />
+          <Text
+            style={styles.label}
+          > Sign in with Facebook
+          </Text>
+        </View>
       </TouchableOpacity>
     );
   }
