@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Config from 'react-native-config';
 import firebase from 'firebase';
 import RF from 'react-native-responsive-fontsize';
@@ -86,13 +87,17 @@ class FacebookLoginButton extends Component {
       }
     }
     BM();
-    console.log('asdf');
   }
 
   render() {
     const { navigation } = this.props;
     return (
       <TouchableOpacity style={styles.loginButton} onPress={() => this.facebookLogin(navigation)}>
+        <FontAwesome
+          name="facebook"
+          size={RF(4)}
+          color="#FFFFFF"
+        />
         <Text
           style={styles.label}
         > Sign in with FaceBook
