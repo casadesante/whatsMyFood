@@ -38,6 +38,12 @@ const styles = StyleSheet.create({
     marginTop: heightPercentageToDP('28%'),
     marginBottom: heightPercentageToDP('6%'),
   },
+  footerText: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: RF(2),
+    lineHeight: RF(2.8),
+  },
 });
 
 export default class Signin extends Component {
@@ -67,9 +73,9 @@ export default class Signin extends Component {
             <View style={styles.loginButton}>
               <FacebookLoginButton navigation={navigation} />
             </View>
-            <Text style={{ color: 'white' }}>
+            <Text style={styles.footerText}>
                 By signing up, I agree with WhatsMyFood’s{'\n'}
-              <Text style={{ color: 'red' }}>
+              <Text style={{ color: '#FF4444' }}>
                   Terms of Service
                 <Text style={{ color: 'white' }}> and </Text>Privacy policy.
               </Text>
