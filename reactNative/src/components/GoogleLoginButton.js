@@ -135,7 +135,7 @@ class GoogleLoginButton extends Component {
             : (
               <View style={styles.container}>
                 <FontAwesome
-                  name="google-plus"
+                  name="google"
                   size={RF(3.5)}
                   style={styles.SNSlogo}
                   color="#FFFFFF"
