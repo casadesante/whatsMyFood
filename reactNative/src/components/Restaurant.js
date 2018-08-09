@@ -1,11 +1,9 @@
 import React from 'react';
-import {
-  Text,
+import { Text,
   View,
   ImageBackground,
   StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+  TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const Restaurant = props => {
