@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   label: {
     color: 'white',
     fontSize: RF(2.5),
-    fontFamily: 'SFProText-Light',
+    fontFamily: 'SFProText-Regular',
     marginRight: widthPercentageToDP('15%'),
   },
 });
