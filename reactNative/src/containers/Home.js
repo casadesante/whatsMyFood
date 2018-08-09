@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
+import { StyleSheet,
   Text,
   View,
   Image,
   ScrollView,
   TouchableHighlight,
-  StatusBar,
-} from 'react-native';
+  StatusBar } from 'react-native';
 import PropTypes from 'prop-types';
 import RF from 'react-native-responsive-fontsize';
 import * as Animatable from 'react-native-animatable';
@@ -99,7 +97,7 @@ export default class Home extends Component {
 
     const BigRipple = {
       0: {
-        opacity: 1,
+        opacity: 0.8,
         scale: 1,
       },
       0.5: {
@@ -114,7 +112,7 @@ export default class Home extends Component {
 
     const SmallRipple = {
       0: {
-        opacity: 1,
+        opacity: 0.8,
         scale: 1,
       },
       0.5: {
@@ -144,14 +142,15 @@ export default class Home extends Component {
               <Animatable.View
                 style={styles.animCircleBig}
                 animation={BigRipple}
-                duration={4000}
+                duration={6000}
+                iterationDelay={100}
                 iterationCount="infinite"
               />
               <Animatable.View
                 style={styles.animCircle}
                 animation={SmallRipple}
-                duration={3800}
-                iterationDelay={200}
+                duration={5600}
+                iterationDelay={500}
                 iterationCount="infinite"
               />
               <TouchableHighlight
