@@ -64,7 +64,6 @@ class GoogleLoginButton extends Component {
 
   googleLogin = (navigation) => {
     async function AsyncLogin(self) {
-      console.log('Login Manager code');
       let result;
       try {
         self.setState({ GoogleLoginLoading: true });

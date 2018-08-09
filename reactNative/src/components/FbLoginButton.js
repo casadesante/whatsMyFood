@@ -64,7 +64,6 @@ class FacebookLoginButton extends Component {
 
   facebookLogin = (navigation) => {
     async function AsyncLogin(self) {
-      console.log('Login Manager code');
       let result;
       try {
         self.setState({ FbLoginLoading: true });
