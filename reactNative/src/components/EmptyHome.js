@@ -48,6 +48,10 @@ const styles = StyleSheet.create({
     height: widthPercentageToDP('14.15%'),
     resizeMode: 'contain',
   },
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 const BigRipple = {
@@ -84,10 +88,7 @@ const EmptyHome = props => {
   const { navigation } = props;
   return (
     <View
-      style={{
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
+      style={styles.container}
     >
       <Animatable.Text animation="fadeInUp" style={styles.welcome}>
               Add your first restaurant and dish !
