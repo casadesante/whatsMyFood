@@ -19,7 +19,6 @@ export default class App extends Component {
 
   render() {
     const { signedIn } = this.state;
-    console.log(signedIn);
     const Layout = createRootNavigator(signedIn);
 
     return <Layout />;

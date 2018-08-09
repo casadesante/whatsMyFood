@@ -1,116 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, Image, ImageBackground } from 'react-native';
-import { AccessToken, LoginButton } from 'react-native-fbsdk';
+import { StyleSheet, Text, Image, ImageBackground, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { Row, Grid } from 'react-native-easy-grid';
-import Config from 'react-native-config';
-import firebase from 'firebase';
 import PropTypes from 'prop-types';
-
-const config = {
-  apiKey: Config.API_KEY,
-  authDomain: Config.AUTH_DOMAIN,
-  databaseURL: Config.DB_URL,
-  storageBucket: 'gs://whatsmyfood.appspot.com',
-};
-
-// const firebaseRef = firebase.initializeApp(config);
-
-export default class Signin extends Component {
-  static navigationOptions = {
-    header: null,
-  };
-
-  componentDidMount() {
-    if (!firebase.apps.length) {
-      firebase.initializeApp(config);
-    }
-  }
-
-  render() {
-    const { navigation } = this.props;
-    return (
-      <ImageBackground
-        source={require('../assets/img/stockPic.png')}
-        style={styles.backgroundImage}
-      >
-        <LinearGradient
-          colors={['rgba(0, 0, 0, 0.72)', 'rgba(0, 0, 0, 0.11)']}
-          style={styles.linearGradient}
-        >
-          <Grid style={styles.container}>
-            <Row
-              size={25}
-              style={{
-                marginTop: 100,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <Image
-                source={require('../assets/img/logo.png')}
-                style={styles.logo}
-                resizeMode="contain"
-              />
-            </Row>
-            <Row size={40} style={{ marginTop: 70 }}>
-              <Text style={styles.welcome}>WhatsMyFood</Text>
-            </Row>
-            <Row size={10}>
-              <LoginButton
-                style={{ width: '88%', height: 45 }}
-                publishPermissions={['publish_actions']}
-                onLoginFinished={(error, result) => {
-                  if (error) {
-                    alert(`Login failed with error: ${result.error}`);
-                  } else if (result.isCancelled) {
-                    alert('Login was cancelled');
-                  } else {
-                    AccessToken.getCurrentAccessToken().then(
-                      accessTokenData => {
-                        const credential = firebase.auth.FacebookAuthProvider.credential(
-                          accessTokenData.accessToken,
-                        );
-                        firebase
-                          .auth()
-                          .signInWithCredential(credential)
-                          .then(
-                            () => {
-                              navigation.navigate('Home');
-                            },
-                            // eslint-disable-next-line no-unused-vars
-                            err => {
-                              alert('Error while loggin in');
-                            },
-                          );
-                      },
-                      err => {
-                        alert(`Some error occured: ${err}`);
-                      },
-                    );
-                  }
-                }}
-                onLogoutFinished={() => {
-                  // delete id from Firebase ?
-                  alert('User logged out');
-                }}
-              />
-            </Row>
-            <Row size={15}>
-              <Text style={{ color: 'white' }}>
-                By signing up, I agree with WhatsMyFood’s{'\n'}
-                <Text style={{ color: 'red' }}>
-                  Terms of Service
-                  <Text style={{ color: 'white' }}> and </Text>Privacy policy.
-                </Text>
-              </Text>
-            </Row>
-          </Grid>
-        </LinearGradient>
-      </ImageBackground>
-    );
-  }
-}
+import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
+import RF from '../../node_modules/react-native-responsive-fontsize';
+import FacebookLoginButton from '../components/FbLoginButton';
+import GoogleLoginButton from '../components/GoogleLoginButton';
 
 const styles = StyleSheet.create({
   linearGradient: {
@@ -124,19 +19,75 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   container: {
-    zIndex: 3,
-    justifyContent: 'center',
+    width: widthPercentageToDP('100%'),
+    marginTop: heightPercentageToDP('15.5%'),
+    display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
   },
-  welcome: {
-    fontSize: 30,
+  appTitle: {
     color: 'white',
+    fontSize: RF(4),
+    marginTop: heightPercentageToDP('4%'),
   },
   logo: {
     opacity: 1,
-    height: 180,
+    width: widthPercentageToDP('47.5%'),
+    height: widthPercentageToDP('47.5%'),
+  },
+  loginButton: {
+    marginTop: heightPercentageToDP('20%'),
+    marginBottom: heightPercentageToDP('6%'),
+  },
+  footerText: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: RF(2),
+    lineHeight: RF(2.8),
   },
 });
+
+export default class Signin extends Component {
+  static navigationOptions = {
+    header: null,
+  };
+
+  render() {
+    const { navigation } = this.props;
+    return (
+      <ImageBackground
+        source={require('../assets/img/stockPic.png')}
+        style={styles.backgroundImage}
+      >
+        <LinearGradient
+          colors={['rgba(0, 0, 0, 0.90)', 'rgba(0, 0, 0, 0.4)']}
+          style={styles.linearGradient}
+        >
+
+          <View style={styles.container}>
+            <Image
+              source={require('../assets/img/logo.png')}
+              style={styles.logo}
+              resizeMode="contain"
+            />
+            <Text style={styles.appTitle}>WhatsMyFood</Text>
+            <View style={styles.loginButton}>
+              <FacebookLoginButton navigation={navigation} />
+              <GoogleLoginButton navigation={navigation} marginTopPercent="3%" />
+            </View>
+            <Text style={styles.footerText}>
+                By signing up, I agree with WhatsMyFood’s{'\n'}
+              <Text style={{ color: '#FF4444' }}>
+                  Terms of Service
+                <Text style={{ color: 'white' }}> and </Text>Privacy policy.
+              </Text>
+            </Text>
+          </View>
+        </LinearGradient>
+      </ImageBackground>
+    );
+  }
+}
 
 Signin.propTypes = {
   navigation: PropTypes.shape({

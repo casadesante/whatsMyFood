@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
 import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 
+// Emoji and its corresponding rating
 const emojiList = [
   { rating: 1, emoji: '🤢' },
   { rating: 2, emoji: '🙅' },
@@ -12,6 +13,7 @@ const emojiList = [
   { rating: 4, emoji: '👌' },
   { rating: 5, emoji: '😍' },
 ];
+// Freeze. No one can modify this anymore.
 emojiList.forEach(Object.freeze);
 
 const styles = StyleSheet.create({
@@ -48,6 +50,7 @@ export default class EmojiPicker extends Component {
   }
 
   emojiToggleStyle = (index, selectedrating) => {
+    // Emoji bounce animation settings
     const emojiOpacity = (index === selectedrating) ? 1.0 : 0.3;
     const emojiSize = (index === selectedrating) ? 1.3 : 1;
     const emojiPosition = (index === selectedrating) ? RF(0.01) : 0;
@@ -61,6 +64,7 @@ export default class EmojiPicker extends Component {
     };
   };
 
+  // Return selected rating to parent component using callback method
   toggleEmoji = (newRating, callback) => {
     this.setState({ selectedRating: newRating });
     callback(newRating);
@@ -72,7 +76,7 @@ export default class EmojiPicker extends Component {
     return (
       <View style={styles.emojiPicker}>
         <Text style={styles.emojiPickerLabel}>
-      Pick one of them
+          Pick one of them
         </Text>
         <View style={styles.emojiSpacing}>
           {emojiList.map(option => (
@@ -94,5 +98,6 @@ export default class EmojiPicker extends Component {
 }
 
 EmojiPicker.propTypes = {
+  // Need onEmjoSelect function to retrun selected emoji's rating
   onEmojiSelect: PropTypes.func.isRequired,
 };
