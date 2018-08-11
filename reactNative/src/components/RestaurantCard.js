@@ -42,6 +42,8 @@ const styles = StyleSheet.create({
 
 const RestaurantCard = props => {
   const { restaurant, goToRestaurant } = props;
+  const redGradient = ['rgb(255, 152, 99)', 'rgb(253, 89, 89)'];
+  const blackOverlay = ['rgba(0, 0, 0, 0.50)', 'rgba(0, 0, 0, 0.55)'];
   return (
     <TouchableOpacity
       onPress={() => {
@@ -51,11 +53,11 @@ const RestaurantCard = props => {
       <ImageBackground
         style={styles.backgroundImage}
         imageStyle={{ borderRadius: 10 }}
-        source={require('../assets/img/restaurantImg_16x9.png')}
         resizeMode="contain"
+        source={require('../assets/img/restaurantImg_16x9.png')}
       >
         <LinearGradient
-          colors={['rgba(0, 0, 0, 0.50)', 'rgba(0, 0, 0, 0.55)']}
+          colors={restaurant.img ? blackOverlay : redGradient}
           style={styles.linearGradient}
         >
           <View style={styles.details}>
@@ -87,6 +89,6 @@ RestaurantCard.propTypes = {
 RestaurantCard.defaultProps = {
   restaurant: {
     distance: '',
-    img: '',
+    img: null,
   },
 };
