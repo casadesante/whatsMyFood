@@ -6,6 +6,8 @@ import { Text,
   TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import PropTypes from 'prop-types';
+import RF from '../../node_modules/react-native-responsive-fontsize';
+import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
 
 const styles = StyleSheet.create({
   linearGradient: {
@@ -14,12 +16,27 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     marginTop: 20,
-    height: 195,
+    height: widthPercentageToDP('92%') * 0.5625,
   },
   details: {
-    flex: 1,
+    display: 'flex',
+    height: '100%',
+    flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
+    padding: widthPercentageToDP('5%'),
+  },
+  restaurantName: {
+    color: 'white',
+    fontFamily: 'SFProText-Medium',
+    fontSize: RF(4),
+    textAlign: 'center',
+  },
+  restaurantDistance: {
+    color: 'white',
+    marginTop: heightPercentageToDP('1%'),
+    fontFamily: 'SFProText-Medium',
+    fontSize: RF(2),
+    textAlign: 'center',
   },
 });
 
@@ -34,18 +51,18 @@ const RestaurantCard = props => {
       <ImageBackground
         style={styles.backgroundImage}
         imageStyle={{ borderRadius: 10 }}
-        source={require('../assets/img/tgif.png')}
-        resizeMode="cover"
+        source={require('../assets/img/restaurantImg_16x9.png')}
+        resizeMode="contain"
       >
         <LinearGradient
-          colors={['rgba(0, 0, 0, 0.45)', 'rgba(0, 0, 0, 0.45)']}
+          colors={['rgba(0, 0, 0, 0.50)', 'rgba(0, 0, 0, 0.55)']}
           style={styles.linearGradient}
         >
           <View style={styles.details}>
-            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 35 }}>
+            <Text style={styles.restaurantName} numberOfLines={2}>
               {restaurant.name}
             </Text>
-            <Text style={{ color: 'white', fontWeight: 'bold' }}>
+            <Text style={styles.restaurantDistance}>
               {restaurant.distance} kms away
             </Text>
           </View>
