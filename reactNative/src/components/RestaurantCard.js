@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
   restaurantName: {
     color: 'white',
-    fontFamily: 'SFProText-Medium',
+    fontFamily: 'SFProText-Bold',
     fontSize: RF(4),
     textAlign: 'center',
   },
@@ -54,7 +54,12 @@ const RestaurantCard = props => {
         style={styles.backgroundImage}
         imageStyle={{ borderRadius: 10 }}
         resizeMode="contain"
-        source={require('../assets/img/restaurantImg_16x9.png')}
+        source={require('../assets/img/restaurantImg_16x9.png')
+        // source={{
+          //   uri: restaurant.img,
+          // }}
+        }
+
       >
         <LinearGradient
           colors={restaurant.img ? blackOverlay : redGradient}
