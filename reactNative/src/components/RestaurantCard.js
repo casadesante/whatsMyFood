@@ -5,38 +5,7 @@ import { Text,
   StyleSheet,
   TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-
-const RestaurantCard = props => {
-  const list = props.restaurant;
-  return (
-    <TouchableOpacity
-      onPress={() => {
-        props.goToRestaurant(list.id, list.name);
-      }}
-    >
-      <ImageBackground
-        style={styles.backgroundImage}
-        imageStyle={{ borderRadius: 10 }}
-        source={require('../assets/img/tgif.png')}
-        resizeMode="cover"
-      >
-        <LinearGradient
-          colors={['rgba(0, 0, 0, 0.45)', 'rgba(0, 0, 0, 0.45)']}
-          style={styles.linearGradient}
-        >
-          <View style={styles.details}>
-            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 35 }}>
-              {list.name}
-            </Text>
-            <Text style={{ color: 'white', fontWeight: 'bold' }}>
-              {list.distance} kms away
-            </Text>
-          </View>
-        </LinearGradient>
-      </ImageBackground>
-    </TouchableOpacity>
-  );
-};
+import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
   linearGradient: {
@@ -54,4 +23,53 @@ const styles = StyleSheet.create({
   },
 });
 
+const RestaurantCard = props => {
+  const { restaurant, goToRestaurant } = props;
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        goToRestaurant(restaurant.id, restaurant.name);
+      }}
+    >
+      <ImageBackground
+        style={styles.backgroundImage}
+        imageStyle={{ borderRadius: 10 }}
+        source={require('../assets/img/tgif.png')}
+        resizeMode="cover"
+      >
+        <LinearGradient
+          colors={['rgba(0, 0, 0, 0.45)', 'rgba(0, 0, 0, 0.45)']}
+          style={styles.linearGradient}
+        >
+          <View style={styles.details}>
+            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 35 }}>
+              {restaurant.name}
+            </Text>
+            <Text style={{ color: 'white', fontWeight: 'bold' }}>
+              {restaurant.distance} kms away
+            </Text>
+          </View>
+        </LinearGradient>
+      </ImageBackground>
+    </TouchableOpacity>
+  );
+};
+
 export default RestaurantCard;
+
+RestaurantCard.propTypes = {
+  restaurant: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    distance: PropTypes.string,
+    img: PropTypes.string,
+  }),
+  goToRestaurant: PropTypes.func.isRequired,
+};
+
+RestaurantCard.defaultProps = {
+  restaurant: {
+    distance: '',
+    img: '',
+  },
+};
