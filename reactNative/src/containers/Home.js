@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   restaurantContainer: {
-    margin: widthPercentageToDP('4%'),
-    marginBottom: widthPercentageToDP('0%'),
+    padding: widthPercentageToDP('4%'),
+    paddingBottom: widthPercentageToDP('0%'),
   },
   restaurantLabel: {
     fontFamily: 'SFProDisplay-Regular',
@@ -66,13 +66,14 @@ export default class Home extends Component {
         {empty ? (
           <EmptyHome navigation={navigation} />
         ) : (
-          <View style={styles.restaurantContainer}>
-            <Text
-              style={styles.restaurantLabel}
-            >
+          <ScrollView>
+            <View style={styles.restaurantContainer}>
+              <Text
+                style={styles.restaurantLabel}
+              >
               Nearby restaurants
-            </Text>
-            <ScrollView>
+              </Text>
+
               {helper.generateRestaurants().map(restaurantInfo => (
                 <RestaurantCard
                   goToRestaurant={this.getRestaurant}
@@ -80,8 +81,8 @@ export default class Home extends Component {
                   key={restaurantInfo.id}
                 />
               ))}
-            </ScrollView>
-          </View>
+            </View>
+          </ScrollView>
         )}
       </View>
     );
