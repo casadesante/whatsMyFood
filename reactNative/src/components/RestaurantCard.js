@@ -6,7 +6,7 @@ import { Text,
   TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-const Restaurant = props => {
+const RestaurantCard = props => {
   const list = props.restaurant;
   return (
     <TouchableOpacity
@@ -17,9 +17,7 @@ const Restaurant = props => {
       <ImageBackground
         style={styles.backgroundImage}
         imageStyle={{ borderRadius: 10 }}
-        source={{
-          uri: list.img,
-        }}
+        source={require('../assets/img/tgif.png')}
         resizeMode="cover"
       >
         <LinearGradient
@@ -56,4 +54,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Restaurant;
+export default RestaurantCard;

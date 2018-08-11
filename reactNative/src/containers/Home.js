@@ -7,7 +7,7 @@ import { StyleSheet,
 import PropTypes from 'prop-types';
 
 import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
-import Restaurant from '../components/Restaurant';
+import RestaurantCard from '../components/RestaurantCard';
 import EmptyHome from '../components/EmptyHome';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
 import RF from '../../node_modules/react-native-responsive-fontsize';
@@ -70,16 +70,15 @@ export default class Home extends Component {
             <Text
               style={styles.restaurantLabel}
             >
-              Restaurants
+              Nearby restaurants
             </Text>
             <ScrollView>
-              {helper.generateRestaurants().map(x => (
-                <View key={x.id}>
-                  <Restaurant
-                    goToRestaurant={this.getRestaurant}
-                    restaurant={x}
-                  />
-                </View>
+              {helper.generateRestaurants().map(restaurantInfo => (
+                <RestaurantCard
+                  goToRestaurant={this.getRestaurant}
+                  restaurant={restaurantInfo}
+                  key={restaurantInfo.id}
+                />
               ))}
             </ScrollView>
           </View>
