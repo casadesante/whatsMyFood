@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   restaurantContainer: {
-    marginLeft: widthPercentageToDP('4%'),
-    marginRight: widthPercentageToDP('4%'),
+    margin: widthPercentageToDP('4%'),
+    marginBottom: widthPercentageToDP('0%'),
   },
   restaurantLabel: {
     fontFamily: 'SFProDisplay-Regular',
