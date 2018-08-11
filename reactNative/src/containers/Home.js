@@ -66,7 +66,7 @@ export default class Home extends Component {
         {empty ? (
           <EmptyHome navigation={navigation} />
         ) : (
-          <ScrollView>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.restaurantContainer}>
               <Text
                 style={styles.restaurantLabel}
