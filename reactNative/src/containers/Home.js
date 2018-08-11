@@ -9,7 +9,8 @@ import PropTypes from 'prop-types';
 import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
 import Restaurant from '../components/Restaurant';
 import EmptyHome from '../components/EmptyHome';
-import { heightPercentageToDP } from '../lib/Responsive';
+import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
+import RF from '../../node_modules/react-native-responsive-fontsize';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,6 +21,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
+  },
+  restaurantContainer: {
+    marginLeft: widthPercentageToDP('4%'),
+    marginRight: widthPercentageToDP('4%'),
+  },
+  restaurantLabel: {
+    fontFamily: 'SFProDisplay-Regular',
+    fontWeight: 'bold',
+    fontSize: RF(4),
   },
 });
 
@@ -33,7 +43,7 @@ export default class Home extends Component {
   };
 
   state = {
-    empty: 1,
+    empty: 0,
   };
 
   componentDidMount() {
@@ -56,13 +66,9 @@ export default class Home extends Component {
         {empty ? (
           <EmptyHome navigation={navigation} />
         ) : (
-          <View style={{ padding: 20 }}>
+          <View style={styles.restaurantContainer}>
             <Text
-              style={{
-                fontFamily: 'SFProDisplay-Regular',
-                fontWeight: 'bold',
-                fontSize: 30,
-              }}
+              style={styles.restaurantLabel}
             >
               Restaurants
             </Text>
