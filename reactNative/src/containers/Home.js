@@ -9,10 +9,11 @@ import PropTypes from 'prop-types';
 import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
 import Restaurant from '../components/Restaurant';
 import EmptyHome from '../components/EmptyHome';
+import { heightPercentageToDP } from '../lib/Responsive';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: heightPercentageToDP('100%'),
     backgroundColor: 'white',
   },
   instructions: {
