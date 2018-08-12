@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator,
   createBottomTabNavigator,
-  createSwitchNavigator } from 'react-navigation';
+  createSwitchNavigator, NavigationActions, StackActions } from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Material from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
@@ -57,6 +57,12 @@ export const SignedIn = createBottomTabNavigator(
       navigationOptions: {
         tabBarIcon: HomeTabBarIcon,
         title: 'WhatsMyFood',
+        tabBarOnPress: () => {
+          StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: 'Home' })],
+          });
+        },
       },
     },
     Newentry: {
