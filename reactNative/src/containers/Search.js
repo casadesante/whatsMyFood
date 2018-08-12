@@ -23,24 +23,23 @@ const styles = StyleSheet.create({
     paddingBottom: widthPercentageToDP('0%'),
     paddingTop: widthPercentageToDP('2%'),
   },
-  addText: {
+  searchPlaceholder: {
     color: 'white',
-    fontFamily: 'SFProDisplay-Bold',
-    fontSize: RF(5),
-    fontWeight: 'bold',
+    fontFamily: 'SFProDisplay-Medium',
+    fontSize: RF(3.5),
     letterSpacing: 0.41,
     marginLeft: widthPercentageToDP('4%'),
-    marginBottom: heightPercentageToDP('1.35%'),
   },
   headerBackground: {
     backgroundColor: colors.coral,
+    height: heightPercentageToDP('6.8%'),
   },
-  searchTabContainer: {
+  searchTab: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingTop: heightPercentageToDP('2%'),
-    paddingBottom: heightPercentageToDP('2%'),
+    paddingTop: heightPercentageToDP('3%'),
+    paddingBottom: heightPercentageToDP('0.5%'),
   },
   tabButton: {
     width: widthPercentageToDP('50%'),
@@ -50,6 +49,22 @@ const styles = StyleSheet.create({
     color: colors.coral,
     fontSize: RF(3),
     textAlign: 'center',
+  },
+  searchBar: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginLeft: widthPercentageToDP('4%'),
+    marginRight: widthPercentageToDP('4%'),
+    paddingBottom: heightPercentageToDP('0.5%'),
+    borderBottomWidth: 2,
+    borderColor: 'white',
+  },
+  tabSelector: {
+    height: heightPercentageToDP('0.4%'),
+    backgroundColor: colors.coral,
+    width: widthPercentageToDP('42%'),
+    borderRadius: 100,
+    marginLeft: widthPercentageToDP('8%'),
   },
 });
 
@@ -75,22 +90,25 @@ export default class Search extends Component {
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
         <View style={styles.headerBackground}>
-          <Ionicons name="ios-search" size={35} color={tintColor} />
-          <Text style={styles.addText}>Search</Text>
-        </View>
-        <View style={styles.searchTabContainer}>
-          <View style={styles.tabButton}>
-            <TouchableOpacity>
-              <Text style={styles.tabLabel}>RESTAURANT</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.tabButton}>
-            <TouchableOpacity>
-              <Text style={styles.tabLabel}>FOOD</Text>
-            </TouchableOpacity>
+          <View style={styles.searchBar}>
+            <Ionicons name="ios-search" size={RF(4)} color="white" style={styles.searchIcon} />
+            <Text style={styles.searchPlaceholder}>Search</Text>
           </View>
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.searchTab}>
+            <View style={styles.tabButton}>
+              <TouchableOpacity>
+                <Text style={[styles.tabLabel, { marginLeft: widthPercentageToDP('8%') }]}>RESTAURANT</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.tabButton}>
+              <TouchableOpacity>
+                <Text style={styles.tabLabel}>FOOD</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.tabSelector} />
           <View style={styles.restaurantContainer}>
             {helper.generateRestaurants().map(restaurantInfo => (
               <RestaurantCard
