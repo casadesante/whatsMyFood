@@ -135,10 +135,12 @@ export default class Search extends Component {
               onChangeText={(KeyWord) => {
                 this.setState({ searchKeyword: KeyWord });
               }}
-              text={searchKeyword}
+              value={searchKeyword}
               selectionColor="white"
             />
-            <Feather name="x" size={RF(4.4)} color={this.searchClearStyle()} />
+            <TouchableOpacity onPress={() => { this.setState({ searchKeyword: '' }); }}>
+              <Feather name="x" size={RF(4.4)} color={this.searchClearStyle()} />
+            </TouchableOpacity>
           </View>
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
