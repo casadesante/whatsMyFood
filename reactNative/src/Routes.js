@@ -57,11 +57,12 @@ export const SignedIn = createBottomTabNavigator(
       navigationOptions: {
         tabBarIcon: HomeTabBarIcon,
         title: 'WhatsMyFood',
-        tabBarOnPress: () => {
-          StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'Home' })],
-          });
+        tabBarOnPress: ({ navigation }) => {
+          const { routes } = navigation.state;
+          // If home tab button is pressed when home screen is active, scroll to top
+          if (navigation.state.index === 0) {
+            routes.find(x => x.routeName === 'Home').params.scrollToTop();
+          }
         },
       },
     },

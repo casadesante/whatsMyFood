@@ -46,14 +46,28 @@ export default class Home extends Component {
     empty: 0,
   };
 
+  componentWillMount() {
+    const { navigation } = this.props;
+    navigation.setParams({
+      scrollToTop: this.scrollToTop,
+    });
+  }
+
   componentDidMount() {
-    console.log(helper.generateRestaurants());
+    console.log('Homescreen:  Component did mount');
   }
 
   getRestaurant = (id, name) => {
     const { navigation } = this.props;
     navigation.navigate('Restaurant', { id, name });
   };
+
+  scrollToTop = () => {
+    console.log('scroll to top');
+    if (this.scrollview) {
+      this.scrollview.scrollTo({ x: 0, y: 0, animated: true });
+    }
+  }
 
   // if restaurant list is empty, show add button else show the list of restaurants
   render() {
@@ -66,7 +80,7 @@ export default class Home extends Component {
         {empty ? (
           <EmptyHome navigation={navigation} />
         ) : (
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView showsVerticalScrollIndicator={false} ref={(scrollview) => { this.scrollview = scrollview; }}>
             <View style={styles.restaurantContainer}>
               <Text
                 style={styles.restaurantLabel}
