@@ -1,9 +1,7 @@
 import React from 'react';
-import {
-  createStackNavigator,
+import { createStackNavigator,
   createBottomTabNavigator,
-  createSwitchNavigator,
-} from 'react-navigation';
+  createSwitchNavigator } from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Material from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
@@ -59,6 +57,13 @@ export const SignedIn = createBottomTabNavigator(
       navigationOptions: {
         tabBarIcon: HomeTabBarIcon,
         title: 'WhatsMyFood',
+        tabBarOnPress: ({ navigation }) => {
+          const { routes } = navigation.state;
+          // If home tab button is pressed when home screen is active, scroll to top
+          if (navigation.state.index === 0) {
+            routes.find(x => x.routeName === 'Home').params.scrollToTop();
+          }
+        },
       },
     },
     Newentry: {
@@ -72,7 +77,7 @@ export const SignedIn = createBottomTabNavigator(
       },
     },
     Search: {
-      screen: Search,
+      screen: createStackNavigator({ Search: { screen: Search } }),
       path: '',
       navigationOptions: {
         tabBarIcon: SearchTabBarIcon,

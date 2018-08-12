@@ -41,6 +41,72 @@ const generateRestaurants = (params = {}) => {
       img: 'https://tblg.k-img.com/restaurant/images/Rvw/234/234973.jpg',
       distance: '7',
     },
+    {
+      id: 3,
+      name: 'T.G.I.F',
+      img: 'https://tblg.k-img.com/restaurant/images/Rvw/234/234973.jpg',
+      distance: '7',
+    },
+    {
+      id: 4,
+      name: 'T.G.I.F',
+      img: 'https://tblg.k-img.com/restaurant/images/Rvw/234/234973.jpg',
+      distance: '7',
+    },
+    {
+      id: 5,
+      name: 'T.G.I.F',
+      img: 'https://tblg.k-img.com/restaurant/images/Rvw/234/234973.jpg',
+      distance: '7',
+    },
+    {
+      id: 6,
+      name: 'T.G.I.F',
+      img: 'https://tblg.k-img.com/restaurant/images/Rvw/234/234973.jpg',
+      distance: '7',
+    },
+    {
+      id: 7,
+      name: 'T.G.I.F',
+      img: 'https://tblg.k-img.com/restaurant/images/Rvw/234/234973.jpg',
+      distance: '7',
+    },
+    {
+      id: 8,
+      name: 'T.G.I.F',
+      img: 'https://tblg.k-img.com/restaurant/images/Rvw/234/234973.jpg',
+      distance: '7',
+    },
+    {
+      id: 9,
+      name: 'T.G.I.F',
+      img: 'https://tblg.k-img.com/restaurant/images/Rvw/234/234973.jpg',
+      distance: '7',
+    },
+    {
+      id: 10,
+      name: 'T.G.I.F',
+      img: 'https://tblg.k-img.com/restaurant/images/Rvw/234/234973.jpg',
+      distance: '7',
+    },
+    {
+      id: 11,
+      name: 'T.G.I.F',
+      img: 'https://tblg.k-img.com/restaurant/images/Rvw/234/234973.jpg',
+      distance: '7',
+    },
+    {
+      id: 12,
+      name: 'T.G.I.F',
+      img: 'https://tblg.k-img.com/restaurant/images/Rvw/234/234973.jpg',
+      distance: '7',
+    },
+    {
+      id: 13,
+      name: 'T.G.I.F',
+      img: 'https://tblg.k-img.com/restaurant/images/Rvw/234/234973.jpg',
+      distance: '7',
+    },
   ];
   return list;
 };

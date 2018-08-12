@@ -7,6 +7,35 @@ import PropTypes from 'prop-types';
 import FoodItems from '../components/FoodItems';
 import helper from '../lib/Helper';
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  linearGradient: {
+    flex: 1,
+  },
+  image: {
+    height: 200,
+  },
+  titleText: {
+    flexDirection: 'row',
+    color: 'black',
+    fontSize: 33,
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
+    marginLeft: 15,
+  },
+  nameView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderBottomColor: 'rgba(222, 222, 222, 0.5)',
+    borderBottomWidth: 0.5,
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+});
+
 export default class Restaurant extends Component {
   static navigationOptions = {
     headerTintColor: 'white',
@@ -79,35 +108,6 @@ export default class Restaurant extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  linearGradient: {
-    flex: 1,
-  },
-  image: {
-    height: 200,
-  },
-  titleText: {
-    flexDirection: 'row',
-    color: 'black',
-    fontSize: 33,
-    fontWeight: 'bold',
-    letterSpacing: 0.5,
-    marginLeft: 15,
-  },
-  nameView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderBottomColor: 'rgba(222, 222, 222, 0.5)',
-    borderBottomWidth: 0.5,
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
-});
 
 Restaurant.propTypes = {
   navigation: PropTypes.shape({
