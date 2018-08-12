@@ -70,7 +70,7 @@ export const SignedIn = createBottomTabNavigator(
       },
     },
     Search: {
-      screen: createStackNavigator({ Profile: { screen: Search } }),
+      screen: createStackNavigator({ Search: { screen: Search } }),
       path: '',
       navigationOptions: {
         tabBarIcon: SearchTabBarIcon,
