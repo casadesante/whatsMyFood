@@ -1,11 +1,46 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { GoogleAutoComplete } from 'react-native-google-autocomplete';
+
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  ScrollView,
+  View,
+  Image,
+} from 'react-native';
 
 export default class Search extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Search !</Text>
+        <GoogleAutoComplete
+          apiKey="AIzaSyDHdH3LF-90nO_OKk16q_8G2x5zLewXDtU"
+          debounce={300}
+        >
+          {({
+            inputValue,
+            handleTextChange,
+            locationResults,
+            fetchDetails,
+          }) => (
+            <React.Fragment>
+              {console.log(locationResults)}
+              {console.log(fetchDetails)}
+              <TextInput
+                style={{
+                  height: 40,
+                  width: 300,
+                  borderWidth: 1,
+                  paddingHorizontal: 16,
+                }}
+                value={inputValue}
+                onChangeText={handleTextChange}
+                placeholder="Location..."
+              />
+            </React.Fragment>
+          )}
+        </GoogleAutoComplete>
       </View>
     );
   }
@@ -13,10 +48,7 @@ export default class Search extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    marginTop: 100,
   },
   welcome: {
     fontSize: 20,
