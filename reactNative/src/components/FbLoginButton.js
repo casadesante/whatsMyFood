@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, ActivityIndicator, TouchableOpacity, Text, View } from 'react-native';
+import {
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+  Text,
+  View,
+} from 'react-native';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Config from 'react-native-config';
@@ -48,7 +54,6 @@ const styles = StyleSheet.create({
   },
 });
 
-
 class FacebookLoginButton extends Component {
   constructor() {
     super();
@@ -62,25 +67,30 @@ class FacebookLoginButton extends Component {
     }
   }
 
-  facebookLogin = (navigation) => {
+  facebookLogin = navigation => {
     async function AsyncLogin(self) {
       console.log('Login Manager code');
       let result;
       try {
         self.setState({ FbLoginLoading: true });
         LoginManager.setLoginBehavior('native');
-        result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
+        result = await LoginManager.logInWithReadPermissions([
+          'public_profile',
+          'email',
+        ]);
       } catch (nativeError) {
         try {
           LoginManager.setLoginBehavior('web');
-          result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
+          result = await LoginManager.logInWithReadPermissions([
+            'public_profile',
+            'email',
+          ]);
         } catch (webError) {
           alert(`Some error occured: ${webError}`);
-        // show error message to the user if none of the FB screens
-        // did not open
+          // show error message to the user if none of the FB screens
+          // did not open
         }
       }
-
 
       if (result.isCancelled) {
         self.setState({ FbLoginLoading: false });
@@ -111,42 +121,40 @@ class FacebookLoginButton extends Component {
       }
     }
     AsyncLogin(this);
-  }
+  };
 
   render() {
     const { navigation, marginTopPercent } = this.props;
     const { FbLoginLoading } = this.state;
     return (
       <TouchableOpacity
-        style={[styles.loginButton, { marginTop: heightPercentageToDP(marginTopPercent) }]}
+        style={[
+          styles.loginButton,
+          { marginTop: heightPercentageToDP(marginTopPercent) },
+        ]}
         onPress={() => this.facebookLogin(navigation)}
       >
-        { // Facebook login in process? Show loading spinner : else show sign in button
-          FbLoginLoading
-            ? (
-              <View style={[styles.container, { justifyContent: 'center' }]}>
-                <ActivityIndicator style={styles.loadingSpinner} size="small" color="#ffffff" />
-                <Text
-                  style={[styles.label, { marginRight: 0 }]}
-                > Loading
-                </Text>
-              </View>
-            )
-            : (
-              <View style={styles.container}>
-                <FontAwesome
-                  name="facebook"
-                  size={RF(3.5)}
-                  style={styles.facebookLogo}
-                  color="#FFFFFF"
-                />
-                <Text
-                  style={styles.label}
-                > Sign in with Facebook
-                </Text>
-              </View>
-            )
-      }
+        {// Facebook login in process? Show loading spinner : else show sign in button
+        FbLoginLoading ? (
+          <View style={[styles.container, { justifyContent: 'center' }]}>
+            <ActivityIndicator
+              style={styles.loadingSpinner}
+              size="small"
+              color="#ffffff"
+            />
+            <Text style={[styles.label, { marginRight: 0 }]}> Loading</Text>
+          </View>
+        ) : (
+          <View style={styles.container}>
+            <FontAwesome
+              name="facebook"
+              size={RF(3.5)}
+              style={styles.facebookLogo}
+              color="#FFFFFF"
+            />
+            <Text style={styles.label}> Sign in with Facebook</Text>
+          </View>
+        )}
       </TouchableOpacity>
     );
   }

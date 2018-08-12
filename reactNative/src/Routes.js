@@ -100,22 +100,23 @@ export const SignedIn = createBottomTabNavigator(
   },
 );
 
-export const createRootNavigator = signedIn => createSwitchNavigator(
-  {
-    SignedIn: {
-      screen: SignedIn,
-      navigationOptions: {
-        gesturesEnabled: false,
+export const createRootNavigator = signedIn =>
+  createSwitchNavigator(
+    {
+      SignedIn: {
+        screen: SignedIn,
+        navigationOptions: {
+          gesturesEnabled: false,
+        },
+      },
+      SignedOut: {
+        screen: SignedOut,
+        navigationOptions: {
+          gesturesEnabled: false,
+        },
       },
     },
-    SignedOut: {
-      screen: SignedOut,
-      navigationOptions: {
-        gesturesEnabled: false,
-      },
+    {
+      initialRouteName: signedIn ? 'SignedIn' : 'SignedOut',
     },
-  },
-  {
-    initialRouteName: signedIn ? 'SignedIn' : 'SignedOut',
-  },
-);
+  );
