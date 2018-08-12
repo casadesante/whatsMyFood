@@ -53,10 +53,6 @@ export default class Home extends Component {
     });
   }
 
-  componentDidMount() {
-    console.log('Homescreen:  Component did mount');
-  }
-
   getRestaurant = (id, name) => {
     const { navigation } = this.props;
     navigation.navigate('Restaurant', { id, name });
@@ -80,7 +76,10 @@ export default class Home extends Component {
         {empty ? (
           <EmptyHome navigation={navigation} />
         ) : (
-          <ScrollView showsVerticalScrollIndicator={false} ref={(scrollview) => { this.scrollview = scrollview; }}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            ref={(scrollview) => { this.scrollview = scrollview; }}
+          >
             <View style={styles.restaurantContainer}>
               <Text
                 style={styles.restaurantLabel}
