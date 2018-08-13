@@ -52,6 +52,7 @@ export const SignedIn = createBottomTabNavigator(
       screen: createStackNavigator({
         Home: { screen: Home },
         Restaurant: { screen: Restaurant },
+        Addfood: { screen: Addfood },
       }),
       path: '',
       navigationOptions: {
@@ -77,7 +78,11 @@ export const SignedIn = createBottomTabNavigator(
       },
     },
     Search: {
-      screen: createStackNavigator({ Search: { screen: Search } }),
+      screen: createStackNavigator({
+        Search: { screen: Search },
+        Restaurant: { screen: Restaurant },
+        Addfood: { screen: Addfood },
+      }),
       path: '',
       navigationOptions: {
         tabBarIcon: SearchTabBarIcon,

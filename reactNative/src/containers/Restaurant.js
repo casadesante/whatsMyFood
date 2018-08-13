@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import HeaderImageScrollView from 'react-native-image-header-scroll-view';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Image, TouchableOpacity, ActionSheetIOS } from 'react-native';
 import PropTypes from 'prop-types';
 import RF from '../../node_modules/react-native-responsive-fontsize';
 import FoodItems from '../components/FoodItems';
@@ -75,6 +75,22 @@ export default class Restaurant extends Component {
     console.log(navigation.state);
   }
 
+  restaurantActionSheet = () => {
+    const { navigation } = this.props;
+    ActionSheetIOS.showActionSheetWithOptions({
+      options: ['Cancel', 'Add food', 'Edit restaurant', 'Remove restaurant'],
+      destructiveButtonIndex: 3,
+      cancelButtonIndex: 0,
+    },
+    (buttonIndex) => {
+      if (buttonIndex === 1) {
+        navigation.navigate('Addfood', { restaurantData: null });
+      } else if (buttonIndex === 3) {
+        alert('Delete restaurant API under contruction');
+      }
+    });
+  }
+
   render() {
     const { navigation } = this.props;
     const foodItems = helper.getFoodItems();
@@ -97,15 +113,18 @@ export default class Restaurant extends Component {
         >
           <View>
             <View style={styles.restaurantTitleBar}>
-              <Text style={styles.restaurantNameStyle} numberOfLines={2}>{`${restaurantName}asdfadsjfnaksdnfjkasndflkjnasdlfjknaskdljfnlakjsdnflkjn`}</Text>
-              <MaterialCommunityIcons
-                style={{
-                  marginLeft: widthPercentageToDP('3%'),
-                }}
-                name="dots-horizontal-circle"
-                size={RF(5)}
-                color="#FF4444"
-              />
+              <Text style={styles.restaurantNameStyle} numberOfLines={2}>{restaurantName}</Text>
+              <TouchableOpacity onPress={this.restaurantActionSheet}>
+                <MaterialCommunityIcons
+                  style={{
+                    paddingLeft: widthPercentageToDP('3%'),
+                    paddingRight: widthPercentageToDP('3%'),
+                  }}
+                  name="dots-horizontal-circle"
+                  size={RF(5)}
+                  color="#FF4444"
+                />
+              </TouchableOpacity>
             </View>
             {foodItems.fav.length !== 0 ? (
               <FoodItems title="😍 My fav" items={foodItems.fav} />
