@@ -6,10 +6,11 @@ import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import PropTypes from 'prop-types';
 import FoodItems from '../components/FoodItems';
 import helper from '../lib/Helper';
+import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: heightPercentageToDP('100%'),
   },
   linearGradient: {
     flex: 1,
@@ -76,8 +77,8 @@ export default class Restaurant extends Component {
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
         <HeaderImageScrollView
-          maxHeight={300}
-          minHeight={100}
+          maxHeight={heightPercentageToDP('32%')}
+          minHeight={heightPercentageToDP('11%')}
           headerImage={require('../assets/img/tgif.jpg')}
           maxOverlayOpacity={0.6}
           minOverlayOpacity={0.5}
@@ -96,6 +97,36 @@ export default class Restaurant extends Component {
                 color="rgb(255, 68, 68)"
               />
             </View>
+            {foodItems.fav.length !== 0 ? (
+              <FoodItems title="😍 My fav" items={foodItems.fav} />
+            ) : null}
+            {foodItems.good.length !== 0 ? (
+              <FoodItems title="👌 Good" items={foodItems.good} />
+            ) : null}
+            {foodItems.fav.length !== 0 ? (
+              <FoodItems title="😍 My fav" items={foodItems.fav} />
+            ) : null}
+            {foodItems.good.length !== 0 ? (
+              <FoodItems title="👌 Good" items={foodItems.good} />
+            ) : null}
+            {foodItems.fav.length !== 0 ? (
+              <FoodItems title="😍 My fav" items={foodItems.fav} />
+            ) : null}
+            {foodItems.good.length !== 0 ? (
+              <FoodItems title="👌 Good" items={foodItems.good} />
+            ) : null}
+            {foodItems.fav.length !== 0 ? (
+              <FoodItems title="😍 My fav" items={foodItems.fav} />
+            ) : null}
+            {foodItems.good.length !== 0 ? (
+              <FoodItems title="👌 Good" items={foodItems.good} />
+            ) : null}
+            {foodItems.fav.length !== 0 ? (
+              <FoodItems title="😍 My fav" items={foodItems.fav} />
+            ) : null}
+            {foodItems.good.length !== 0 ? (
+              <FoodItems title="👌 Good" items={foodItems.good} />
+            ) : null}
             {foodItems.fav.length !== 0 ? (
               <FoodItems title="😍 My fav" items={foodItems.fav} />
             ) : null}
