@@ -31,9 +31,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
     borderBottomColor: 'rgba(222, 222, 222, 0.5)',
-    borderBottomWidth: 0.5,
-    paddingTop: 10,
-    paddingBottom: 10,
+    borderBottomWidth: 1,
+    paddingTop: heightPercentageToDP('1%'),
+    paddingBottom: heightPercentageToDP('1%'),
   },
   headerImage: {
     width: widthPercentageToDP('100%'),
