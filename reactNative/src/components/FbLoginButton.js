@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Text,
   View,
+  AsyncStorage,
 } from 'react-native';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -14,6 +15,7 @@ import RF from 'react-native-responsive-fontsize';
 import PropTypes from 'prop-types';
 
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
+import { saveInAsyncStorage } from '../lib/Auth';
 
 const config = {
   apiKey: Config.API_KEY,
@@ -105,11 +107,17 @@ class FacebookLoginButton extends Component {
               .signInWithCredential(credential)
               .then(
                 () => {
-                  navigation.navigate('Home');
+                  saveInAsyncStorage().then(res => {
+                    console.log(res);
+                    res
+                      ? navigation.navigate('Home')
+                      : alert('Async store Error');
+                  });
                 },
                 // eslint-disable-next-line no-unused-vars
                 err => {
-                  alert('Error while loggin in');
+                  // TODO: handle error
+                  alert('Error while logging in');
                 },
               );
           },
