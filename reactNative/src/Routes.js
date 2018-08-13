@@ -14,6 +14,7 @@ import Addfood from './containers/Addfood';
 import Search from './containers/Search';
 import Profile from './containers/Profile';
 import Restaurant from './containers/Restaurant';
+import EditRestaurant from './containers/EditRestaurant';
 
 export const SignedOut = createStackNavigator({
   SignIn: {
@@ -53,6 +54,7 @@ export const SignedIn = createBottomTabNavigator(
         Home: { screen: Home },
         Restaurant: { screen: Restaurant },
         Addfood: { screen: Addfood },
+        EditRestaurant: { screen: EditRestaurant },
       }),
       path: '',
       navigationOptions: {
@@ -71,6 +73,7 @@ export const SignedIn = createBottomTabNavigator(
       screen: createStackNavigator({
         Newentry: { screen: Newentry },
         Addfood: { screen: Addfood },
+        Restaurant: { screen: Restaurant },
       }),
       path: '',
       navigationOptions: {
@@ -82,6 +85,7 @@ export const SignedIn = createBottomTabNavigator(
         Search: { screen: Search },
         Restaurant: { screen: Restaurant },
         Addfood: { screen: Addfood },
+        EditRestaurant: { screen: EditRestaurant },
       }),
       path: '',
       navigationOptions: {

@@ -85,8 +85,11 @@ export default class Restaurant extends Component {
     (buttonIndex) => {
       if (buttonIndex === 1) {
         navigation.navigate('Addfood', { restaurantData: null });
+      } else if (buttonIndex === 2) {
+        navigation.navigate('EditRestaurant', { restaurantData: null });
       } else if (buttonIndex === 3) {
         alert('Delete restaurant API under contruction');
+        // Where should we navigate? Home or Search?
       }
     });
   }

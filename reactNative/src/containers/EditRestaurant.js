@@ -48,7 +48,7 @@ const options = {
   },
 };
 
-export default class Newentry extends Component {
+export default class EditRestaurant extends Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     return {
@@ -59,6 +59,7 @@ export default class Newentry extends Component {
       headerTitleStyle: {
         color: 'white',
       },
+      headerTintColor: 'white',
       headerBackTitle: 'Back',
       headerRight: (
         <TouchableOpacity onPress={() => params.save()}>
@@ -113,7 +114,7 @@ export default class Newentry extends Component {
   saveRestaurantForm = () => {
     const { navigation } = this.props;
     // alert(JSON.stringify(this.state));
-    navigation.navigate('Addfood', { restaurantData: this.state });
+    navigation.navigate('Restaurant', { restaurantData: this.state });
   };
 
   uploadImage = (uri, mime = 'application/octet-stream') => new Promise((resolve, reject) => {
@@ -147,7 +148,7 @@ export default class Newentry extends Component {
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
-        <Header text="Add restaurant" />
+        <Header text="Edit restaurant" />
         {/* <KeyboardAwareScrollView */}
         {/* scrollEnabled={false} */}
         {/* onPress={Keyboard.dismiss()} */}
@@ -189,7 +190,7 @@ export default class Newentry extends Component {
   }
 }
 
-Newentry.propTypes = {
+EditRestaurant.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
