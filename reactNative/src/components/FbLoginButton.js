@@ -106,13 +106,32 @@ class FacebookLoginButton extends Component {
               .auth()
               .signInWithCredential(credential)
               .then(
-                () => {
-                  saveInAsyncStorage().then(res => {
-                    console.log(res);
-                    res
-                      ? navigation.navigate('Home')
-                      : alert('Async store Error');
-                  });
+                user => {
+                  const userObj = {
+                    firebaseID: user.uid,
+                    userName: user.displayName,
+                    emailID: user.email,
+                    profilePicURL: user.photoURL,
+                  };
+                  console.log(userObj);
+                  fetch(
+                    'https://us-central1-whatsmyfood.cloudfunctions.net/addUser',
+                    {
+                      method: 'POST',
+                      body: JSON.stringify(userObj),
+                    },
+                  )
+                    .then(() => {
+                      saveInAsyncStorage().then(res => {
+                        console.log(res);
+                        res
+                          ? navigation.navigate('Home')
+                          : alert('Async store Error');
+                      });
+                    })
+                    .catch(err => {
+                      alert(err);
+                    });
                 },
                 // eslint-disable-next-line no-unused-vars
                 err => {

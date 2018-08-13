@@ -44,6 +44,7 @@ const getFromAsyncStorage = async () => {
 
 const getProfileInfo = () => {
   const userObject = firebase.auth().currentUser;
+  console.log(userObject);
   const user = {
     displayName: userObject.displayName,
     photoURL: userObject.photoURL,
