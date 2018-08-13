@@ -87,11 +87,9 @@ const SmallRipple = {
 const EmptyHome = props => {
   const { navigation } = props;
   return (
-    <View
-      style={styles.container}
-    >
+    <View style={styles.container}>
       <Animatable.Text animation="fadeInUp" style={styles.welcome}>
-              Add your first restaurant and dish !
+        Add your first restaurant and dish !
       </Animatable.Text>
       <View style={styles.buttonContainer}>
         <Animatable.View

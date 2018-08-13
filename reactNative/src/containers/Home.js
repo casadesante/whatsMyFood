@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  StatusBar } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, StatusBar } from 'react-native';
 import PropTypes from 'prop-types';
 
 import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
@@ -63,7 +59,7 @@ export default class Home extends Component {
     if (this.scrollview) {
       this.scrollview.scrollTo({ x: 0, y: 0, animated: true });
     }
-  }
+  };
 
   // if restaurant list is empty, show add button else show the list of restaurants
   render() {
@@ -78,22 +74,22 @@ export default class Home extends Component {
         ) : (
           <ScrollView
             showsVerticalScrollIndicator={false}
-            ref={(scrollview) => { this.scrollview = scrollview; }}
+            ref={scrollview => {
+              this.scrollview = scrollview;
+            }}
           >
             <View style={styles.restaurantContainer}>
-              <Text
-                style={styles.restaurantLabel}
-              >
-              Nearby restaurants
-              </Text>
+              <Text style={styles.restaurantLabel}>Nearby restaurants</Text>
 
-              {helper.generateRestaurants().map(restaurantInfo => (
-                <RestaurantCard
-                  goToRestaurant={this.getRestaurant}
-                  restaurant={restaurantInfo}
-                  key={restaurantInfo.id}
-                />
-              ))}
+              {helper
+                .generateRestaurants()
+                .map(restaurantInfo => (
+                  <RestaurantCard
+                    goToRestaurant={this.getRestaurant}
+                    restaurant={restaurantInfo}
+                    key={restaurantInfo.id}
+                  />
+                ))}
             </View>
           </ScrollView>
         )}

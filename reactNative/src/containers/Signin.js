@@ -63,7 +63,6 @@ export default class Signin extends Component {
           colors={['rgba(0, 0, 0, 0.90)', 'rgba(0, 0, 0, 0.4)']}
           style={styles.linearGradient}
         >
-
           <View style={styles.container}>
             <Image
               source={require('../assets/img/logo.png')}
@@ -73,12 +72,15 @@ export default class Signin extends Component {
             <Text style={styles.appTitle}>WhatsMyFood</Text>
             <View style={styles.loginButton}>
               <FacebookLoginButton navigation={navigation} />
-              <GoogleLoginButton navigation={navigation} marginTopPercent="3%" />
+              <GoogleLoginButton
+                navigation={navigation}
+                marginTopPercent="3%"
+              />
             </View>
             <Text style={styles.footerText}>
-                By signing up, I agree with WhatsMyFood’s{'\n'}
+              By signing up, I agree with WhatsMyFood’s{'\n'}
               <Text style={{ color: '#FF4444' }}>
-                  Terms of Service
+                Terms of Service
                 <Text style={{ color: 'white' }}> and </Text>Privacy policy.
               </Text>
             </Text>

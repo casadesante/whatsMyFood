@@ -1,9 +1,11 @@
 import React from 'react';
-import { Text,
+import {
+  Text,
   View,
   ImageBackground,
   StyleSheet,
-  TouchableOpacity } from 'react-native';
+  TouchableOpacity,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
@@ -67,25 +69,24 @@ const FoodCard = props => {
           style={styles.backgroundImage}
           imageStyle={{ borderRadius: 10 }}
           resizeMode="contain"
-          source={require('../assets/img/foodImg_16x9.png')
-        // source={{
-          //   uri: food.img,
-          // }}
-        }
+          source={
+            require('../assets/img/foodImg_16x9.png')
+            // source={{
+            //   uri: food.img,
+            // }}
+          }
         >
           <LinearGradient
             colors={food.img ? blackOverlay : redGradient}
             style={styles.linearGradient}
           >
             <View style={styles.details}>
-              <Text style={styles.foodRating}>
-              👌
+              <Text style={styles.foodRating}>👌</Text>
+              <Text style={styles.foodName} numberOfLines={2}>
+                Brownie obsession
               </Text>
               <Text style={styles.foodName} numberOfLines={2}>
-              Brownie obsession
-              </Text>
-              <Text style={styles.foodName} numberOfLines={2}>
-              in T.G.I.Fridays
+                in T.G.I.Fridays
               </Text>
             </View>
           </LinearGradient>
