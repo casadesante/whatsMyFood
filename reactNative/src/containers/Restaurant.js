@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import HeaderImageScrollView from 'react-native-image-header-scroll-view';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import FoodItems from '../components/FoodItems';
 import helper from '../lib/Helper';
@@ -34,6 +34,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     paddingTop: 10,
     paddingBottom: 10,
+  },
+  headerImage: {
+    width: widthPercentageToDP('100%'),
+    height: heightPercentageToDP('32%'),
+    alignSelf: 'stretch',
+    resizeMode: 'cover',
   },
 });
 
@@ -73,15 +79,21 @@ export default class Restaurant extends Component {
     const { navigation } = this.props;
     const foodItems = helper.getFoodItems();
     const restaurantName = navigation.getParam('name');
+    const restaurantImageLink = 0; // boolean variable to toggle default and real restaurant image
+    const restaurantImage = restaurantImageLink ? (
+      <Image source={require('../assets/img/restaurantImg_16x9.png')} style={styles.headerImage} />
+    ) : (
+      <Image source={require('../assets/img/default_restaurantImg.png')} style={styles.headerImage} />
+    );
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
         <HeaderImageScrollView
           maxHeight={heightPercentageToDP('32%')}
           minHeight={heightPercentageToDP('11%')}
-          headerImage={require('../assets/img/tgif.jpg')}
-          maxOverlayOpacity={0.6}
-          minOverlayOpacity={0.5}
+          renderHeader={() => restaurantImage}
+          maxOverlayOpacity={restaurantImageLink ? 0.6 : 0.01}
+          minOverlayOpacity={restaurantImageLink ? 0.3 : 0.01}
         >
           <View>
             <View style={styles.nameView}>
