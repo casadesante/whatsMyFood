@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     fontSize: RF(4.3),
     fontFamily: 'SFProDisplay-Bold',
     marginLeft: widthPercentageToDP('4%'),
-    width: widthPercentageToDP('80%'),
+    width: widthPercentageToDP('78%'),
   },
   restaurantTitleBar: {
     flexDirection: 'row',
@@ -32,8 +32,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderBottomColor: 'rgba(222, 222, 222, 0.5)',
     borderBottomWidth: 1,
-    paddingTop: heightPercentageToDP('1%'),
-    paddingBottom: heightPercentageToDP('1%'),
+    paddingTop: heightPercentageToDP('1.5%'),
+    paddingBottom: heightPercentageToDP('1.5%'),
   },
   headerImage: {
     width: widthPercentageToDP('100%'),
@@ -97,16 +97,14 @@ export default class Restaurant extends Component {
         >
           <View>
             <View style={styles.restaurantTitleBar}>
-              <Text style={styles.restaurantNameStyle} numberOfLines={2}>{restaurantName}</Text>
+              <Text style={styles.restaurantNameStyle} numberOfLines={2}>{`${restaurantName}asdfadsjfnaksdnfjkasndflkjnasdlfjknaskdljfnlakjsdnflkjn`}</Text>
               <MaterialCommunityIcons
                 style={{
-                  position: 'absolute',
-                  right: 0,
-                  paddingRight: 15,
+                  marginLeft: widthPercentageToDP('3%'),
                 }}
                 name="dots-horizontal-circle"
-                size={35}
-                color="rgb(255, 68, 68)"
+                size={RF(5)}
+                color="#FF4444"
               />
             </View>
             {foodItems.fav.length !== 0 ? (
