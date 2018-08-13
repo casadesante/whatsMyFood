@@ -4,6 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
 import PropTypes from 'prop-types';
+import RF from '../../node_modules/react-native-responsive-fontsize';
 import FoodItems from '../components/FoodItems';
 import helper from '../lib/Helper';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
@@ -18,15 +19,14 @@ const styles = StyleSheet.create({
   image: {
     height: 200,
   },
-  titleText: {
-    flexDirection: 'row',
+  restaurantNameStyle: {
     color: 'black',
-    fontSize: 33,
-    fontWeight: 'bold',
-    letterSpacing: 0.5,
-    marginLeft: 15,
+    fontSize: RF(4.3),
+    fontFamily: 'SFProDisplay-Bold',
+    marginLeft: widthPercentageToDP('4%'),
+    width: widthPercentageToDP('80%'),
   },
-  nameView: {
+  restaurantTitleBar: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'white',
@@ -96,8 +96,8 @@ export default class Restaurant extends Component {
           minOverlayOpacity={restaurantImageLink ? 0.3 : 0.01}
         >
           <View>
-            <View style={styles.nameView}>
-              <Text style={styles.titleText}>{restaurantName}</Text>
+            <View style={styles.restaurantTitleBar}>
+              <Text style={styles.restaurantNameStyle} numberOfLines={2}>{restaurantName}</Text>
               <MaterialCommunityIcons
                 style={{
                   position: 'absolute',
