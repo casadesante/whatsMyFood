@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
 });
 
 export default class Restaurant extends Component {
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => ({
     headerTintColor: 'white',
     headerStyle: {
       position: 'absolute',
@@ -61,14 +61,20 @@ export default class Restaurant extends Component {
       },
     },
     headerRight: (
-      <Ionicons
-        style={{ paddingRight: 10 }}
-        name="md-add"
-        size={30}
-        color="white"
-      />
+      <TouchableOpacity onPress={() => {
+        navigation.navigate('Addfood', { restaurantData: null });
+      }}
+      >
+        <Ionicons
+          style={{ paddingRight: 10 }}
+          name="md-add"
+          size={30}
+          color="white"
+        />
+      </TouchableOpacity>
     ),
-  };
+  })
+  ;
 
   componentDidMount() {
     const { navigation } = this.props;
