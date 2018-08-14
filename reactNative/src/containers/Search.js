@@ -157,8 +157,8 @@ export default class Search extends Component {
             </View>
           </View>
           <Animatable.View
-            easing="ease-in-cubic"
-            duration={450}
+            easing="ease-out"
+            duration={500}
             transition={['marginLeft', 'width']}
             style={this.tabSelectorStyle()}
           />

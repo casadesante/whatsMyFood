@@ -1,24 +1,17 @@
 import React, { Component } from 'react';
-import { StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  StatusBar,
-  Keyboard,
-  ScrollView } from 'react-native';
-import RNFetchBlob from 'react-native-fetch-blob';
-import * as ImagePicker from 'react-native-image-picker';
+import { StyleSheet, View, Button, StatusBar } from 'react-native';
 import PropTypes from 'prop-types';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 
-import RF from 'react-native-responsive-fontsize';
+import * as ImagePicker from 'react-native-image-picker';
+import RNFetchBlob from 'react-native-fetch-blob';
 import Header from '../components/Header';
 import Textbox from '../components/Textbox';
-import firebase from '../lib/FirebaseClient';
 import Imageupload from '../components/Imageupload';
 import Imageuploader from '../components/Imageuploader';
-import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
+import { heightPercentageToDP } from '../lib/Responsive';
 import Optional from '../components/Optional';
+import EmojiPicker from '../components/EmojiPicker';
+import firebase from '../lib/FirebaseClient';
 
 // Prepare Blob support
 const [Blob, fs] = [RNFetchBlob.polyfill.Blob, RNFetchBlob.fs];
@@ -26,9 +19,14 @@ window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
 window.Blob = Blob;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
+  optionalText: {
+    padding: 20,
+    backgroundColor: 'rgb(249, 249, 249)',
+  },
+  optional: {
+    color: 'rgb(105, 105, 105)',
+    fontSize: 20,
+    letterSpacing: 0.5,
   },
   imageUploaderLayout: {
     display: 'flex',
@@ -36,6 +34,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: heightPercentageToDP('2.97%'),
+  },
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
   },
 });
 
@@ -48,30 +50,21 @@ const options = {
   },
 };
 
-export default class Newentry extends Component {
+export default class EditFood extends Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     return {
+      title: "T.G.I. Friday's", // Add restaurant title from props here
       headerStyle: {
         backgroundColor: 'rgb(255, 68, 68)',
         borderBottomWidth: 0,
       },
+      headerTintColor: 'white',
       headerTitleStyle: {
         color: 'white',
       },
-      headerBackTitle: 'Back',
       headerRight: (
-        <TouchableOpacity onPress={() => params.save()}>
-          <Text
-            style={{
-              fontSize: RF(3),
-              color: '#FFFFFF',
-              paddingRight: widthPercentageToDP('2.7%'),
-            }}
-          >
-            Save
-          </Text>
-        </TouchableOpacity>
+        <Button color="white" title="Save" onPress={() => params.save()} />
       ),
     };
   };
@@ -80,40 +73,27 @@ export default class Newentry extends Component {
     uploaded: false,
     url: '',
     name: '',
-    location: '',
+    rating: 5,
   };
 
   componentDidMount() {
     const { navigation } = this.props;
-    navigation.setParams({ save: this.saveRestaurantForm });
+    navigation.setParams({ save: this.saveDetails });
   }
 
-  getImage = () => {
-    ImagePicker.showImagePicker(options, response => {
-      console.log('Response = ', response);
-
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        console.log(response.uri);
-        this.uploadImage(response.uri)
-          .then(url => {
-            this.setState({ uploaded: true, url });
-            console.log(url);
-          })
-          .catch(error => console.log(error));
-      }
-    });
+  onPress = () => {
+    console.log('pressed');
   };
 
-  saveRestaurantForm = () => {
-    const { navigation } = this.props;
-    // alert(JSON.stringify(this.state));
-    navigation.navigate('Addfood', { restaurantData: this.state });
+  saveDetails = () => {
+    const { restaurantData } = this.props.navigation.state.params;
+    restaurantData.food = this.state;
+    alert(JSON.stringify(restaurantData));
+    // console.log('Save');
+  };
+
+  selectedEmoji = newRating => {
+    this.setState({ rating: newRating });
   };
 
   uploadImage = (uri, mime = 'application/octet-stream') => new Promise((resolve, reject) => {
@@ -142,36 +122,46 @@ export default class Newentry extends Component {
       });
   });
 
+  getImage = () => {
+    ImagePicker.showImagePicker(options, response => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        console.log(response.uri);
+        this.uploadImage(response.uri)
+          .then(url => {
+            this.setState({ uploaded: true, url });
+            console.log(url);
+          })
+          .catch(error => console.log(error));
+      }
+    });
+  };
+
   render() {
-    const { uploaded, url, name, location } = this.state;
+    const { rating, uploaded, url } = this.state;
+    console.log(`Selected rating: ${rating}`);
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
-        <Header text="Add restaurant" />
-        {/* <KeyboardAwareScrollView */}
-        {/* scrollEnabled={false} */}
-        {/* onPress={Keyboard.dismiss()} */}
-        {/* > */}
+        <Header text="Edit food" />
         <Textbox
-          icon="restaurant"
-          placeholder="Restaurant name"
-          changeText={inputName => {
-            this.setState({ name: inputName });
+          icon="restaurant-menu"
+          placeholder="Food name"
+          changeText={name => {
+            this.setState({ name });
           }}
-          text={name}
+          text={this.state.name}
           field="name"
         />
+        <EmojiPicker onEmojiSelect={this.selectedEmoji} />
         <Optional />
-        {/* Location must be fetched from google places or something */}
-        <Textbox
-          icon="location"
-          placeholder="Restaurant location"
-          changeText={inputLocation => {
-            this.setState({ location: inputLocation });
-          }}
-          text={location}
-          field="location"
-        />
         <View>
           {uploaded ? (
             <View>
@@ -183,13 +173,12 @@ export default class Newentry extends Component {
             </View>
           )}
         </View>
-        {/* </KeyboardAwareScrollView> */}
       </View>
     );
   }
 }
 
-Newentry.propTypes = {
+EditFood.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
