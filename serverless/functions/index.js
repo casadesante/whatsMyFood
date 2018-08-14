@@ -5,16 +5,60 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp();
 
-// Take the text parameter passed to this HTTP endpoint and insert it into the
-// Realtime Database under the path /messages/:pushId/original
-exports.addMessage = functions.https.onRequest((req, res) => {
-  // Grab the text parameter.
-  const original = req.query.text;
-  // Push the new message into the Realtime Database using the Firebase Admin SDK.
-  return admin.database().ref('/users').push({name: original}).then((snapshot) => {
-    // Redirect with 303 SEE OTHER to the URL of the pushed object in the Firebase console.
-    return res.redirect(303, snapshot.ref.toString());
-  });
+// Get a database reference to whatsMyFood
+var db = admin.database();
+
+exports.addUser = functions.https.onRequest((req, res) => {
+  console.log('====================================');
+  console.log("Received Request");
+  console.log(req.body);
+  console.log('====================================');
+  
+  let parsedRequest = typeof(req.body) === 'object' ? req.body : JSON.parse(req.body);
+  var firebaseID = parsedRequest.firebaseID;
+  var readRef = db.ref("/users/" + firebaseID)
+  var user = {};
+
+  readRef.once("value")
+    .then((snapshot, readError) => {
+      if (readError) {
+        throw readError;
+      }
+      console.log('====================================');
+      console.log("snapshot value");
+      console.log(snapshot.val());      
+      console.log('====================================');
+      return snapshot.val() !== null;
+    })
+    .then((exists) => {
+      if (!exists) {
+        user[firebaseID] = {
+          "userName": parsedRequest.userName,
+          "emailID": parsedRequest.emailID,
+          "profilePictureURL": parsedRequest.profilePicURL,
+          "restaurants": [],
+          "createdAt": admin.database.ServerValue.TIMESTAMP
+        };
+        console.log('====================================');
+        console.log("printing user");
+        console.log(user);
+        console.log('====================================');    
+        let usersRef = db.ref("/users");
+        return usersRef.update(user);  
+      }
+      return res.status(200).send("User Already exists");
+    })
+    .then((err) => {
+      if (err) {
+        throw err;
+      } else {
+        return res.status(200).send(user);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).send(err);
+    });
 });
 
 // Listens for new messages added to /messages/:pushId/original and creates an
