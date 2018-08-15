@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, Image, ImageBackground, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import PropTypes from 'prop-types';
+import SplashScreen from 'react-native-splash-screen';
 import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 import RF from '../../node_modules/react-native-responsive-fontsize';
 import FacebookLoginButton from '../components/FbLoginButton';
@@ -20,20 +21,20 @@ const styles = StyleSheet.create({
   },
   container: {
     width: widthPercentageToDP('100%'),
-    marginTop: heightPercentageToDP('15.5%'),
+    marginTop: heightPercentageToDP('14%'),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
   appTitle: {
     color: 'white',
-    fontSize: RF(4),
-    marginTop: heightPercentageToDP('4%'),
+    fontSize: RF(5),
+    marginTop: heightPercentageToDP('1%'),
   },
   logo: {
     opacity: 1,
-    width: widthPercentageToDP('47.5%'),
-    height: widthPercentageToDP('47.5%'),
+    width: widthPercentageToDP('60%'),
+    height: widthPercentageToDP('60%'),
   },
   loginButton: {
     marginTop: heightPercentageToDP('20%'),
@@ -52,6 +53,10 @@ export default class Signin extends Component {
     header: null,
   };
 
+  componentDidMount() {
+    SplashScreen.hide();
+  }
+
   render() {
     const { navigation } = this.props;
     return (
@@ -66,7 +71,9 @@ export default class Signin extends Component {
 
           <View style={styles.container}>
             <Image
-              source={require('../assets/img/logo.png')}
+              source={require('../assets/img/logo.png')
+               // 1024x1024 imagesize
+              }
               style={styles.logo}
               resizeMode="contain"
             />
