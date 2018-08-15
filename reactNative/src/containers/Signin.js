@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, Image, ImageBackground, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import PropTypes from 'prop-types';
+import SplashScreen from 'react-native-splash-screen';
 import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 import RF from '../../node_modules/react-native-responsive-fontsize';
 import FacebookLoginButton from '../components/FbLoginButton';
@@ -51,6 +52,10 @@ export default class Signin extends Component {
   static navigationOptions = {
     header: null,
   };
+
+  componentDidMount() {
+    SplashScreen.hide();
+  }
 
   render() {
     const { navigation } = this.props;
