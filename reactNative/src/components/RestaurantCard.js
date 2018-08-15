@@ -1,9 +1,11 @@
 import React from 'react';
-import { Text,
+import {
+  Text,
   View,
   ImageBackground,
   StyleSheet,
-  TouchableOpacity } from 'react-native';
+  TouchableOpacity,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import PropTypes from 'prop-types';
@@ -63,8 +65,9 @@ const RestaurantCard = props => {
   return (
     <Animatable.View
       animation={cardStyle}
-      delay={restaurant.id * 150
-      // List index
+      delay={
+        restaurant.id * 150
+        // List index
       }
     >
       <TouchableOpacity
@@ -76,11 +79,12 @@ const RestaurantCard = props => {
           style={styles.backgroundImage}
           imageStyle={{ borderRadius: 10 }}
           resizeMode="contain"
-          source={require('../assets/img/restaurantImg_16x9.png')
-          // source={{
-          //   uri: restaurant.img,
-          // }}
-        }
+          source={
+            require('../assets/img/restaurantImg_16x9.png')
+            // source={{
+            //   uri: restaurant.img,
+            // }}
+          }
         >
           <LinearGradient
             colors={restaurant.img ? blackOverlay : redGradient}

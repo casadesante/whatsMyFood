@@ -1,26 +1,38 @@
 import React, { Component } from 'react';
+import { View, Text } from 'react-native';
 
 import { createRootNavigator } from './Routes';
-import { isSignedIn } from './lib/Auth';
+import { isSignedIn, getFromAsyncStorage } from './lib/Auth';
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       signedIn: false,
+      promiseResolve: false,
     };
   }
 
-  componentDidMount() {
-    isSignedIn().then(res => {
-      this.setState({ signedIn: res });
+  async componentWillMount() {
+    getFromAsyncStorage().then(res => {
+      console.log(`component will mount: ${res}`);
+      this.setState({ signedIn: res, promiseResolve: true });
     });
   }
 
   render() {
-    const { signedIn } = this.state;
+    let { signedIn, promiseResolve } = this.state;
     const Layout = createRootNavigator(signedIn);
-
-    return <Layout />;
+    if (promiseResolve) {
+      return <Layout />;
+    } else if (!promiseResolve) {
+      {
+        return (
+          <View style={{ marginTop: 200 }}>
+            <Text>Loading ...</Text>
+          </View>
+        );
+      }
+    }
   }
 }

@@ -1,6 +1,7 @@
 /* eslint-disable implicit-arrow-linebreak */
 import firebase from 'firebase';
 import FBSDK from 'react-native-fbsdk';
+import { AsyncStorage } from 'react-native';
 
 const { LoginManager } = FBSDK;
 
@@ -16,8 +17,34 @@ const isSignedIn = () =>
     });
   });
 
+const saveInAsyncStorage = async () => {
+  try {
+    var asyncSave = await AsyncStorage.setItem(
+      'whatsMyFoodLogin',
+      JSON.stringify(true),
+    );
+    return true;
+  } catch (error) {
+    alert('Async store error');
+    return false;
+  }
+};
+
+const getFromAsyncStorage = async () => {
+  try {
+    const retrievedItem = await AsyncStorage.getItem('whatsMyFoodLogin');
+    console.log(`Async store : ${retrievedItem}`);
+    return JSON.parse(retrievedItem);
+  } catch (error) {
+    console.log(`Async store : ${error}`);
+    return false;
+  }
+  return;
+};
+
 const getProfileInfo = () => {
   const userObject = firebase.auth().currentUser;
+  console.log(userObject);
   const user = {
     displayName: userObject.displayName,
     photoURL: userObject.photoURL,
@@ -33,7 +60,9 @@ const logout = () =>
       .signOut()
       .then(() => {
         console.log('logout successful');
-        resolve(true);
+        AsyncStorage.setItem('whatsMyFoodLogin', 'false').then(() => {
+          resolve(true);
+        });
       })
       .catch(error => {
         console.log(`Error while logging out : ${error}`);
@@ -41,4 +70,10 @@ const logout = () =>
       });
   });
 
-export { isSignedIn, getProfileInfo, logout };
+export {
+  isSignedIn,
+  getProfileInfo,
+  logout,
+  saveInAsyncStorage,
+  getFromAsyncStorage,
+};

@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, ActivityIndicator, TouchableOpacity, Text, View } from 'react-native';
+import {
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+  Text,
+  View,
+} from 'react-native';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Config from 'react-native-config';
@@ -48,7 +54,6 @@ const styles = StyleSheet.create({
   },
 });
 
-
 class GoogleLoginButton extends Component {
   constructor() {
     super();
@@ -62,24 +67,29 @@ class GoogleLoginButton extends Component {
     }
   }
 
-  googleLogin = (navigation) => {
+  googleLogin = navigation => {
     async function AsyncLogin(self) {
       let result;
       try {
         self.setState({ GoogleLoginLoading: true });
         LoginManager.setLoginBehavior('native');
-        result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
+        result = await LoginManager.logInWithReadPermissions([
+          'public_profile',
+          'email',
+        ]);
       } catch (nativeError) {
         try {
           LoginManager.setLoginBehavior('web');
-          result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
+          result = await LoginManager.logInWithReadPermissions([
+            'public_profile',
+            'email',
+          ]);
         } catch (webError) {
           alert(`Some error occured: ${webError}`);
-        // show error message to the user if none of the FB screens
-        // did not open
+          // show error message to the user if none of the FB screens
+          // did not open
         }
       }
-
 
       if (result.isCancelled) {
         self.setState({ GoogleLoginLoading: false });
@@ -110,42 +120,40 @@ class GoogleLoginButton extends Component {
       }
     }
     AsyncLogin(this);
-  }
+  };
 
   render() {
     const { navigation, marginTopPercent } = this.props;
     const { GoogleLoginLoading } = this.state;
     return (
       <TouchableOpacity
-        style={[styles.loginButton, { marginTop: heightPercentageToDP(marginTopPercent) }]}
+        style={[
+          styles.loginButton,
+          { marginTop: heightPercentageToDP(marginTopPercent) },
+        ]}
         onPress={() => this.googleLogin(navigation)}
       >
-        { // Google login in process? Show loading spinner : else show sign in button
-          GoogleLoginLoading
-            ? (
-              <View style={[styles.container, { justifyContent: 'center' }]}>
-                <ActivityIndicator style={styles.loadingSpinner} size="small" color="#ffffff" />
-                <Text
-                  style={[styles.label, { marginRight: 0 }]}
-                > Loading
-                </Text>
-              </View>
-            )
-            : (
-              <View style={styles.container}>
-                <FontAwesome
-                  name="google"
-                  size={RF(3.5)}
-                  style={styles.SNSlogo}
-                  color="#FFFFFF"
-                />
-                <Text
-                  style={styles.label}
-                > Sign in with Google
-                </Text>
-              </View>
-            )
-      }
+        {// Google login in process? Show loading spinner : else show sign in button
+        GoogleLoginLoading ? (
+          <View style={[styles.container, { justifyContent: 'center' }]}>
+            <ActivityIndicator
+              style={styles.loadingSpinner}
+              size="small"
+              color="#ffffff"
+            />
+            <Text style={[styles.label, { marginRight: 0 }]}> Loading</Text>
+          </View>
+        ) : (
+          <View style={styles.container}>
+            <FontAwesome
+              name="google"
+              size={RF(3.5)}
+              style={styles.SNSlogo}
+              color="#FFFFFF"
+            />
+            <Text style={styles.label}> Sign in with Google</Text>
+          </View>
+        )}
       </TouchableOpacity>
     );
   }

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet,
+import {
+  StyleSheet,
   Text,
   View,
   ScrollView,
   StatusBar,
   TouchableOpacity,
-  TextInput } from 'react-native';
+  TextInput,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import PropTypes from 'prop-types';
@@ -82,11 +84,11 @@ export default class Search extends Component {
     navigation.navigate('Restaurant', { id, name });
   };
 
-  toggleSearchTab = (selectedTab) => {
+  toggleSearchTab = selectedTab => {
     this.setState({ tabState: selectedTab });
-  }
+  };
 
-  tabLabelStyle = (tabName) => {
+  tabLabelStyle = tabName => {
     const { tabState } = this.state;
     const styleObj = {
       fontFamily: 'SFProText-Medium',
@@ -99,26 +101,32 @@ export default class Search extends Component {
       styleObj.opacity = 1.0;
     }
     return styleObj;
-  }
+  };
 
   tabSelectorStyle = () => {
     const { tabState } = this.state;
-    const moveLeft = (tabState === 'Restaurant') ? widthPercentageToDP('8%') : widthPercentageToDP('65%');
-    const underlineWidth = (tabState === 'Restaurant') ? widthPercentageToDP('42%') : widthPercentageToDP('20%');
-    return ({
+    const moveLeft =
+      tabState === 'Restaurant'
+        ? widthPercentageToDP('8%')
+        : widthPercentageToDP('65%');
+    const underlineWidth =
+      tabState === 'Restaurant'
+        ? widthPercentageToDP('42%')
+        : widthPercentageToDP('20%');
+    return {
       height: heightPercentageToDP('0.4%'),
       backgroundColor: colors.coral,
       width: underlineWidth,
       borderRadius: 100,
       marginLeft: moveLeft,
-    });
-  }
+    };
+  };
 
   searchClearStyle = () => {
     const { searchKeyword } = this.state;
-    const crossOpacity = (searchKeyword === '') ? 0 : 1;
-    return (`rgba(255,255,255,${crossOpacity})`);
-  }
+    const crossOpacity = searchKeyword === '' ? 0 : 1;
+    return `rgba(255,255,255,${crossOpacity})`;
+  };
 
   render() {
     const { tabState, searchKeyword } = this.state;
@@ -127,27 +135,49 @@ export default class Search extends Component {
         <StatusBar barStyle="light-content" />
         <View style={styles.headerBackground}>
           <View style={styles.searchBar}>
-            <Ionicons name="ios-search" size={RF(4)} color="white" style={styles.searchIcon} />
+            <Ionicons
+              name="ios-search"
+              size={RF(4)}
+              color="white"
+              style={styles.searchIcon}
+            />
             <TextInput
               style={styles.searchInput}
               placeholder="Search"
               placeholderTextColor="rgba(255, 255, 255, 0.7)"
-              onChangeText={(KeyWord) => {
+              onChangeText={KeyWord => {
                 this.setState({ searchKeyword: KeyWord });
               }}
               value={searchKeyword}
               selectionColor="white"
             />
-            <TouchableOpacity onPress={() => { this.setState({ searchKeyword: '' }); }}>
-              <Feather name="x" size={RF(4.4)} color={this.searchClearStyle()} />
+            <TouchableOpacity
+              onPress={() => {
+                this.setState({ searchKeyword: '' });
+              }}
+            >
+              <Feather
+                name="x"
+                size={RF(4.4)}
+                color={this.searchClearStyle()}
+              />
             </TouchableOpacity>
           </View>
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.searchTab}>
             <View style={styles.tabButton}>
-              <TouchableOpacity onPress={() => this.toggleSearchTab('Restaurant')}>
-                <Text style={[this.tabLabelStyle('Restaurant'), { marginLeft: widthPercentageToDP('8%') }]}>RESTAURANT</Text>
+              <TouchableOpacity
+                onPress={() => this.toggleSearchTab('Restaurant')}
+              >
+                <Text
+                  style={[
+                    this.tabLabelStyle('Restaurant'),
+                    { marginLeft: widthPercentageToDP('8%') },
+                  ]}
+                >
+                  RESTAURANT
+                </Text>
               </TouchableOpacity>
             </View>
             <View style={styles.tabButton}>
@@ -163,27 +193,31 @@ export default class Search extends Component {
             style={this.tabSelectorStyle()}
           />
 
-          { tabState === 'Restaurant' ? (
+          {tabState === 'Restaurant' ? (
             <View style={styles.restaurantContainer}>
-              {helper.generateRestaurants().map(restaurantInfo => (
-                <RestaurantCard
-                  goToRestaurant={this.goToRestaurant}
-                  restaurant={restaurantInfo}
-                  key={restaurantInfo.id}
-                />
-              ))}
-            </View>) : (
-              <View style={styles.restaurantContainer}>
-                {helper.generateRestaurants().map(foodInfo => (
+              {helper
+                .generateRestaurants()
+                .map(restaurantInfo => (
+                  <RestaurantCard
+                    goToRestaurant={this.goToRestaurant}
+                    restaurant={restaurantInfo}
+                    key={restaurantInfo.id}
+                  />
+                ))}
+            </View>
+          ) : (
+            <View style={styles.restaurantContainer}>
+              {helper
+                .generateRestaurants()
+                .map(foodInfo => (
                   <FoodCard
                     goToRestaurant={this.goToRestaurant}
                     food={foodInfo}
                     key={foodInfo.id}
                   />
                 ))}
-              </View>
-          )
-        }
+            </View>
+          )}
         </ScrollView>
       </View>
     );

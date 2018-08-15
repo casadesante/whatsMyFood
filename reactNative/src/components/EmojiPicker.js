@@ -51,9 +51,9 @@ export default class EmojiPicker extends Component {
 
   emojiToggleStyle = (index, selectedrating) => {
     // Emoji bounce animation settings
-    const emojiOpacity = (index === selectedrating) ? 1.0 : 0.3;
-    const emojiSize = (index === selectedrating) ? 1.3 : 1;
-    const emojiPosition = (index === selectedrating) ? RF(0.01) : 0;
+    const emojiOpacity = index === selectedrating ? 1.0 : 0.3;
+    const emojiSize = index === selectedrating ? 1.3 : 1;
+    const emojiPosition = index === selectedrating ? RF(0.01) : 0;
 
     return {
       fontSize: RF(5),
@@ -68,16 +68,14 @@ export default class EmojiPicker extends Component {
   toggleEmoji = (newRating, callback) => {
     this.setState({ selectedRating: newRating });
     callback(newRating);
-  }
+  };
 
   render() {
     const { selectedRating } = this.state;
     const { onEmojiSelect } = this.props;
     return (
       <View style={styles.emojiPicker}>
-        <Text style={styles.emojiPickerLabel}>
-          Pick one of them
-        </Text>
+        <Text style={styles.emojiPickerLabel}>Pick one of them</Text>
         <View style={styles.emojiSpacing}>
           {emojiList.map(option => (
             <View key={option.rating} style={styles.emojiContainer}>
@@ -90,7 +88,8 @@ export default class EmojiPicker extends Component {
               >
                 {option.emoji}
               </Animatable.Text>
-            </View>))}
+            </View>
+          ))}
         </View>
       </View>
     );
