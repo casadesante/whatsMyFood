@@ -1,8 +1,21 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 
+import SplashScreen from 'react-native-splash-screen';
 import { createRootNavigator } from './Routes';
-import { isSignedIn, getFromAsyncStorage } from './lib/Auth';
+import { getFromAsyncStorage } from './lib/Auth';
+import { heightPercentageToDP } from './lib/Responsive';
+
+const styles = StyleSheet.create(
+  {
+    container: {
+      height: heightPercentageToDP('100%'),
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+  },
+);
 
 export default class App extends Component {
   constructor(props) {
@@ -15,24 +28,24 @@ export default class App extends Component {
 
   async componentWillMount() {
     getFromAsyncStorage().then(res => {
-      console.log(`component will mount: ${res}`);
       this.setState({ signedIn: res, promiseResolve: true });
     });
   }
 
+  componentDidMount() {
+    SplashScreen.hide();
+  }
+
   render() {
-    let { signedIn, promiseResolve } = this.state;
+    const { signedIn, promiseResolve } = this.state;
     const Layout = createRootNavigator(signedIn);
-    if (promiseResolve) {
-      return <Layout />;
-    } else if (!promiseResolve) {
-      {
-        return (
-          <View style={{ marginTop: 200 }}>
-            <Text>Loading ...</Text>
-          </View>
-        );
-      }
-    }
+
+    return (
+      promiseResolve ? <Layout /> : (
+        <View style={styles.container}>
+          <ActivityIndicator size="large" color="#FF4444" />
+        </View>
+      )
+    );
   }
 }
