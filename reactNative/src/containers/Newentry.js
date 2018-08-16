@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
-import { StyleSheet,
+import {
+  StyleSheet,
   Text,
   View,
   TouchableOpacity,
   StatusBar,
+  NativeModules,
   Keyboard,
-  ScrollView } from 'react-native';
+  ScrollView,
+} from 'react-native';
 import RNFetchBlob from 'react-native-fetch-blob';
-import * as ImagePicker from 'react-native-image-picker';
+// import * as ImagePicker from 'react-native-image-picker';
+var ImagePicker = NativeModules.ImageCropPicker;
 import PropTypes from 'prop-types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 
@@ -46,6 +50,9 @@ const options = {
     skipBackup: true,
     path: 'images',
   },
+  allowsEditing: 'true',
+  maxHeight: 1920,
+  maxWidth: 1080,
 };
 
 export default class Newentry extends Component {
@@ -81,6 +88,7 @@ export default class Newentry extends Component {
     url: '',
     name: '',
     location: '',
+    uploading: false,
   };
 
   componentDidMount() {
@@ -89,25 +97,41 @@ export default class Newentry extends Component {
   }
 
   getImage = () => {
-    ImagePicker.showImagePicker(options, response => {
-      console.log('Response = ', response);
-
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        console.log(response.uri);
-        this.uploadImage(response.uri)
+    ImagePicker.openPicker({
+      cropping: true,
+      width: 1920,
+      height: 1080,
+    })
+      .then(response => {
+        console.log(response.path);
+        this.setState({ uploading: true });
+        this.uploadImage(response.path)
           .then(url => {
-            this.setState({ uploaded: true, url });
+            this.setState({ uploaded: true, uploading: false, url });
             console.log(url);
           })
           .catch(error => console.log(error));
-      }
-    });
+      })
+      .catch(e => alert(e));
+    // ImagePicker.showImagePicker(options, response => {
+    //   console.log('Response = ', response);
+    //
+    //   if (response.didCancel) {
+    //     console.log('User cancelled image picker');
+    //   } else if (response.error) {
+    //     console.log('ImagePicker Error: ', response.error);
+    //   } else if (response.customButton) {
+    //     console.log('User tapped custom button: ', response.customButton);
+    //   } else {
+    //     console.log(response.uri);
+    //     this.uploadImage(response.uri)
+    //       .then(url => {
+    //         this.setState({ uploaded: true, url });
+    //         console.log(url);
+    //       })
+    //       .catch(error => console.log(error));
+    //   }
+    // });
   };
 
   saveRestaurantForm = () => {
@@ -116,34 +140,35 @@ export default class Newentry extends Component {
     navigation.navigate('Addfood', { restaurantData: this.state });
   };
 
-  uploadImage = (uri, mime = 'application/octet-stream') => new Promise((resolve, reject) => {
-    const uploadUri = uri.replace('file://', '');
-    let uploadBlob = null;
-    const { uid } = firebase.auth().currentUser;
-    console.log(uid);
-    const imageRef = firebase.storage().ref(`${uid}/images/image001.jpg`);
+  uploadImage = (uri, mime = 'application/octet-stream') =>
+    new Promise((resolve, reject) => {
+      const uploadUri = uri.replace('file://', '');
+      let uploadBlob = null;
+      const { uid } = firebase.auth().currentUser;
+      console.log(uid);
+      const imageRef = firebase.storage().ref(`${uid}/images/image001.jpg`);
 
-    fs
-      .readFile(uploadUri, 'base64')
-      .then(data => Blob.build(data, { type: `${mime};BASE64` }))
-      .then(blob => {
-        uploadBlob = blob;
-        return imageRef.put(blob, { contentType: mime });
-      })
-      .then(() => {
-        uploadBlob.close();
-        return imageRef.getDownloadURL();
-      })
-      .then(url => {
-        resolve(url);
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
+      fs
+        .readFile(uploadUri, 'base64')
+        .then(data => Blob.build(data, { type: `${mime};BASE64` }))
+        .then(blob => {
+          uploadBlob = blob;
+          return imageRef.put(blob, { contentType: mime });
+        })
+        .then(() => {
+          uploadBlob.close();
+          return imageRef.getDownloadURL();
+        })
+        .then(url => {
+          resolve(url);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
 
   render() {
-    const { uploaded, url, name, location } = this.state;
+    const { uploaded, url, name, location, uploading } = this.state;
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
@@ -179,7 +204,7 @@ export default class Newentry extends Component {
             </View>
           ) : (
             <View style={styles.imageUploaderLayout}>
-              <Imageuploader upload={this.getImage} />
+              <Imageuploader upload={this.getImage} uploading={uploading} />
             </View>
           )}
         </View>

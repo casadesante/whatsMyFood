@@ -3,6 +3,15 @@ package com.whatsmyfood;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.BV.LinearGradient.LinearGradientPackage;
+import com.imagepicker.ImagePickerPackage;
+import com.RNFetchBlob.RNFetchBlobPackage;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
+import org.reactnative.camera.RNCameraPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
@@ -115,6 +124,15 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new PickerPackage(),
+            new VectorIconsPackage(),
+            new SplashScreenReactPackage(),
+            new LinearGradientPackage(),
+            new ImagePickerPackage(),
+            new RNFetchBlobPackage(),
+            new FBSDKPackage(),
+            new ReactNativeConfigPackage(),
+            new RNCameraPackage(),
             new VectorIconsPackage(),
             new SplashScreenReactPackage(),
             new LinearGradientPackage(),
