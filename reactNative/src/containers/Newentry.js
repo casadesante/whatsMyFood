@@ -153,16 +153,6 @@ export default class Newentry extends Component {
           field="name"
         />
         <Optional />
-        {/* Location must be fetched from google places or something */}
-        <Textbox
-          icon="location"
-          placeholder="Restaurant location"
-          changeText={inputLocation => {
-            this.setState({ location: inputLocation });
-          }}
-          text={location}
-          field="location"
-        />
         <View>
           {uploaded ? (
             <View>
