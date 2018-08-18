@@ -187,6 +187,116 @@ exports.addRestaurantAndFood = functions.https.onRequest((req, res) => {
   );
 });
 
+exports.fetchRestaurantsAndFoods = functions.https.onRequest((req, res) => {
+  console.log('====================================');
+  console.log("Received Request for fetchRestaurantsAndFoods");
+  console.log(req.body);
+  console.log('====================================');
+  let parsedRequest = typeof(req.body) === 'object' ? req.body : JSON.parse(req.body);
+
+  // check, If all required parameters are passed.
+  if (!parsedRequest.hasOwnProperty("firebaseID")) {
+    res.status(500).send("No firebaseID in the request");
+  }
+
+  var firebaseID = parsedRequest.firebaseID;
+  var readUserRef = db.ref("/users/" + firebaseID);
+  var readFoodsRef = db.ref("/foods");
+  var userRestaurants;
+
+  async.waterfall([
+    (callback) => {
+      // fetching restaurants from user
+      readUserRef.once("value", (snapshot, readUserError) => {
+        if (readUserError) {
+          return callback(readUserError);
+        } else {
+          let user = snapshot.val();
+          return callback(null, user.restaurants)
+        }
+      })
+    },
+    (restaurants, callback) => {
+      var promises = [];
+      if (restaurants !== undefined) {
+        restaurants.map((restaurantID) => {
+          console.log('====================================');
+          console.log(`restaurantID: ${restaurantID}`);
+          console.log('====================================');
+          promises.push(getRestaurantByID(restaurantID));
+        });
+        Promise.all(promises).then((resolvedRestaurants) => {
+          userRestaurants = resolvedRestaurants;
+          console.log('====================================');
+          console.log(`printing user restaurants: ${JSON.stringify(userRestaurants)}`);
+          console.log('====================================');
+          return callback(null, userRestaurants);
+        })
+        .catch((err) => {
+          console.log('====================================');
+          console.log(err);
+          console.log('====================================');
+        });
+      } else {
+        userRestaurants = [];
+        console.log('====================================');
+        console.log(`Else part: if user.restaurants is undefined. Printing user restaurants: ${JSON.stringify(userRestaurants)}`);
+        console.log('====================================');
+        return callback(null, userRestaurants);
+      }
+    },
+    (userRestaurants, callback) => {
+      readFoodsRef.orderByChild("firebaseID").equalTo(firebaseID).once("value", (snapshot, readFoodsError) => {
+        if (readFoodsError) {
+          console.log(`readFoodsError: ${readFoodsError}`);
+          throw readFoodsError;
+        }
+        console.log(`Snapshot of foods: ${snapshot}`);
+        let foods = snapshot.val();
+        console.log(`foods: ${JSON.stringify(foods)}`);
+        for (var i=0; i<userRestaurants.length; i++) {
+          let filteredFoods = [];
+          for (var key in foods) {
+            if (foods.hasOwnProperty(key)) {
+              let modifiedFood = foods[key];
+              console.log(`modified food: ${JSON.stringify(modifiedFood)}`);
+              if (modifiedFood["restaurantID"] === userRestaurants[i].restaurantID) {
+                modifiedFood["foodId"] = key;
+                filteredFoods.push(modifiedFood);
+              }
+            }
+          }  
+          userRestaurants[i]["foods"] = filteredFoods;
+        }
+        return callback(null, userRestaurants);
+      });
+    }
+  ], (err, result) => {
+    if (err) {
+      console.log(`error: ${err}`);
+      res.status(500).send(err);
+    }
+    console.log(`result: ${result}`);
+    res.status(200).send(result);
+  });
+});
+
+getRestaurantByID = (restaurantID) =>
+  new Promise((resolve, reject) => {
+    db.ref("/restaurants/" + restaurantID).once("value", (snapshot, readRestaurantError) => {
+      if (readRestaurantError) {
+        reject(readRestaurantError);
+      }
+      let snapshotRestaurant = snapshot.val();
+      console.log('====================================');
+      console.log(`typeof: ${typeof(snapshotRestaurant)}`);      
+      console.log(`Specific Restaurant: ${JSON.stringify(snapshotRestaurant)}`);
+      console.log('====================================');
+      snapshotRestaurant["restaurantID"] = restaurantID;
+      resolve(snapshotRestaurant); 
+    });
+  });
+
 // Listens for new messages added to /messages/:pushId/original and creates an
 // uppercase version of the message to /messages/:pushId/uppercase
 exports.makeUppercase = functions.database
