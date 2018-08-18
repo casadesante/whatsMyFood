@@ -27,11 +27,10 @@ const styles = StyleSheet.create({
   },
 });
 
-// sendBackInfo(a, b,c ) {
-//   props.cahjngeText(a, b,c);
-// }
+
 const RestaurantTextInput = props => {
   const { changeText } = props;
+
   console.log(GoogleAutoComplete);
   return (
     <View style={styles.searchSection}>
@@ -52,15 +51,16 @@ const RestaurantTextInput = props => {
           fetchDetails,
         }) => (
           <React.Fragment>
-            {// this.sendBackInfo(input, location results)
-            }
             {console.log(locationResults)}
             {console.log(fetchDetails)}
             <TextInput
               style={styles.input}
               placeholder="Restaurant Name"
               placeholderTextColor="rgb(144, 144, 144)"
-              onChangeText={handleTextChange}
+              onChangeText={((val) => {
+                changeText(val);
+                handleTextChange(val);
+              })}
               value={inputValue}
             />
           </React.Fragment>
