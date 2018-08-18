@@ -42,7 +42,6 @@ export default class RestaurantTextInput extends Component {
   };
 
   onSelectSuggestedPlace = (placeName, placeID) => {
-    Keyboard.dismiss();
     console.log(`${placeName} ${placeID}`);
     this.setState({ inputText: placeName, suggestions: [] });
   };
@@ -78,9 +77,9 @@ export default class RestaurantTextInput extends Component {
                   onChangeText={((val) => {
                     changeText(val);
                     handleTextChange(val);
-                    console.log(val);
+                    const googleSuggestions = (val === '') ? [] : locationResults;
                     this.setState(
-                      { suggestions: locationResults,
+                      { suggestions: googleSuggestions,
                         inputText: val },
                     );
                   })}
@@ -91,7 +90,7 @@ export default class RestaurantTextInput extends Component {
           </GoogleAutoComplete>
         </View>
 
-        <ScrollView style={styles.suggestionScrollBox}>
+        <ScrollView style={styles.suggestionScrollBox} onPress={() => (Keyboard.dismiss())}>
           {suggestions.map(
             (places) => (
               <PlaceSuggestion
