@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     fontSize: RF(3.2),
   },
   suggestionScrollBox: {
-    maxHeight: heightPercentageToDP('33%'),
+    maxHeight: heightPercentageToDP('100%'),
   },
 });
 
