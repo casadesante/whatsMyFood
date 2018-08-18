@@ -7,6 +7,7 @@ import {
   NativeModules,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import RNFetchBlob from 'react-native-fetch-blob';
 
 import Header from '../components/Header';
 import Textbox from '../components/Textbox';
@@ -16,9 +17,7 @@ import { heightPercentageToDP } from '../lib/Responsive';
 import Optional from '../components/Optional';
 import EmojiPicker from '../components/EmojiPicker';
 var ImagePicker = NativeModules.ImageCropPicker;
-// import * as ImagePicker from 'react-native-image-picker';
 import firebase from '../lib/FirebaseClient';
-import RNFetchBlob from 'react-native-fetch-blob';
 
 // Prepare Blob support
 const [Blob, fs] = [RNFetchBlob.polyfill.Blob, RNFetchBlob.fs];
@@ -47,15 +46,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
 });
-
-const options = {
-  title: 'Select Avatar',
-  customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
-  storageOptions: {
-    skipBackup: true,
-    path: 'images',
-  },
-};
 
 export default class Addfood extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -148,25 +138,6 @@ export default class Addfood extends Component {
           .catch(error => console.log(error));
       })
       .catch(e => alert(e));
-    // ImagePicker.showImagePicker(options, response => {
-    //   console.log('Response = ', response);
-    //
-    //   if (response.didCancel) {
-    //     console.log('User cancelled image picker');
-    //   } else if (response.error) {
-    //     console.log('ImagePicker Error: ', response.error);
-    //   } else if (response.customButton) {
-    //     console.log('User tapped custom button: ', response.customButton);
-    //   } else {
-    //     console.log(response.uri);
-    //     this.uploadImage(response.uri)
-    //       .then(url => {
-    //         this.setState({ uploaded: true, url });
-    //         console.log(url);
-    //       })
-    //       .catch(error => console.log(error));
-    //   }
-    // });
   };
 
   render() {

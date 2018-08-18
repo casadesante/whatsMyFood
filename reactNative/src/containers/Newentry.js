@@ -10,7 +10,6 @@ import {
   ScrollView,
 } from 'react-native';
 import RNFetchBlob from 'react-native-fetch-blob';
-// import * as ImagePicker from 'react-native-image-picker';
 var ImagePicker = NativeModules.ImageCropPicker;
 import PropTypes from 'prop-types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
@@ -42,18 +41,6 @@ const styles = StyleSheet.create({
     marginTop: heightPercentageToDP('2.97%'),
   },
 });
-
-const options = {
-  title: 'Select Avatar',
-  customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
-  storageOptions: {
-    skipBackup: true,
-    path: 'images',
-  },
-  allowsEditing: 'true',
-  maxHeight: 1920,
-  maxWidth: 1080,
-};
 
 export default class Newentry extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -113,25 +100,6 @@ export default class Newentry extends Component {
           .catch(error => console.log(error));
       })
       .catch(e => alert(e));
-    // ImagePicker.showImagePicker(options, response => {
-    //   console.log('Response = ', response);
-    //
-    //   if (response.didCancel) {
-    //     console.log('User cancelled image picker');
-    //   } else if (response.error) {
-    //     console.log('ImagePicker Error: ', response.error);
-    //   } else if (response.customButton) {
-    //     console.log('User tapped custom button: ', response.customButton);
-    //   } else {
-    //     console.log(response.uri);
-    //     this.uploadImage(response.uri)
-    //       .then(url => {
-    //         this.setState({ uploaded: true, url });
-    //         console.log(url);
-    //       })
-    //       .catch(error => console.log(error));
-    //   }
-    // });
   };
 
   saveRestaurantForm = () => {
