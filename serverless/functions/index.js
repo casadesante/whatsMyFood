@@ -335,6 +335,76 @@ exports.addFood = functions.https.onRequest((req, res) => {
   });
 });
 
+exports.updateFood = functions.https.onRequest((req, res) => {
+  console.log('====================================');
+  console.log("Received Request for updateFood");
+  console.log(req.body);
+  console.log('====================================');
+  let parsedRequest = typeof(req.body) === 'object' ? req.body : JSON.parse(req.body);
+
+  // check, If all required parameters are passed.
+  if (!parsedRequest.hasOwnProperty("foodName")) {
+    res.status(500).send("No foodName in the request");
+  } else if (!parsedRequest.hasOwnProperty("rating")) {
+    res.status(500).send("No food's rating in the request");
+  } else if (!parsedRequest.hasOwnProperty("firebaseID")) {
+    res.status(500).send("No firebaseID in the request");
+  } else if (!parsedRequest.hasOwnProperty("restaurantID")) {
+    res.status(500).send("No restaurantID in the request");
+  } else if (!parsedRequest.hasOwnProperty("foodID")) {
+    res.status(500).send("No foodID in the request");
+  }
+
+  var readFoodRef = db.ref('/foods/' + parsedRequest.foodID);
+  var foodRef = db.ref('/foods');
+
+  async.waterfall([
+    (callback) => {
+      // fetch the food based on foodID
+      readFoodRef.once("value", (snapshot, readFoodError) => {
+        if (readFoodError) {
+          return callback(readFoodError);
+        } else {
+          let food = snapshot.val();
+          console.log('====================================');
+          console.log(`Fetched specific food: ${JSON.stringify(food)}`);
+          console.log('====================================');
+          return callback(null, food);
+        }
+      });
+    },
+    (food, callback) => {
+      // updating the food
+      let updatedFood = {};
+      updatedFood[parsedRequest.foodID] = {
+        "foodName": parsedRequest.foodName,
+        "rating": parsedRequest.rating,
+        "firebaseID": parsedRequest.firebaseID,
+        "restaurantID": parsedRequest.restaurantID,
+      };
+
+      if (parsedRequest.hasOwnProperty("foodPhotoURL")) {
+        updatedFood[parsedRequest.foodID]["foodPhotoURL"] = parsedRequest.foodPhotoURL;
+      }
+    
+      foodRef.update(updatedFood, updatedFoodError => {
+        if (updatedFoodError) {
+          return callback(updatedFoodError);
+        } else {
+          return callback(null, updatedFood);
+        }
+      });
+    }
+  ], (err, result) => {
+    if (err) {
+      console.log(`error: ${err}`);
+      res.status(500).send(err);
+    }
+    console.log(`Final updated Food: ${result}`);
+    res.status(200).send(result);
+  });
+});
+
 getRestaurantByID = (restaurantID) =>
   new Promise((resolve, reject) => {
     db.ref("/restaurants/" + restaurantID).once("value", (snapshot, readRestaurantError) => {
