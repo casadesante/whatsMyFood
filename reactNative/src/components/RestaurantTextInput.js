@@ -42,9 +42,9 @@ export default class RestaurantTextInput extends Component {
   };
 
   onSelectSuggestedPlace = (placeName, placeID) => {
-    console.log(`${placeName} ${placeID}`);
-    this.setState({ inputText: placeName });
     Keyboard.dismiss();
+    console.log(`${placeName} ${placeID}`);
+    this.setState({ inputText: placeName, suggestions: [] });
   };
 
   render() {
