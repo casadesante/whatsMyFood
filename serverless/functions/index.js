@@ -163,28 +163,34 @@ exports.addRestaurantAndFood = functions.https.onRequest((req, res) => {
       },
       (emptyMessage, callback) => {
         let foodsRef = db.ref('/foods');
-        let uniqueFoodKey = foodsRef.push({
+        let parsedFood = parsedRequest.food;
+        let food = {
           foodName: parsedRequest.food.foodName,
-          foodPhotoURL: parsedRequest.food.foodPhotoURL,
           rating: parsedRequest.food.rating,
           firebaseID: parsedRequest.firebaseID,
-          restaurantID: restaurantID,
-        });
+          restaurantID: parsedRequest.restaurantID,
+        };
+        
+        if (parsedRequest.hasOwnProperty("food")) {
+          if (parsedFood.hasOwnProperty("foodPhotoURL")) {
+            food["foodPhotoURL"] = parsedRequest.food.foodPhotoURL;
+          }  
+        }
+
+        let uniqueFoodKey = foodsRef.push(food);
         console.log('====================================');
         console.log(`Food Key: ${uniqueFoodKey}`);
         console.log('====================================');
         callback(null, 'Added Restaurant & Food');
       },
-    ],
-    (err, result) => {
+    ], (err, result) => {
       if (err) {
         console.log(`error: ${err}`);
         res.status(500).send(err);
       }
       console.log(`result: ${result}`);
       res.status(200).send(result);
-    },
-  );
+    });
 });
 
 exports.fetchRestaurantsAndFoods = functions.https.onRequest((req, res) => {
@@ -277,6 +283,54 @@ exports.fetchRestaurantsAndFoods = functions.https.onRequest((req, res) => {
       res.status(500).send(err);
     }
     console.log(`result: ${result}`);
+    res.status(200).send(result);
+  });
+});
+
+exports.addFood = functions.https.onRequest((req, res) => {
+  console.log('====================================');
+  console.log("Received Request for addFood");
+  console.log(req.body);
+  console.log('====================================');
+  let parsedRequest = typeof(req.body) === 'object' ? req.body : JSON.parse(req.body);
+
+  // check, If all required parameters are passed.
+  if (!parsedRequest.hasOwnProperty("foodName")) {
+    res.status(500).send("No foodName in the request");
+  } else if (!parsedRequest.hasOwnProperty("rating")) {
+    res.status(500).send("No food's rating in the request");
+  } else if (!parsedRequest.hasOwnProperty("firebaseID")) {
+    res.status(500).send("No firebaseID in the request");
+  } else if (!parsedRequest.hasOwnProperty("restaurantID")) {
+    res.status(500).send("No restaurantID in the request");
+  }
+
+  var foodsRef = db.ref('/foods');
+  var food = {
+    foodName: parsedRequest.foodName,
+    rating: parsedRequest.rating,
+    firebaseID: parsedRequest.firebaseID,
+    restaurantID: parsedRequest.restaurantID,
+  };
+
+  if (parsedRequest.hasOwnProperty("foodPhotoURL")) {
+    food["foodPhotoURL"] = parsedRequest.foodPhotoURL;
+  }
+
+  async.waterfall([
+    (callback) => {
+      let uniqueFoodKey = foodsRef.push(food);
+      console.log('====================================');
+      console.log(`Food Key: ${uniqueFoodKey}`);
+      console.log('====================================');
+      callback(null, uniqueFoodKey);
+    }
+  ], (err, result) => {
+    if (err) {
+      console.log(`error: ${err}`);
+      res.status(500).send(err);
+    }
+    console.log(`Food created with unique Key: ${result}`);
     res.status(200).send(result);
   });
 });
