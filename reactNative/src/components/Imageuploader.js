@@ -1,5 +1,10 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import {
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import PropTypes from 'prop-types';
@@ -28,7 +33,7 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
 });
-const Imageuploader = ({ upload }) => (
+const Imageuploader = ({ upload, uploading }) => (
   <TouchableOpacity onPress={() => upload()}>
     <LinearGradient
       style={styles.gradientBox}
@@ -40,7 +45,9 @@ const Imageuploader = ({ upload }) => (
         size={RF(6)}
         color="white"
       />
-      <Text style={styles.uploadText}>Add photo</Text>
+      <Text style={styles.uploadText}>
+        {uploading ? 'Loading ...' : 'Add photo'}
+      </Text>
     </LinearGradient>
   </TouchableOpacity>
 );
