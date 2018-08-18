@@ -17,8 +17,7 @@ exports.addUser = functions.https.onRequest((req, res) => {
   console.log(req.body);
   console.log('====================================');
 
-  let parsedRequest =
-    typeof req.body === 'object' ? req.body : JSON.parse(req.body);
+  let parsedRequest = typeof(req.body) === 'object' ? req.body : JSON.parse(req.body);
   var firebaseID = parsedRequest.firebaseID;
   var readRef = db.ref('/users/' + firebaseID);
   var user = {};
@@ -71,9 +70,9 @@ exports.addRestaurantAndFood = functions.https.onRequest((req, res) => {
   console.log('Received Request for addRestaurant');
   console.log(req.body);
   console.log('====================================');
-  let parsedRequest =
-    typeof req.body === 'object' ? req.body : JSON.parse(req.body);
-
+  var parsedRequest = typeof(req.body) === 'object' ? req.body : JSON.parse(req.body);
+  var parsedFood = parsedRequest.food;
+  
   // check, If all required parameters are passed.
   if (!parsedRequest.hasOwnProperty('firebaseID')) {
     res.status(500).send('No firebaseID in the request');
@@ -81,62 +80,44 @@ exports.addRestaurantAndFood = functions.https.onRequest((req, res) => {
     res.status(500).send('No restaurantName in the request');
   } else if (!parsedRequest.hasOwnProperty('food')) {
     res.status(500).send('No food in the request');
+  } else if (!parsedFood.hasOwnProperty('foodName')) {
+    res.status(500).send('No food.foodName in the request');
+  } else if (!parsedFood.hasOwnProperty('rating')) {
+    res.status(500).send('No food.rating in the request');
   }
 
-  var firebaseID = parsedRequest.firebaseID;
-  var readRestaurantRef = db.ref('/restaurants/' + restaurantID);
-  var readUserRef = db.ref('/users/' + firebaseID);
+  var readUserRef = db.ref('/users/' + parsedRequest.firebaseID);
+  // Generate an unique restuarntID for each restaurant
+  var restaurantID = uuidv4();
   var restaurant = {};
-  var restaurantID = null;
-
-  if (parsedRequest.hasOwnProperty('restaurantID')) {
-    restaurantID = parsedRequest.restaurantID;
-  } else {
-    restaurantID = uuidv4();
-  }
 
   async.waterfall(
     [
       callback => {
-        // check if restaurant exists
-        readRestaurantRef.once('value', (snapshot, readError) => {
-          if (readError) {
-            return callback(readError);
+        // Create Restaurant Object
+        restaurant[restaurantID] = {
+          "restaurantName": parsedRequest.restaurantName,
+          "latitude": parsedRequest.latitude || null,
+          "longitude": parsedRequest.longitude || null,
+          "restaurantPhotoURL": parsedRequest.restaurantPhotoURL || null,
+          "googlePlacesID": parsedRequest.googlePlacesID || null,
+          "createdAt": admin.database.ServerValue.TIMESTAMP
+        };
+        console.log('====================================');
+        console.log('printing Restaurant');
+        console.log(restaurant);
+        console.log('====================================');
+        let restaurantsRef = db.ref('/restaurants');
+        restaurantsRef.update(restaurant, restaurantUpdateError => {
+          if (restaurantUpdateError) {
+            return callback(restaurantUpdateError);
+          } else {
+            return callback(null, restaurantID);
           }
-          console.log('====================================');
-          console.log('Restaurant snapshot value');
-          console.log(snapshot.val());
-          console.log('====================================');
-          return callback(null, snapshot.val() !== null);
         });
       },
-      (exists, callback) => {
-        if (!exists) {
-          // create restaurant, if it does not exists
-          restaurant[restaurantID] = {
-            restaurantName: parsedRequest.restaurantName,
-            latitude: parsedRequest.latitude || null,
-            longitude: parsedRequest.longitude || null,
-            createdAt: admin.database.ServerValue.TIMESTAMP,
-            restaurantPhotoURL: parsedRequest.restaurantPhotoURL || null,
-          };
-          console.log('====================================');
-          console.log('printing Restaurant');
-          console.log(restaurant);
-          console.log('====================================');
-          let restaurantsRef = db.ref('/restaurants');
-          restaurantsRef.update(restaurant, restaurantUpdateError => {
-            if (restaurantUpdateError) {
-              return callback(restaurantUpdateError);
-            } else {
-              return callback(null, restaurantID);
-            }
-          });
-        } else {
-          return callback(null, restaurantID);
-        }
-      },
       (restaurantID, callback) => {
+        // update the restaurant in user.restaurants
         readUserRef.once('value', (snapshot, readUserError) => {
           let user = snapshot.val();
           let refactoredUser = {};
@@ -152,6 +133,7 @@ exports.addRestaurantAndFood = functions.https.onRequest((req, res) => {
         });
       },
       (refactoredUser, callback) => {
+        // update the updatedUser in /users
         let usersRef = db.ref('/users');
         usersRef.update(refactoredUser, userUpdateError => {
           if (userUpdateError) {
@@ -162,13 +144,14 @@ exports.addRestaurantAndFood = functions.https.onRequest((req, res) => {
         });
       },
       (emptyMessage, callback) => {
+        // push a new food in the /foods
         let foodsRef = db.ref('/foods');
-        let parsedFood = parsedRequest.food;
         let food = {
-          foodName: parsedRequest.food.foodName,
-          rating: parsedRequest.food.rating,
-          firebaseID: parsedRequest.firebaseID,
-          restaurantID: parsedRequest.restaurantID,
+          "foodName": parsedRequest.food.foodName,
+          "rating": parsedRequest.food.rating,
+          "firebaseID": parsedRequest.firebaseID,
+          "restaurantID": parsedRequest.restaurantID,
+          "createdAt": admin.database.ServerValue.TIMESTAMP
         };
         
         if (parsedRequest.hasOwnProperty("food")) {
@@ -381,6 +364,7 @@ exports.updateFood = functions.https.onRequest((req, res) => {
         "rating": parsedRequest.rating,
         "firebaseID": parsedRequest.firebaseID,
         "restaurantID": parsedRequest.restaurantID,
+        "updatedAt": admin.database.ServerValue.TIMESTAMP
       };
 
       if (parsedRequest.hasOwnProperty("foodPhotoURL")) {
@@ -404,6 +388,76 @@ exports.updateFood = functions.https.onRequest((req, res) => {
     res.status(200).send(result);
   });
 });
+
+// exports.updateRestaurant = functions.https.onRequest((req, res) => {
+//   console.log('====================================');
+//   console.log("Received Request for updateRestaurant");
+//   console.log(req.body);
+//   console.log('====================================');
+//   let parsedRequest = typeof(req.body) === 'object' ? req.body : JSON.parse(req.body);
+
+//   // check, If all required parameters are passed.
+//   if (!parsedRequest.hasOwnProperty("foodName")) {
+//     res.status(500).send("No foodName in the request");
+//   } else if (!parsedRequest.hasOwnProperty("rating")) {
+//     res.status(500).send("No food's rating in the request");
+//   } else if (!parsedRequest.hasOwnProperty("firebaseID")) {
+//     res.status(500).send("No firebaseID in the request");
+//   } else if (!parsedRequest.hasOwnProperty("restaurantID")) {
+//     res.status(500).send("No restaurantID in the request");
+//   } else if (!parsedRequest.hasOwnProperty("foodID")) {
+//     res.status(500).send("No foodID in the request");
+//   }
+
+//   var readFoodRef = db.ref('/foods/' + parsedRequest.foodID);
+//   var foodRef = db.ref('/foods');
+
+//   async.waterfall([
+//     (callback) => {
+//       // fetch the food based on foodID
+//       readFoodRef.once("value", (snapshot, readFoodError) => {
+//         if (readFoodError) {
+//           return callback(readFoodError);
+//         } else {
+//           let food = snapshot.val();
+//           console.log('====================================');
+//           console.log(`Fetched specific food: ${JSON.stringify(food)}`);
+//           console.log('====================================');
+//           return callback(null, food);
+//         }
+//       });
+//     },
+//     (food, callback) => {
+//       // updating the food
+//       let updatedFood = {};
+//       updatedFood[parsedRequest.foodID] = {
+//         "foodName": parsedRequest.foodName,
+//         "rating": parsedRequest.rating,
+//         "firebaseID": parsedRequest.firebaseID,
+//         "restaurantID": parsedRequest.restaurantID,
+//       };
+
+//       if (parsedRequest.hasOwnProperty("foodPhotoURL")) {
+//         updatedFood[parsedRequest.foodID]["foodPhotoURL"] = parsedRequest.foodPhotoURL;
+//       }
+    
+//       foodRef.update(updatedFood, updatedFoodError => {
+//         if (updatedFoodError) {
+//           return callback(updatedFoodError);
+//         } else {
+//           return callback(null, updatedFood);
+//         }
+//       });
+//     }
+//   ], (err, result) => {
+//     if (err) {
+//       console.log(`error: ${err}`);
+//       res.status(500).send(err);
+//     }
+//     console.log(`Final updated Food: ${result}`);
+//     res.status(200).send(result);
+//   });
+// });
 
 getRestaurantByID = (restaurantID) =>
   new Promise((resolve, reject) => {
