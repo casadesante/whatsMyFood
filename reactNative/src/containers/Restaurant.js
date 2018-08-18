@@ -2,7 +2,15 @@ import React, { Component } from 'react';
 import HeaderImageScrollView from 'react-native-image-header-scroll-view';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { StyleSheet, Text, View, StatusBar, Image, TouchableOpacity, ActionSheetIOS } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  Image,
+  TouchableOpacity,
+  ActionSheetIOS,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import RF from '../../node_modules/react-native-responsive-fontsize';
 import FoodItems from '../components/FoodItems';
@@ -61,9 +69,10 @@ export default class Restaurant extends Component {
       },
     },
     headerRight: (
-      <TouchableOpacity onPress={() => {
-        navigation.navigate('Addfood', { restaurantData: null });
-      }}
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Addfood', { restaurantData: null });
+        }}
       >
         <Ionicons
           style={{ paddingRight: 10 }}
@@ -73,8 +82,7 @@ export default class Restaurant extends Component {
         />
       </TouchableOpacity>
     ),
-  })
-  ;
+  });
 
   componentDidMount() {
     const { navigation } = this.props;
@@ -83,22 +91,24 @@ export default class Restaurant extends Component {
 
   restaurantActionSheet = () => {
     const { navigation } = this.props;
-    ActionSheetIOS.showActionSheetWithOptions({
-      options: ['Cancel', 'Add food', 'Edit restaurant', 'Remove restaurant'],
-      destructiveButtonIndex: 3,
-      cancelButtonIndex: 0,
-    },
-    (buttonIndex) => {
-      if (buttonIndex === 1) {
-        navigation.navigate('Addfood', { restaurantData: null });
-      } else if (buttonIndex === 2) {
-        navigation.navigate('EditRestaurant', { restaurantData: null });
-      } else if (buttonIndex === 3) {
-        alert('Delete restaurant API under contruction');
-        // Where should we navigate? Home or Search?
-      }
-    });
-  }
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: ['Cancel', 'Add food', 'Edit restaurant', 'Remove restaurant'],
+        destructiveButtonIndex: 3,
+        cancelButtonIndex: 0,
+      },
+      buttonIndex => {
+        if (buttonIndex === 1) {
+          navigation.navigate('Addfood', { restaurantData: null });
+        } else if (buttonIndex === 2) {
+          navigation.navigate('EditRestaurant', { restaurantData: null });
+        } else if (buttonIndex === 3) {
+          alert('Delete restaurant API under contruction');
+          // Where should we navigate? Home or Search?
+        }
+      },
+    );
+  };
 
   render() {
     const { navigation } = this.props;
@@ -106,9 +116,15 @@ export default class Restaurant extends Component {
     const restaurantName = navigation.getParam('name');
     const restaurantImageLink = 0; // boolean variable to toggle default and real restaurant image
     const restaurantImage = restaurantImageLink ? (
-      <Image source={require('../assets/img/restaurantImg_16x9.png')} style={styles.headerImage} />
+      <Image
+        source={require('../assets/img/restaurantImg_16x9.png')}
+        style={styles.headerImage}
+      />
     ) : (
-      <Image source={require('../assets/img/default_restaurantImg.png')} style={styles.headerImage} />
+      <Image
+        source={require('../assets/img/default_restaurantImg.png')}
+        style={styles.headerImage}
+      />
     );
     return (
       <View style={styles.container}>
@@ -122,7 +138,9 @@ export default class Restaurant extends Component {
         >
           <View>
             <View style={styles.restaurantTitleBar}>
-              <Text style={styles.restaurantNameStyle} numberOfLines={2}>{restaurantName}</Text>
+              <Text style={styles.restaurantNameStyle} numberOfLines={2}>
+                {restaurantName}
+              </Text>
               <TouchableOpacity onPress={this.restaurantActionSheet}>
                 <MaterialCommunityIcons
                   style={{

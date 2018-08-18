@@ -6,16 +6,14 @@ import { createRootNavigator } from './Routes';
 import { getFromAsyncStorage } from './lib/Auth';
 import { heightPercentageToDP } from './lib/Responsive';
 
-const styles = StyleSheet.create(
-  {
-    container: {
-      height: heightPercentageToDP('100%'),
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
+const styles = StyleSheet.create({
+  container: {
+    height: heightPercentageToDP('100%'),
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-);
+});
 
 export default class App extends Component {
   constructor(props) {
@@ -40,12 +38,12 @@ export default class App extends Component {
     const { signedIn, promiseResolve } = this.state;
     const Layout = createRootNavigator(signedIn);
 
-    return (
-      promiseResolve ? <Layout /> : (
-        <View style={styles.container}>
-          <ActivityIndicator size="large" color="#FF4444" />
-        </View>
-      )
+    return promiseResolve ? (
+      <Layout />
+    ) : (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#FF4444" />
+      </View>
     );
   }
 }

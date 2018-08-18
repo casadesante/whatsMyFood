@@ -70,8 +70,9 @@ export default class Signin extends Component {
         >
           <View style={styles.container}>
             <Image
-              source={require('../assets/img/logo.png')
-               // 1024x1024 imagesize
+              source={
+                require('../assets/img/logo.png')
+                // 1024x1024 imagesize
               }
               style={styles.logo}
               resizeMode="contain"

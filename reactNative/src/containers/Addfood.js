@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Button, StatusBar } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Button,
+  StatusBar,
+  NativeModules,
+} from 'react-native';
 import PropTypes from 'prop-types';
+import RNFetchBlob from 'react-native-fetch-blob';
 
 import Header from '../components/Header';
 import Textbox from '../components/Textbox';
@@ -9,9 +16,8 @@ import Imageuploader from '../components/Imageuploader';
 import { heightPercentageToDP } from '../lib/Responsive';
 import Optional from '../components/Optional';
 import EmojiPicker from '../components/EmojiPicker';
-import * as ImagePicker from 'react-native-image-picker';
+var ImagePicker = NativeModules.ImageCropPicker;
 import firebase from '../lib/FirebaseClient';
-import RNFetchBlob from 'react-native-fetch-blob';
 
 // Prepare Blob support
 const [Blob, fs] = [RNFetchBlob.polyfill.Blob, RNFetchBlob.fs];
@@ -41,15 +47,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const options = {
-  title: 'Select Avatar',
-  customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
-  storageOptions: {
-    skipBackup: true,
-    path: 'images',
-  },
-};
-
 export default class Addfood extends Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
@@ -74,6 +71,7 @@ export default class Addfood extends Component {
     url: '',
     name: '',
     rating: 5,
+    uploading: false,
   };
 
   componentDidMount() {
@@ -124,29 +122,26 @@ export default class Addfood extends Component {
     });
 
   getImage = () => {
-    ImagePicker.showImagePicker(options, response => {
-      console.log('Response = ', response);
-
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        console.log(response.uri);
-        this.uploadImage(response.uri)
+    ImagePicker.openPicker({
+      cropping: true,
+      width: 1920,
+      height: 1080,
+    })
+      .then(response => {
+        console.log(response.path);
+        this.setState({ uploading: true });
+        this.uploadImage(response.path)
           .then(url => {
-            this.setState({ uploaded: true, url });
+            this.setState({ uploaded: true, uploading: false, url });
             console.log(url);
           })
           .catch(error => console.log(error));
-      }
-    });
+      })
+      .catch(e => alert(e));
   };
 
   render() {
-    const { rating, uploaded, url } = this.state;
+    const { rating, uploaded, url, uploading } = this.state;
     console.log(`Selected rating: ${rating}`);
     return (
       <View style={styles.container}>
@@ -170,7 +165,7 @@ export default class Addfood extends Component {
             </View>
           ) : (
             <View style={styles.imageUploaderLayout}>
-              <Imageuploader upload={this.getImage} />
+              <Imageuploader upload={this.getImage} uploading={uploading} />
             </View>
           )}
         </View>
