@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TextInput, ScrollView, Text } from 'react-native';
+import { StyleSheet, View, TextInput, ScrollView, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import RF from 'react-native-responsive-fontsize';
 import { GoogleAutoComplete } from 'react-native-google-autocomplete';
@@ -35,19 +35,21 @@ const styles = StyleSheet.create({
   },
 });
 
-const onSelectSuggestedPlace = (placeName, address, placeID) => {
-  alert(`${placeName} ${address} ${placeID}`);
-};
-
-
 export default class RestaurantTextInput extends Component {
   state = {
     suggestions: [],
+    inputText: '',
+  };
+
+  onSelectSuggestedPlace = (placeName, placeID) => {
+    console.log(`${placeName} ${placeID}`);
+    this.setState({ inputText: placeName });
+    Keyboard.dismiss();
   };
 
   render() {
     const { changeText } = this.props;
-    const { suggestions } = this.state;
+    const { suggestions, inputText } = this.state;
 
 
     return (
@@ -65,7 +67,6 @@ export default class RestaurantTextInput extends Component {
             fetchDetails
           >
             {({
-              inputValue,
               handleTextChange,
               locationResults,
             }) => (
@@ -77,10 +78,13 @@ export default class RestaurantTextInput extends Component {
                   onChangeText={((val) => {
                     changeText(val);
                     handleTextChange(val);
-                    console.log(locationResults);
-                    this.setState({ suggestions: locationResults });
+                    console.log(val);
+                    this.setState(
+                      { suggestions: locationResults,
+                        inputText: val },
+                    );
                   })}
-                  value={inputValue}
+                  value={inputText}
                 />
               </React.Fragment>
             )}
@@ -95,7 +99,9 @@ export default class RestaurantTextInput extends Component {
                 placeID={places.place_id}
                 address={places.description}
                 placeName={places.structured_formatting.main_text}
-                selectPlace={(a, b, c) => onSelectSuggestedPlace(a, b, c)}
+                selectPlace={
+                  (placeName, placeID) => this.onSelectSuggestedPlace(placeName, placeID)
+                }
               />
             ),
           )}
