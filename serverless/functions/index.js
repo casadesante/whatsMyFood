@@ -455,6 +455,65 @@ exports.updateRestaurant = functions.https.onRequest((req, res) => {
   });
 });
 
+exports.deleteFood = functions.https.onRequest((req, res) => {
+  console.log('====================================');
+  console.log("Received Request for deleteFood");
+  console.log(req.body);
+  console.log('====================================');
+  let parsedRequest = typeof(req.body) === 'object' ? req.body : JSON.parse(req.body);
+
+  // check, If all required parameters are passed.
+  if (!parsedRequest.hasOwnProperty("foodID")) {
+    res.status(500).send("No foodID in the request");
+  }
+
+  var deleteFoodRef = db.ref('/foods/' + parsedRequest.foodID);
+  var deleteFoodsRef = db.ref('/deleteFoods');
+  var retrievedFood = {};
+
+  async.waterfall([
+    (callback) => {
+      // fetch the food based on foodID
+      deleteFoodRef.once("value", (snapshot, deleteFoodError) => {
+        if (deleteFoodError) {
+          return callback(deleteFoodError);
+        } else {
+          retrievedFood = snapshot.val();
+          console.log('====================================');
+          console.log(`Fetched specific Food: ${JSON.stringify(retrievedFood)}`);
+          console.log('====================================');
+          return callback(null, parsedRequest.foodID);
+        }
+      });
+    },
+    (foodID, callback) => {
+      // delete the food
+      deleteFoodRef.set(null, deleteFoodError => {
+        if (deleteFoodError) {
+          return callback(deleteFoodError);
+        } else {
+          return callback(null, retrievedFood);
+        }
+      });
+    },
+    (retrievedFood, callback) => {
+      // push the food to /deleteFoods
+      let deleteFoodUniqueKey = deleteFoodsRef.push(retrievedFood);
+      console.log('====================================');
+      console.log(`Deleted FoodID: ${deleteFoodUniqueKey}`);
+      console.log('====================================');
+      callback(null, parsedRequest.foodID);
+    }
+  ], (err, result) => {
+    if (err) {
+      console.log(`error: ${err}`);
+      res.status(500).send(err);
+    }
+    console.log(`Deleted foodID: ${result}`);
+    res.status(200).send(result);
+  });
+});
+
 getRestaurantByID = (restaurantID) =>
   new Promise((resolve, reject) => {
     db.ref("/restaurants/" + restaurantID).once("value", (snapshot, readRestaurantError) => {
