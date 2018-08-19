@@ -6,7 +6,6 @@ import SplashScreen from 'react-native-splash-screen';
 import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 import RF from '../../node_modules/react-native-responsive-fontsize';
 import FacebookLoginButton from '../components/FbLoginButton';
-import GoogleLoginButton from '../components/GoogleLoginButton';
 
 const styles = StyleSheet.create({
   linearGradient: {
