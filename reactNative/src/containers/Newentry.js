@@ -4,19 +4,15 @@ import {
   Text,
   View,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   StatusBar,
-  NativeModules,
-  Keyboard,
-  ScrollView,
-  NetInfo,
-} from 'react-native';
+  NativeModules } from 'react-native';
 import RNFetchBlob from 'react-native-fetch-blob';
 import PropTypes from 'prop-types';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
-
+/* eslint import/no-unresolved: */
+import DismissKeyboard from 'dismissKeyboard';
 import RF from 'react-native-responsive-fontsize';
 import Header from '../components/Header';
-import Textbox from '../components/Textbox';
 import firebase from '../lib/FirebaseClient';
 import Imageupload from '../components/Imageupload';
 import Imageuploader from '../components/Imageuploader';
@@ -160,54 +156,33 @@ export default class Newentry extends Component {
     });
 
   render() {
-    const {
-      uploaded,
-      url,
-      name,
-      location,
-      uploading,
-      isConnected,
-    } = this.state;
+    const { uploaded, url, name, uploading } = this.state;
     return (
-      <View style={styles.container}>
-        <StatusBar barStyle="light-content" />
-        {!isConnected ? <OfflineNotice /> : null}
-        <Header text="Add restaurant" />
-        {/* <KeyboardAwareScrollView */}
-        {/* scrollEnabled={false} */}
-        {/* onPress={Keyboard.dismiss()} */}
-        {/* > */}
-        <RestaurantTextInput
-          changeText={inputName => {
-            this.setState({ name: inputName });
-          }}
-          text={name}
-          field="name"
-        />
-        <Optional />
-        {/* Location must be fetched from google places or something */}
-        <Textbox
-          icon="location"
-          placeholder="Restaurant location"
-          changeText={inputLocation => {
-            this.setState({ location: inputLocation });
-          }}
-          text={location}
-          field="location"
-        />
-        <View>
-          {uploaded ? (
-            <View>
-              <Imageupload url={url} />
-            </View>
-          ) : (
-            <View style={styles.imageUploaderLayout}>
-              <Imageuploader upload={this.getImage} uploading={uploading} />
-            </View>
-          )}
+      <TouchableWithoutFeedback onPress={() => { DismissKeyboard(); }}>
+        <View style={styles.container}>
+          <StatusBar barStyle="light-content" />
+          <Header text="Add restaurant" />
+          <RestaurantTextInput
+            changeText={inputName => {
+              this.setState({ name: inputName });
+            }}
+            text={name}
+            field="name"
+          />
+          <Optional />
+          <View>
+            {uploaded ? (
+              <View>
+                <Imageupload url={url} />
+              </View>
+            ) : (
+              <View style={styles.imageUploaderLayout}>
+                <Imageuploader upload={this.getImage} uploading={uploading} />
+              </View>
+            )}
+          </View>
         </View>
-        {/* </KeyboardAwareScrollView> */}
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

@@ -22,8 +22,9 @@ const styles = StyleSheet.create({
 
 const PlaceSuggestion = ({ placeName, address, selectPlace, placeID }) => (
   <TouchableHighlight
+    underlayColor="rgba(255,68,68,0.2)"
     style={styles.container}
-    onPress={() => selectPlace(placeName, address, placeID)}
+    onPress={() => (selectPlace(placeName, address, placeID))}
   >
     <Text style={styles.placeNameStyle}>{address}</Text>
   </TouchableHighlight>

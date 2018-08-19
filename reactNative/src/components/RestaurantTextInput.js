@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TextInput, ScrollView, Text } from 'react-native';
+import { StyleSheet, View, TextInput, Text, ScrollView, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import RF from 'react-native-responsive-fontsize';
 import { GoogleAutoComplete } from 'react-native-google-autocomplete';
 import PropTypes from 'prop-types';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
 import PlaceSuggestion from './PlaceSuggestion';
 
@@ -13,6 +14,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   searchSection: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomColor: 'rgb(188, 187, 193)',
+    borderBottomWidth: 0.5,
+    height: heightPercentageToDP('8%'),
+  },
+  addressBar: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -30,23 +39,32 @@ const styles = StyleSheet.create({
     color: '#424242',
     fontSize: RF(3.2),
   },
+  addressStyle: {
+    width: widthPercentageToDP('82%'),
+    backgroundColor: 'white',
+    color: '#333333',
+    fontSize: RF(1.8),
+  },
   suggestionScrollBox: {
-    maxHeight: heightPercentageToDP('33%'),
+    maxHeight: heightPercentageToDP('100%'),
   },
 });
-
-const onSelectSuggestedPlace = (placeName, address, placeID) => {
-  alert(`${placeName} ${address} ${placeID}`);
-};
 
 export default class RestaurantTextInput extends Component {
   state = {
     suggestions: [],
+    inputText: '',
+    address: '',
+  };
+
+  onSelectSuggestedPlace = (placeName, addressDetails, placeID) => {
+    this.setState({ inputText: placeName, suggestions: [], address: addressDetails });
+    console.log(placeID);
   };
 
   render() {
     const { changeText } = this.props;
-    const { suggestions } = this.state;
+    const { suggestions, inputText, address } = this.state;
 
     return (
       <View style={styles.dropDownContainer}>
@@ -62,35 +80,70 @@ export default class RestaurantTextInput extends Component {
             minLength={2}
             fetchDetails
           >
-            {({ inputValue, handleTextChange, locationResults }) => (
+            {({
+              handleTextChange,
+              locationResults,
+            }) => (
               <React.Fragment>
                 <TextInput
                   style={styles.input}
-                  placeholder="Restaurant Name"
+                  placeholder="Restaurant name"
                   placeholderTextColor="rgb(144, 144, 144)"
                   onChangeText={val => {
                     changeText(val);
                     handleTextChange(val);
-                    console.log(locationResults);
-                    this.setState({ suggestions: locationResults });
-                  }}
-                  value={inputValue}
+                    const googleSuggestions = (val === '') ? [] : locationResults;
+                    const addressDetails = (val.length <= 2) ? '' : address;
+                    this.setState(
+                      { suggestions: googleSuggestions,
+                        inputText: val,
+                        address: addressDetails },
+                    );
+                  })}
+                  value={inputText}
                 />
               </React.Fragment>
             )}
           </GoogleAutoComplete>
         </View>
 
-        <ScrollView style={styles.suggestionScrollBox}>
-          {suggestions.map(places => (
-            <PlaceSuggestion
-              key={places.id}
-              placeID={places.place_id}
-              address={places.description}
-              placeName={places.structured_formatting.main_text}
-              selectPlace={(a, b, c) => onSelectSuggestedPlace(a, b, c)}
-            />
-          ))}
+        {
+          (address !== '')
+            ? (
+              <View style={styles.addressBar}>
+                <SimpleLineIcons
+                  name="location-pin"
+                  style={styles.IconNextToLabel}
+                  size={RF(3.25)}
+                  color="rgb(105, 105, 105)"
+                />
+                <Text style={styles.addressStyle} numberOfLines={3}>
+                  {address}
+                </Text>
+              </View>
+            ) : null
+        }
+
+        <ScrollView
+          style={styles.suggestionScrollBox}
+          onPress={() => (Keyboard.dismiss())}
+          onScrollBeginDrag={() => (Keyboard.dismiss())}
+        >
+          {suggestions.map(
+            (places) => (
+              <PlaceSuggestion
+                key={places.id}
+                placeID={places.place_id}
+                address={places.description}
+                placeName={places.structured_formatting.main_text}
+                selectPlace={
+                  (placeName, addressDetails, placeID) => (
+                    this.onSelectSuggestedPlace(placeName, addressDetails, placeID)
+                  )
+                }
+              />
+            ),
+          )}
         </ScrollView>
       </View>
     );
