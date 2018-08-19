@@ -27,12 +27,12 @@ const styles = StyleSheet.create({
       height: 3,
     },
     shadowRadius: 3,
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.2,
   },
   profileImage: {
-    height: widthPercentageToDP('30%'),
-    width: widthPercentageToDP('30%'),
-    borderRadius: widthPercentageToDP('30%') / 2,
+    height: widthPercentageToDP('40%'),
+    width: widthPercentageToDP('40%'),
+    borderRadius: widthPercentageToDP('40%') / 2,
   },
   welcome: {
     fontSize: 20,
