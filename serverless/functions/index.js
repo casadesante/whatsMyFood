@@ -514,6 +514,120 @@ exports.deleteFood = functions.https.onRequest((req, res) => {
   });
 });
 
+exports.deleteRestaurant = functions.https.onRequest((req, res) => {
+  console.log('====================================');
+  console.log("Received Request for deleteRestaurant");
+  console.log(req.body);
+  console.log('====================================');
+  let parsedRequest = typeof(req.body) === 'object' ? req.body : JSON.parse(req.body);
+
+  // check, If all required parameters are passed.
+  if (!parsedRequest.hasOwnProperty("restaurantID")) {
+    res.status(500).send("No restaurantID in the request");
+  } else if (!parsedRequest.hasOwnProperty("firebaseID")) {
+    res.status(500).send("No firebaseID in the request");
+  }
+
+  var deleteRestaurantRef = db.ref('/restaurants/' + parsedRequest.restaurantID);
+  var deleteRestaurantsRef = db.ref('/deleteRestaurants');
+  var readUserRef = db.ref('/users/' + parsedRequest.firebaseID);
+  var retrievedRestaurant = {};
+
+  async.waterfall([
+    (callback) => {
+      // remove the restaurantID from user.restaurants
+      let refactoredUser = {};
+      readUserRef.once('value', (snapshot, readUserError) => {
+        if (readUserError) {
+          return callback(readUserError);
+        } else {
+          let user = snapshot.val();
+          if (user.hasOwnProperty('restaurants')) {
+            let userRestaurants = user.restaurants;
+            console.log('====================================');
+            console.log(`Type of userRestaurants: ${typeof(userRestaurants)}`);
+            console.log('====================================');
+            console.log('====================================');
+            console.log(`Before Deleting the restaurantID: ${JSON.stringify(userRestaurants)}`);
+            console.log('====================================');
+            let index = userRestaurants.indexOf(parsedRequest.restaurantID);
+            console.log('====================================');
+            console.log(`Index of the restaurantID: ${index}`);
+            console.log('====================================');
+            if (index > -1) {
+              userRestaurants.splice(index, 1);
+            }
+            console.log('====================================');
+            console.log(`After Deleting the restaurantID: ${JSON.stringify(userRestaurants)}`);
+            console.log('====================================');
+            refactoredUser[parsedRequest.firebaseID] = user;
+            console.log('====================================');
+            console.log(`Type of user.restaurants before putting it in object: ${typeof(refactoredUser[parsedRequest.firebaseID]["restaurants"])}`);
+            console.log('====================================');
+            refactoredUser[parsedRequest.firebaseID]["restaurants"] = userRestaurants;
+            return callback(null, refactoredUser);
+          }
+        }
+      });
+    },
+    (refactoredUser, callback) => {
+      // update the user with updated user.restaurants
+      let usersRef = db.ref('/users');
+      usersRef.update(refactoredUser, userUpdateError => {
+        if (userUpdateError) {
+          return callback(userUpdateError);
+        } else {
+          return callback(null, 'User Successfully updated with updatedRestaurants');
+        }
+      });
+    },
+    (dummyVariable, callback) => {
+      // fetch the restaurant based on restaurantID
+      deleteRestaurantRef.once("value", (snapshot, deleteRestaurantError) => {
+        if (deleteRestaurantError) {
+          return callback(deleteRestaurantError);
+        } else {
+          retrievedRestaurant = snapshot.val();
+          console.log('====================================');
+          console.log(`Fetched specific Restaurant: ${JSON.stringify(retrievedRestaurant)}`);
+          console.log('====================================');
+          return callback(null, parsedRequest.restaurantID);
+        }
+      });
+    },
+    (restaurantID, callback) => {
+      // delete the restaurant
+      deleteRestaurantRef.set(null, deleteRestaurantError => {
+        if (deleteRestaurantError) {
+          return callback(deleteRestaurantError);
+        } else {
+          return callback(null, retrievedRestaurant);
+        }
+      });
+    },
+    (retrievedRestaurant, callback) => {
+      // Add the restaurant to /deleteRestaurants
+      let updatedRestaurant = {};
+      updatedRestaurant[parsedRequest.restaurantID] = retrievedRestaurant;
+
+      deleteRestaurantsRef.update(updatedRestaurant, updatedRestaurantError => {
+        if (updatedRestaurantError) {
+          return callback(updatedFoodError);
+        } else {
+          return callback(null, parsedRequest.restaurantID);
+        }
+      });
+    }
+  ], (err, result) => {
+    if (err) {
+      console.log(`error: ${err}`);
+      res.status(500).send(err);
+    }
+    console.log(`Deleted RestaurantID: ${result}`);
+    res.status(200).send(result);
+  });
+});
+
 getRestaurantByID = (restaurantID) =>
   new Promise((resolve, reject) => {
     db.ref("/restaurants/" + restaurantID).once("value", (snapshot, readRestaurantError) => {
