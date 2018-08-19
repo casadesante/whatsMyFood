@@ -1,41 +1,59 @@
 import React from 'react';
-import { Text, View, ScrollView } from 'react-native';
-import { CardViewWithImage } from 'react-native-simple-card-view';
+import { Image, Text, View, ScrollView, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+import RF from 'react-native-responsive-fontsize';
+import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
+
+const styles = StyleSheet.create({
+  container: {
+    marginBottom: heightPercentageToDP('2%'),
+  },
+  categoryLabelStyle: {
+    marginLeft: widthPercentageToDP('3%'),
+    marginTop: heightPercentageToDP('2%'),
+    fontSize: RF(3),
+  },
+  foodImage: {
+    width: widthPercentageToDP('52%'),
+    height: widthPercentageToDP('52%') * 9 / 16,
+    margin: widthPercentageToDP('3.5%'),
+    marginBottom: heightPercentageToDP('1%'),
+    borderRadius: widthPercentageToDP('52%') / 25,
+  },
+  foodName: {
+    fontSize: RF(2.2),
+    marginLeft: widthPercentageToDP('4%'),
+    width: widthPercentageToDP('51%'),
+    marginRight: widthPercentageToDP('0.5%'),
+    color: '#333333',
+  },
+});
 
 const FoodItems = props => {
   const { title, items } = props;
   return (
-    <View>
-      <Text
-        style={{
-          paddingLeft: 10,
-          paddingTop: 20,
-          paddingBottom: 5,
-          fontSize: 20,
-        }}
-      >
+    <View style={styles.container}>
+      <Text style={styles.categoryLabelStyle}>
         {title}
       </Text>
-      <View style={{ flex: 1, flexDirection: 'row', paddingLeft: 7 }}>
-        <ScrollView horizontal>
-          {items.map(item => (
-            <View key={item.img}>
-              <CardViewWithImage
-                source={{
-                  uri: item.img,
-                }}
-                width={200}
-                title={item.name}
-                titleTextAlign="flex-start"
-                imageWidth={200}
-                imageHeight={100}
-                roundedImage={false}
-              />
-            </View>
-          ))}
-        </ScrollView>
-      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+      >
+        {items.map(item => (
+          <View key={item.img}>
+            <Image
+              style={styles.foodImage}
+              source={{
+                uri: item.img,
+              }}
+            />
+            <Text style={styles.foodName} numberOfLines={2}>
+              {item.name}
+            </Text>
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 };
