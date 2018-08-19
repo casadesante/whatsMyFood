@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
+import { StyleSheet,
   Text,
   View,
   TouchableOpacity,
   TouchableWithoutFeedback,
   StatusBar,
-  NativeModules } from 'react-native';
+  NativeModules,
+  NetInfo } from 'react-native';
+
 import RNFetchBlob from 'react-native-fetch-blob';
 import PropTypes from 'prop-types';
 /* eslint import/no-unresolved: */
@@ -95,14 +96,6 @@ export default class Newentry extends Component {
     );
   }
 
-  handleConnectivityChange = isConnected => {
-    if (isConnected) {
-      this.setState({ isConnected });
-    } else {
-      this.setState({ isConnected });
-    }
-  };
-
   getImage = () => {
     ImagePicker.openPicker({
       cropping: true,
@@ -122,45 +115,61 @@ export default class Newentry extends Component {
       .catch(e => alert(e));
   };
 
+  handleConnectivityChange = isConnected => {
+    if (isConnected) {
+      this.setState({ isConnected });
+    } else {
+      this.setState({ isConnected });
+    }
+  };
+
   saveRestaurantForm = () => {
     const { navigation } = this.props;
     // alert(JSON.stringify(this.state));
     navigation.navigate('Addfood', { restaurantData: this.state });
   };
 
-  uploadImage = (uri, mime = 'application/octet-stream') =>
-    new Promise((resolve, reject) => {
-      const uploadUri = uri.replace('file://', '');
-      let uploadBlob = null;
-      const { uid } = firebase.auth().currentUser;
-      console.log(uid);
-      const imageRef = firebase.storage().ref(`${uid}/images/image001.jpg`);
+  uploadImage = (uri, mime = 'application/octet-stream') => new Promise((resolve, reject) => {
+    const uploadUri = uri.replace('file://', '');
+    let uploadBlob = null;
+    const { uid } = firebase.auth().currentUser;
+    console.log(uid);
+    const imageRef = firebase.storage().ref(`${uid}/images/image001.jpg`);
 
-      fs
-        .readFile(uploadUri, 'base64')
-        .then(data => Blob.build(data, { type: `${mime};BASE64` }))
-        .then(blob => {
-          uploadBlob = blob;
-          return imageRef.put(blob, { contentType: mime });
-        })
-        .then(() => {
-          uploadBlob.close();
-          return imageRef.getDownloadURL();
-        })
-        .then(url => {
-          resolve(url);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    fs
+      .readFile(uploadUri, 'base64')
+      .then(data => Blob.build(data, { type: `${mime};BASE64` }))
+      .then(blob => {
+        uploadBlob = blob;
+        return imageRef.put(blob, { contentType: mime });
+      })
+      .then(() => {
+        uploadBlob.close();
+        return imageRef.getDownloadURL();
+      })
+      .then(url => {
+        resolve(url);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
 
   render() {
-    const { uploaded, url, name, uploading } = this.state;
+    const {
+      uploaded,
+      url,
+      name,
+      location,
+      uploading,
+      isConnected,
+    } = this.state;
+
     return (
       <TouchableWithoutFeedback onPress={() => { DismissKeyboard(); }}>
         <View style={styles.container}>
           <StatusBar barStyle="light-content" />
+          {!isConnected ? <OfflineNotice /> : null}
           <Header text="Add restaurant" />
           <RestaurantTextInput
             changeText={inputName => {
