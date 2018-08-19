@@ -21,7 +21,10 @@ const styles = StyleSheet.create({
 });
 
 const PlaceSuggestion = ({ placeName, address, selectPlace, placeID }) => (
-  <TouchableHighlight style={styles.container} onPress={() => (selectPlace(placeName, address, placeID))}>
+  <TouchableHighlight
+    style={styles.container}
+    onPress={() => selectPlace(placeName, address, placeID)}
+  >
     <Text style={styles.placeNameStyle}>{address}</Text>
   </TouchableHighlight>
 );
