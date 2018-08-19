@@ -6,8 +6,7 @@ import {
   View,
   StatusBar,
   Image,
-  NetInfo,
-} from 'react-native';
+  NetInfo } from 'react-native';
 import { ListItem } from 'react-native-elements';
 
 import PropTypes from 'prop-types';
@@ -39,7 +38,7 @@ export default class Profile extends Component {
     );
     getProfileInfo()
       .then(res => {
-        let user = {
+        const user = {
           displayName: res.displayName,
           photoURL: res.photoURL,
         };
