@@ -73,10 +73,15 @@ export default class Profile extends Component {
   };
 
   componentDidMount = () => {
+    const { navigation } = this.props;
     NetInfo.isConnected.addEventListener(
       'connectionChange',
       this.handleConnectivityChange,
     );
+    /* eslint no-underscore-dangle: */
+    this._navListener = navigation.addListener('didFocus', () => {
+      StatusBar.setBarStyle('dark-content');
+    });
     getProfileInfo()
       .then(res => {
         const user = {
@@ -93,6 +98,7 @@ export default class Profile extends Component {
       'connectionChange',
       this.handleConnectivityChange,
     );
+    this._navListener.remove();
   }
 
   handleConnectivityChange = isConnected => {
@@ -136,7 +142,6 @@ export default class Profile extends Component {
     const { user, isConnected, photoLoaded } = this.state;
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="dark-content" />
         {!isConnected ? <OfflineNotice /> : null}
         <View
           style={styles.headerContainer}
