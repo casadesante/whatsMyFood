@@ -8,7 +8,7 @@ import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 // Emoji and its corresponding rating
 const emojiList = [
   { rating: 1, emoji: '🤢' },
-  { rating: 2, emoji: '🙅🏻' },
+  { rating: 2, emoji: '👎🏼' },
   { rating: 3, emoji: '😐' },
   { rating: 4, emoji: '👌🏼' },
   { rating: 5, emoji: '😍' },

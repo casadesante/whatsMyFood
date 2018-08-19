@@ -180,37 +180,16 @@ export default class Restaurant extends Component {
               <FoodItems title="😍 My fav" items={foodItems.fav} />
             ) : null}
             {foodItems.good.length !== 0 ? (
-              <FoodItems title="👌 Good" items={foodItems.good} />
+              <FoodItems title="👌🏼 Good" items={foodItems.good} />
             ) : null}
             {foodItems.fav.length !== 0 ? (
-              <FoodItems title="😍 My fav" items={foodItems.fav} />
+              <FoodItems title="😐 Meh" items={foodItems.fav} />
             ) : null}
             {foodItems.good.length !== 0 ? (
-              <FoodItems title="👌 Good" items={foodItems.good} />
+              <FoodItems title="☹️ Not satisfied" items={foodItems.good} />
             ) : null}
             {foodItems.fav.length !== 0 ? (
-              <FoodItems title="😍 My fav" items={foodItems.fav} />
-            ) : null}
-            {foodItems.good.length !== 0 ? (
-              <FoodItems title="👌 Good" items={foodItems.good} />
-            ) : null}
-            {foodItems.fav.length !== 0 ? (
-              <FoodItems title="😍 My fav" items={foodItems.fav} />
-            ) : null}
-            {foodItems.good.length !== 0 ? (
-              <FoodItems title="👌 Good" items={foodItems.good} />
-            ) : null}
-            {foodItems.fav.length !== 0 ? (
-              <FoodItems title="😍 My fav" items={foodItems.fav} />
-            ) : null}
-            {foodItems.good.length !== 0 ? (
-              <FoodItems title="👌 Good" items={foodItems.good} />
-            ) : null}
-            {foodItems.fav.length !== 0 ? (
-              <FoodItems title="😍 My fav" items={foodItems.fav} />
-            ) : null}
-            {foodItems.good.length !== 0 ? (
-              <FoodItems title="👌 Good" items={foodItems.good} />
+              <FoodItems title="🤢 Yuck" items={foodItems.fav} />
             ) : null}
           </View>
         </HeaderImageScrollView>
