@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
+import { StyleSheet,
   Text,
   View,
   ScrollView,
   StatusBar,
   NetInfo,
-  ActivityIndicator,
-} from 'react-native';
+  ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 
 import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
@@ -69,10 +67,15 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
+    const { navigation } = this.props;
     NetInfo.isConnected.addEventListener(
       'connectionChange',
       this.handleConnectivityChange,
     );
+    /* eslint no-underscore-dangle: */
+    this._navListener = navigation.addListener('didFocus', () => {
+      StatusBar.setBarStyle('dark-content');
+    });
     getProfileInfo()
       .then(user => user.uid)
       .then(firebaseID =>
@@ -85,9 +88,7 @@ export default class Home extends Component {
         ),
       )
       .then(restaurants => restaurants.json())
-      .then(parsedRestaurants =>
-        this.setState({ restaurants: parsedRestaurants, loading: false }),
-      )
+      .then(parsedRestaurants => this.setState({ restaurants: parsedRestaurants, loading: false }))
       .catch(err => alert(err));
   }
 
@@ -96,6 +97,7 @@ export default class Home extends Component {
       'connectionChange',
       this.handleConnectivityChange,
     );
+    this._navListener.remove();
   }
 
   getRestaurant = restaurant => {
@@ -133,47 +135,44 @@ export default class Home extends Component {
           />
         </View>
       );
-    } else {
-      return (
-        <View style={styles.container}>
-          <StatusBar barStyle="dark-content" />
-          {!isConnected ? <OfflineNotice /> : null}
-          {restaurants.length === 0 ? (
-            <EmptyHome navigation={navigation} />
-          ) : (
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              ref={scrollview => {
-                this.scrollview = scrollview;
-              }}
-            >
-              <View style={styles.restaurantContainer}>
-                <Text style={styles.restaurantLabel}>Nearby restaurants</Text>
-                {restaurants.map((restaurantInfo, index) => {
-                  return (
-                    <RestaurantCard
-                      goToRestaurant={this.getRestaurant}
-                      restaurant={restaurantInfo}
-                      key={restaurantInfo.restaurantID}
-                      index={index}
-                    />
-                  );
-                })}
-                {/*{helper*/}
-                {/*.generateRestaurants()*/}
-                {/*.map(restaurantInfo => (*/}
-                {/*<RestaurantCard*/}
-                {/*goToRestaurant={this.getRestaurant}*/}
-                {/*restaurant={restaurantInfo}*/}
-                {/*key={restaurantInfo.id}*/}
-                {/*/>*/}
-                {/*))}*/}
-              </View>
-            </ScrollView>
-          )}
-        </View>
-      );
     }
+    return (
+      <View style={styles.container}>
+        <StatusBar barStyle="dark-content" />
+        {!isConnected ? <OfflineNotice /> : null}
+        {restaurants.length === 0 ? (
+          <EmptyHome navigation={navigation} />
+        ) : (
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            ref={scrollview => {
+              this.scrollview = scrollview;
+            }}
+          >
+            <View style={styles.restaurantContainer}>
+              <Text style={styles.restaurantLabel}>Nearby restaurants</Text>
+              {restaurants.map((restaurantInfo, index) => (
+                <RestaurantCard
+                  goToRestaurant={this.getRestaurant}
+                  restaurant={restaurantInfo}
+                  key={restaurantInfo.restaurantID}
+                  index={index}
+                />
+              ))}
+              {/* {helper */}
+              {/* .generateRestaurants() */}
+              {/* .map(restaurantInfo => ( */}
+              {/* <RestaurantCard */}
+              {/* goToRestaurant={this.getRestaurant} */}
+              {/* restaurant={restaurantInfo} */}
+              {/* key={restaurantInfo.id} */}
+              {/* /> */}
+              {/* ))} */}
+            </View>
+          </ScrollView>
+        )}
+      </View>
+    );
   }
 }
 

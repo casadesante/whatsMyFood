@@ -6,13 +6,52 @@ import {
   View,
   StatusBar,
   Image,
-  NetInfo,
-} from 'react-native';
+  ActivityIndicator,
+  NetInfo } from 'react-native';
 import { ListItem } from 'react-native-elements';
-
 import PropTypes from 'prop-types';
+import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
+import RF from '../../node_modules/react-native-responsive-fontsize';
+
 import { getProfileInfo, logout } from '../lib/Auth';
 import OfflineNotice from '../components/Nointernet';
+
+const styles = StyleSheet.create({
+  container: {
+    height: heightPercentageToDP('100%'),
+    backgroundColor: 'white',
+  },
+  headerContainer: {
+    height: heightPercentageToDP('30%'),
+    backgroundColor: 'rgb(248, 248, 248)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  ImageShadow: {
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowRadius: 3,
+    shadowOpacity: 0.2,
+    position: 'absolute',
+  },
+  profileImage: {
+    height: widthPercentageToDP('40%'),
+    width: widthPercentageToDP('40%'),
+    borderRadius: widthPercentageToDP('40%') / 2,
+  },
+  usernameStyle: {
+    fontWeight: 'bold',
+    fontSize: RF(3.8),
+    margin: heightPercentageToDP('2%'),
+  },
+  photoHolder: {
+    height: widthPercentageToDP('40%'),
+    width: widthPercentageToDP('40%'),
+  },
+});
 
 export default class Profile extends Component {
   static navigationOptions = {
@@ -30,16 +69,22 @@ export default class Profile extends Component {
         'https://ctvalleybrewing.com/wp-content/uploads/2017/04/avatar-placeholder.png',
     },
     isConnected: true,
+    photoLoaded: false,
   };
 
   componentDidMount = () => {
+    const { navigation } = this.props;
     NetInfo.isConnected.addEventListener(
       'connectionChange',
       this.handleConnectivityChange,
     );
+    /* eslint no-underscore-dangle: */
+    this._navListener = navigation.addListener('didFocus', () => {
+      StatusBar.setBarStyle('dark-content');
+    });
     getProfileInfo()
       .then(res => {
-        let user = {
+        const user = {
           displayName: res.displayName,
           photoURL: res.photoURL,
         };
@@ -53,6 +98,7 @@ export default class Profile extends Component {
       'connectionChange',
       this.handleConnectivityChange,
     );
+    this._navListener.remove();
   }
 
   handleConnectivityChange = isConnected => {
@@ -74,6 +120,10 @@ export default class Profile extends Component {
     });
   };
 
+  showProfilePic = () => {
+    this.setState({ photoLoaded: true });
+  }
+
   render() {
     const list = [
       {
@@ -89,25 +139,33 @@ export default class Profile extends Component {
         title: 'Report a problem',
       },
     ];
-    const { user, isConnected } = this.state;
+    const { user, isConnected, photoLoaded } = this.state;
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="dark-content" />
         {!isConnected ? <OfflineNotice /> : null}
         <View
-          style={{
-            height: 250,
-            backgroundColor: 'rgb(248, 248, 248)',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
+          style={styles.headerContainer}
         >
-          <Image
-            source={{ uri: `${user.photoURL}?height=500` }}
-            style={styles.profileImage}
-            alt
-          />
-          <Text style={{ fontWeight: 'bold', fontSize: 30, marginTop: 20 }}>
+
+          <View style={styles.photoHolder}>
+            <View style={styles.ImageShadow}>
+              <Image
+                source={{ uri: `${user.photoURL}?height=500` }}
+                style={styles.profileImage}
+                onLoadEnd={this.showProfilePic}
+                alt
+              />
+            </View>
+
+            {photoLoaded ? null : (
+              <View style={[styles.profileImage, { justifyContent: 'center', position: 'absolute' }]}>
+                <ActivityIndicator size="large" color="#BFBFBF" />
+              </View>
+            )
+          }
+          </View>
+
+          <Text style={styles.usernameStyle} numberOfLines={2}>
             {user.displayName}
           </Text>
         </View>
@@ -127,28 +185,6 @@ export default class Profile extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  profileImage: {
-    height: 100,
-    width: 100,
-    borderRadius: 50,
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
 
 Profile.propTypes = {
   navigation: PropTypes.shape({

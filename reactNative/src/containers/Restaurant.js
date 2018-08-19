@@ -91,10 +91,15 @@ export default class Restaurant extends Component {
   };
 
   componentDidMount() {
+    const { navigation } = this.props;
     NetInfo.isConnected.addEventListener(
       'connectionChange',
       this.handleConnectivityChange,
     );
+    /* eslint no-underscore-dangle: */
+    this._navListener = navigation.addListener('didFocus', () => {
+      StatusBar.setBarStyle('light-content');
+    });
   }
 
   componentWillUnmount() {
@@ -102,6 +107,7 @@ export default class Restaurant extends Component {
       'connectionChange',
       this.handleConnectivityChange,
     );
+    this._navListener.remove();
   }
 
   handleConnectivityChange = isConnected => {
@@ -169,7 +175,6 @@ export default class Restaurant extends Component {
     );
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="light-content" />
         {!isConnected ? <OfflineNotice /> : null}
         <HeaderImageScrollView
           maxHeight={heightPercentageToDP('32%')}

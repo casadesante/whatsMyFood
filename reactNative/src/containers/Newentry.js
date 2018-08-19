@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
+import { StyleSheet,
   Text,
   View,
   TouchableOpacity,
   TouchableWithoutFeedback,
   StatusBar,
   NativeModules,
-  NetInfo,
-} from 'react-native';
+  NetInfo } from 'react-native';
 
 import RNFetchBlob from 'react-native-fetch-blob';
 import PropTypes from 'prop-types';
@@ -92,6 +90,10 @@ export default class Newentry extends Component {
       this.handleConnectivityChange,
     );
     navigation.setParams({ save: this.saveRestaurantForm });
+    /* eslint no-underscore-dangle: */
+    this._navListener = navigation.addListener('didFocus', () => {
+      StatusBar.setBarStyle('light-content');
+    });
   }
 
   componentWillUnmount() {
@@ -99,6 +101,7 @@ export default class Newentry extends Component {
       'connectionChange',
       this.handleConnectivityChange,
     );
+    this._navListener.remove();
   }
 
   getImage = () => {
@@ -201,7 +204,6 @@ export default class Newentry extends Component {
         }}
       >
         <View style={styles.container}>
-          <StatusBar barStyle="light-content" />
           {!isConnected ? <OfflineNotice /> : null}
           <Header text="Add restaurant" />
           <RestaurantTextInput

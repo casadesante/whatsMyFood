@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
+import { StyleSheet,
   View,
   Button,
   StatusBar,
-  NativeModules,
-} from 'react-native';
+  NativeModules } from 'react-native';
 import PropTypes from 'prop-types';
 import RNFetchBlob from 'react-native-fetch-blob';
 import uuidv4 from 'uuid/v4';
@@ -17,9 +15,10 @@ import Imageuploader from '../components/Imageuploader';
 import { heightPercentageToDP } from '../lib/Responsive';
 import Optional from '../components/Optional';
 import EmojiPicker from '../components/EmojiPicker';
-var ImagePicker = NativeModules.ImageCropPicker;
 import firebase from '../lib/FirebaseClient';
 import { getProfileInfo } from '../lib/Auth';
+
+const ImagePicker = NativeModules.ImageCropPicker;
 
 // Prepare Blob support
 const [Blob, fs] = [RNFetchBlob.polyfill.Blob, RNFetchBlob.fs];
@@ -79,6 +78,14 @@ export default class Addfood extends Component {
   componentDidMount() {
     const { navigation } = this.props;
     navigation.setParams({ save: this.saveDetails });
+    /* eslint no-underscore-dangle: */
+    this._navListener = navigation.addListener('didFocus', () => {
+      StatusBar.setBarStyle('light-content');
+    });
+  }
+
+  componentWillUnmount() {
+    this._navListener.remove();
   }
 
   onPress = () => {
@@ -88,6 +95,7 @@ export default class Addfood extends Component {
   saveDetails = () => {
     const { navigation } = this.props;
     const { restaurantData } = this.props.navigation.state.params;
+
     const { name, url, rating } = this.state;
     if (name.length !== 0) {
       getProfileInfo()
@@ -119,7 +127,6 @@ export default class Addfood extends Component {
     } else {
       alert('Name cannot be empty');
     }
-
     // console.log('Save');
   };
 
@@ -178,7 +185,6 @@ export default class Addfood extends Component {
     console.log(`Selected rating: ${rating}`);
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="light-content" />
         <Header text="Add food" />
         <Textbox
           icon="restaurant-menu"
