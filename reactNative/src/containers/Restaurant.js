@@ -158,8 +158,9 @@ export default class Restaurant extends Component {
           renderHeader={() => restaurantImage}
           maxOverlayOpacity={restaurantImageLink ? 0.6 : 0.01}
           minOverlayOpacity={restaurantImageLink ? 0.3 : 0.01}
+          showsVerticalScrollIndicator={false}
         >
-          <View>
+          <View style={{ marginBottom: heightPercentageToDP('12%') }}>
             <View style={styles.restaurantTitleBar}>
               <Text style={styles.restaurantNameStyle} numberOfLines={2}>
                 {restaurantName}
