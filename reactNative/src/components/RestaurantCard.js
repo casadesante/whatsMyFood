@@ -72,7 +72,7 @@ const RestaurantCard = props => {
     >
       <TouchableOpacity
         onPress={() => {
-          goToRestaurant(restaurant.restaurantID, restaurant.restaurantName);
+          goToRestaurant(restaurant);
         }}
       >
         <ImageBackground

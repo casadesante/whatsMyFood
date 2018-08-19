@@ -80,7 +80,7 @@ export default class Home extends Component {
           'https://us-central1-whatsmyfood.cloudfunctions.net/fetchRestaurantsAndFoods',
           {
             method: 'POST',
-            body: JSON.stringify({ firebaseID: 'sharath123' }),
+            body: JSON.stringify({ firebaseID }),
           },
         ),
       )
@@ -98,9 +98,9 @@ export default class Home extends Component {
     );
   }
 
-  getRestaurant = (id, name) => {
+  getRestaurant = restaurant => {
     const { navigation } = this.props;
-    navigation.navigate('Restaurant', { id, name });
+    navigation.navigate('Restaurant', { restaurant });
   };
 
   handleConnectivityChange = isConnected => {
