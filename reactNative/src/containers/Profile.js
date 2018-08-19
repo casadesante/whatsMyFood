@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 // eslint-disable-next-line object-curly-newline
-import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  Image,
+  NetInfo,
+} from 'react-native';
 import { ListItem } from 'react-native-elements';
 
 import PropTypes from 'prop-types';
 import { getProfileInfo, logout } from '../lib/Auth';
+import OfflineNotice from '../components/Nointernet';
 
 export default class Profile extends Component {
   static navigationOptions = {
@@ -17,14 +25,42 @@ export default class Profile extends Component {
 
   state = {
     user: {
-      displayName: '',
-      photoURL: '',
+      displayName: 'Loading...',
+      photoURL:
+        'https://ctvalleybrewing.com/wp-content/uploads/2017/04/avatar-placeholder.png',
     },
+    isConnected: true,
   };
 
   componentDidMount = () => {
-    const user = getProfileInfo();
-    this.setState({ user });
+    NetInfo.isConnected.addEventListener(
+      'connectionChange',
+      this.handleConnectivityChange,
+    );
+    getProfileInfo()
+      .then(res => {
+        let user = {
+          displayName: res.displayName,
+          photoURL: res.photoURL,
+        };
+        this.setState({ user });
+      })
+      .catch(err => alert(err));
+  };
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+      'connectionChange',
+      this.handleConnectivityChange,
+    );
+  }
+
+  handleConnectivityChange = isConnected => {
+    if (isConnected) {
+      this.setState({ isConnected });
+    } else {
+      this.setState({ isConnected });
+    }
   };
 
   logout = () => {
@@ -36,9 +72,6 @@ export default class Profile extends Component {
         alert('Logout error');
       }
     });
-    // const logoutSuccess = logout();
-    // console.log(`logoutSuccess : ${logoutSuccess}`);
-    // logoutSuccess ? navigation.navigate('Signin') : console.log('error');
   };
 
   render() {
@@ -56,10 +89,11 @@ export default class Profile extends Component {
         title: 'Report a problem',
       },
     ];
-    const { user } = this.state;
+    const { user, isConnected } = this.state;
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
+        {!isConnected ? <OfflineNotice /> : null}
         <View
           style={{
             height: 250,
@@ -71,6 +105,7 @@ export default class Profile extends Component {
           <Image
             source={{ uri: `${user.photoURL}?height=500` }}
             style={styles.profileImage}
+            alt
           />
           <Text style={{ fontWeight: 'bold', fontSize: 30, marginTop: 20 }}>
             {user.displayName}

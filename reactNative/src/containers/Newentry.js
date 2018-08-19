@@ -3,24 +3,24 @@ import { StyleSheet,
   Text,
   View,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   StatusBar,
   NativeModules,
-  Keyboard,
-  ScrollView } from 'react-native';
+  NetInfo } from 'react-native';
+
 import RNFetchBlob from 'react-native-fetch-blob';
 import PropTypes from 'prop-types';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
-
+/* eslint import/no-unresolved: */
+import DismissKeyboard from 'dismissKeyboard';
 import RF from 'react-native-responsive-fontsize';
 import Header from '../components/Header';
-import Textbox from '../components/Textbox';
 import firebase from '../lib/FirebaseClient';
 import Imageupload from '../components/Imageupload';
 import Imageuploader from '../components/Imageuploader';
+import OfflineNotice from '../components/Nointernet';
 import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 import Optional from '../components/Optional';
 import RestaurantTextInput from '../components/RestaurantTextInput';
-
 
 const ImagePicker = NativeModules.ImageCropPicker;
 
@@ -76,12 +76,24 @@ export default class Newentry extends Component {
     url: '',
     name: '',
     location: '',
+    isConnected: true,
     uploading: false,
   };
 
   componentDidMount() {
     const { navigation } = this.props;
+    NetInfo.isConnected.addEventListener(
+      'connectionChange',
+      this.handleConnectivityChange,
+    );
     navigation.setParams({ save: this.saveRestaurantForm });
+  }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+      'connectionChange',
+      this.handleConnectivityChange,
+    );
   }
 
   getImage = () => {
@@ -101,6 +113,14 @@ export default class Newentry extends Component {
           .catch(error => console.log(error));
       })
       .catch(e => alert(e));
+  };
+
+  handleConnectivityChange = isConnected => {
+    if (isConnected) {
+      this.setState({ isConnected });
+    } else {
+      this.setState({ isConnected });
+    }
   };
 
   saveRestaurantForm = () => {
@@ -136,46 +156,42 @@ export default class Newentry extends Component {
   });
 
   render() {
-    const { uploaded, url, name, location, uploading } = this.state;
+    const {
+      uploaded,
+      url,
+      name,
+      location,
+      uploading,
+      isConnected,
+    } = this.state;
+
     return (
-      <View style={styles.container}>
-        <StatusBar barStyle="light-content" />
-        <Header text="Add restaurant" />
-        {/* <KeyboardAwareScrollView */}
-        {/* scrollEnabled={false} */}
-        {/* onPress={Keyboard.dismiss()} */}
-        {/* > */}
-        <RestaurantTextInput
-          changeText={inputName => {
-            this.setState({ name: inputName });
-          }}
-          text={name}
-          field="name"
-        />
-        <Optional />
-        {/* Location must be fetched from google places or something */}
-        <Textbox
-          icon="location"
-          placeholder="Restaurant location"
-          changeText={inputLocation => {
-            this.setState({ location: inputLocation });
-          }}
-          text={location}
-          field="location"
-        />
-        <View>
-          {uploaded ? (
-            <View>
-              <Imageupload url={url} />
-            </View>
-          ) : (
-            <View style={styles.imageUploaderLayout}>
-              <Imageuploader upload={this.getImage} uploading={uploading} />
-            </View>
-          )}
+      <TouchableWithoutFeedback onPress={() => { DismissKeyboard(); }}>
+        <View style={styles.container}>
+          <StatusBar barStyle="light-content" />
+          {!isConnected ? <OfflineNotice /> : null}
+          <Header text="Add restaurant" />
+          <RestaurantTextInput
+            changeText={inputName => {
+              this.setState({ name: inputName });
+            }}
+            text={name}
+            field="name"
+          />
+          <Optional />
+          <View>
+            {uploaded ? (
+              <View>
+                <Imageupload url={url} />
+              </View>
+            ) : (
+              <View style={styles.imageUploaderLayout}>
+                <Imageuploader upload={this.getImage} uploading={uploading} />
+              </View>
+            )}
+          </View>
         </View>
-        {/* </KeyboardAwareScrollView> */}
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

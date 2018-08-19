@@ -10,10 +10,12 @@ import {
   Image,
   TouchableOpacity,
   ActionSheetIOS,
+  NetInfo,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import RF from '../../node_modules/react-native-responsive-fontsize';
 import FoodItems from '../components/FoodItems';
+import OfflineNotice from '../components/Nointernet';
 import helper from '../lib/Helper';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
 
@@ -84,10 +86,31 @@ export default class Restaurant extends Component {
     ),
   });
 
+  state = {
+    isConnected: true,
+  };
+
   componentDidMount() {
-    const { navigation } = this.props;
-    console.log(navigation.state);
+    NetInfo.isConnected.addEventListener(
+      'connectionChange',
+      this.handleConnectivityChange,
+    );
   }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+      'connectionChange',
+      this.handleConnectivityChange,
+    );
+  }
+
+  handleConnectivityChange = isConnected => {
+    if (isConnected) {
+      this.setState({ isConnected });
+    } else {
+      this.setState({ isConnected });
+    }
+  };
 
   restaurantActionSheet = () => {
     const { navigation } = this.props;
@@ -112,6 +135,7 @@ export default class Restaurant extends Component {
 
   render() {
     const { navigation } = this.props;
+    const { isConnected } = this.state;
     const foodItems = helper.getFoodItems();
     const restaurantName = navigation.getParam('name');
     const restaurantImageLink = 0; // boolean variable to toggle default and real restaurant image
@@ -129,6 +153,7 @@ export default class Restaurant extends Component {
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
+        {!isConnected ? <OfflineNotice /> : null}
         <HeaderImageScrollView
           maxHeight={heightPercentageToDP('32%')}
           minHeight={heightPercentageToDP('11%')}
