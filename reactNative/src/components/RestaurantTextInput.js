@@ -39,7 +39,6 @@ const onSelectSuggestedPlace = (placeName, address, placeID) => {
   alert(`${placeName} ${address} ${placeID}`);
 };
 
-
 export default class RestaurantTextInput extends Component {
   state = {
     suggestions: [],
@@ -48,7 +47,6 @@ export default class RestaurantTextInput extends Component {
   render() {
     const { changeText } = this.props;
     const { suggestions } = this.state;
-
 
     return (
       <View style={styles.dropDownContainer}>
@@ -64,22 +62,18 @@ export default class RestaurantTextInput extends Component {
             minLength={2}
             fetchDetails
           >
-            {({
-              inputValue,
-              handleTextChange,
-              locationResults,
-            }) => (
+            {({ inputValue, handleTextChange, locationResults }) => (
               <React.Fragment>
                 <TextInput
                   style={styles.input}
                   placeholder="Restaurant Name"
                   placeholderTextColor="rgb(144, 144, 144)"
-                  onChangeText={((val) => {
+                  onChangeText={val => {
                     changeText(val);
                     handleTextChange(val);
                     console.log(locationResults);
                     this.setState({ suggestions: locationResults });
-                  })}
+                  }}
                   value={inputValue}
                 />
               </React.Fragment>
@@ -88,22 +82,17 @@ export default class RestaurantTextInput extends Component {
         </View>
 
         <ScrollView style={styles.suggestionScrollBox}>
-          {suggestions.map(
-            (places) => (
-              <PlaceSuggestion
-                key={places.id}
-                placeID={places.place_id}
-                address={places.description}
-                placeName={places.structured_formatting.main_text}
-                selectPlace={(a, b, c) => onSelectSuggestedPlace(a, b, c)}
-              />
-            ),
-          )}
+          {suggestions.map(places => (
+            <PlaceSuggestion
+              key={places.id}
+              placeID={places.place_id}
+              address={places.description}
+              placeName={places.structured_formatting.main_text}
+              selectPlace={(a, b, c) => onSelectSuggestedPlace(a, b, c)}
+            />
+          ))}
         </ScrollView>
-
-
       </View>
-
     );
   }
 }

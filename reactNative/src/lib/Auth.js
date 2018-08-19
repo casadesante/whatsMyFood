@@ -43,13 +43,17 @@ const getFromAsyncStorage = async () => {
 };
 
 const getProfileInfo = () => {
-  const userObject = firebase.auth().currentUser;
-  console.log(userObject);
-  const user = {
-    displayName: userObject.displayName,
-    photoURL: userObject.photoURL,
-  };
-  return user;
+  return new Promise((resolve, reject) => {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        user === null
+          ? reject(new Error('Hmmm, seems like a problem at our end. Sorry ! '))
+          : resolve(user);
+      } else {
+        reject(new Error('Unable to fetch data from fb ! '));
+      }
+    });
+  });
 };
 
 const logout = () =>

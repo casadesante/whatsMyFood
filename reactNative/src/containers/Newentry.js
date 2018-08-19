@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import { StyleSheet,
+import {
+  StyleSheet,
   Text,
   View,
   TouchableOpacity,
   StatusBar,
   NativeModules,
   Keyboard,
-  ScrollView } from 'react-native';
+  ScrollView,
+  NetInfo,
+} from 'react-native';
 import RNFetchBlob from 'react-native-fetch-blob';
 import PropTypes from 'prop-types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
@@ -17,10 +20,10 @@ import Textbox from '../components/Textbox';
 import firebase from '../lib/FirebaseClient';
 import Imageupload from '../components/Imageupload';
 import Imageuploader from '../components/Imageuploader';
+import OfflineNotice from '../components/Nointernet';
 import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 import Optional from '../components/Optional';
 import RestaurantTextInput from '../components/RestaurantTextInput';
-
 
 const ImagePicker = NativeModules.ImageCropPicker;
 
@@ -76,13 +79,33 @@ export default class Newentry extends Component {
     url: '',
     name: '',
     location: '',
+    isConnected: true,
     uploading: false,
   };
 
   componentDidMount() {
     const { navigation } = this.props;
+    NetInfo.isConnected.addEventListener(
+      'connectionChange',
+      this.handleConnectivityChange,
+    );
     navigation.setParams({ save: this.saveRestaurantForm });
   }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+      'connectionChange',
+      this.handleConnectivityChange,
+    );
+  }
+
+  handleConnectivityChange = isConnected => {
+    if (isConnected) {
+      this.setState({ isConnected });
+    } else {
+      this.setState({ isConnected });
+    }
+  };
 
   getImage = () => {
     ImagePicker.openPicker({
@@ -109,37 +132,46 @@ export default class Newentry extends Component {
     navigation.navigate('Addfood', { restaurantData: this.state });
   };
 
-  uploadImage = (uri, mime = 'application/octet-stream') => new Promise((resolve, reject) => {
-    const uploadUri = uri.replace('file://', '');
-    let uploadBlob = null;
-    const { uid } = firebase.auth().currentUser;
-    console.log(uid);
-    const imageRef = firebase.storage().ref(`${uid}/images/image001.jpg`);
+  uploadImage = (uri, mime = 'application/octet-stream') =>
+    new Promise((resolve, reject) => {
+      const uploadUri = uri.replace('file://', '');
+      let uploadBlob = null;
+      const { uid } = firebase.auth().currentUser;
+      console.log(uid);
+      const imageRef = firebase.storage().ref(`${uid}/images/image001.jpg`);
 
-    fs
-      .readFile(uploadUri, 'base64')
-      .then(data => Blob.build(data, { type: `${mime};BASE64` }))
-      .then(blob => {
-        uploadBlob = blob;
-        return imageRef.put(blob, { contentType: mime });
-      })
-      .then(() => {
-        uploadBlob.close();
-        return imageRef.getDownloadURL();
-      })
-      .then(url => {
-        resolve(url);
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
+      fs
+        .readFile(uploadUri, 'base64')
+        .then(data => Blob.build(data, { type: `${mime};BASE64` }))
+        .then(blob => {
+          uploadBlob = blob;
+          return imageRef.put(blob, { contentType: mime });
+        })
+        .then(() => {
+          uploadBlob.close();
+          return imageRef.getDownloadURL();
+        })
+        .then(url => {
+          resolve(url);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
 
   render() {
-    const { uploaded, url, name, location, uploading } = this.state;
+    const {
+      uploaded,
+      url,
+      name,
+      location,
+      uploading,
+      isConnected,
+    } = this.state;
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
+        {!isConnected ? <OfflineNotice /> : null}
         <Header text="Add restaurant" />
         {/* <KeyboardAwareScrollView */}
         {/* scrollEnabled={false} */}
