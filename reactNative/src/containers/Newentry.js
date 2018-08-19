@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
+import { StyleSheet,
   Text,
   View,
   TouchableOpacity,
   TouchableWithoutFeedback,
   StatusBar,
   NativeModules,
-  NetInfo,
-} from 'react-native';
+  NetInfo } from 'react-native';
 
 import RNFetchBlob from 'react-native-fetch-blob';
 import PropTypes from 'prop-types';
@@ -89,6 +87,10 @@ export default class Newentry extends Component {
       this.handleConnectivityChange,
     );
     navigation.setParams({ save: this.saveRestaurantForm });
+    /* eslint no-underscore-dangle: */
+    this._navListener = navigation.addListener('didFocus', () => {
+      StatusBar.setBarStyle('light-content');
+    });
   }
 
   componentWillUnmount() {
@@ -96,6 +98,7 @@ export default class Newentry extends Component {
       'connectionChange',
       this.handleConnectivityChange,
     );
+    this._navListener.remove();
   }
 
   getImage = () => {
@@ -131,32 +134,31 @@ export default class Newentry extends Component {
     navigation.navigate('Addfood', { restaurantData: this.state });
   };
 
-  uploadImage = (uri, mime = 'application/octet-stream') =>
-    new Promise((resolve, reject) => {
-      const uploadUri = uri.replace('file://', '');
-      let uploadBlob = null;
-      const { uid } = firebase.auth().currentUser;
-      console.log(uid);
-      const imageRef = firebase.storage().ref(`${uid}/images/image001.jpg`);
+  uploadImage = (uri, mime = 'application/octet-stream') => new Promise((resolve, reject) => {
+    const uploadUri = uri.replace('file://', '');
+    let uploadBlob = null;
+    const { uid } = firebase.auth().currentUser;
+    console.log(uid);
+    const imageRef = firebase.storage().ref(`${uid}/images/image001.jpg`);
 
-      fs
-        .readFile(uploadUri, 'base64')
-        .then(data => Blob.build(data, { type: `${mime};BASE64` }))
-        .then(blob => {
-          uploadBlob = blob;
-          return imageRef.put(blob, { contentType: mime });
-        })
-        .then(() => {
-          uploadBlob.close();
-          return imageRef.getDownloadURL();
-        })
-        .then(url => {
-          resolve(url);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    fs
+      .readFile(uploadUri, 'base64')
+      .then(data => Blob.build(data, { type: `${mime};BASE64` }))
+      .then(blob => {
+        uploadBlob = blob;
+        return imageRef.put(blob, { contentType: mime });
+      })
+      .then(() => {
+        uploadBlob.close();
+        return imageRef.getDownloadURL();
+      })
+      .then(url => {
+        resolve(url);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
 
   render() {
     const {
@@ -175,7 +177,6 @@ export default class Newentry extends Component {
         }}
       >
         <View style={styles.container}>
-          <StatusBar barStyle="light-content" />
           {!isConnected ? <OfflineNotice /> : null}
           <Header text="Add restaurant" />
           <RestaurantTextInput
