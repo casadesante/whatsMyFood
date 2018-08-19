@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
+import { StyleSheet,
   View,
   TextInput,
   Text,
   ScrollView,
-  Keyboard,
-} from 'react-native';
+  Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import RF from 'react-native-responsive-fontsize';
 import { GoogleAutoComplete } from 'react-native-google-autocomplete';
@@ -34,7 +32,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomColor: 'rgb(188, 187, 193)',
     borderBottomWidth: 0.5,
-    height: heightPercentageToDP('8%'),
+    minHeight: heightPercentageToDP('8%'),
+    maxHeight: heightPercentageToDP('30%'),
+    paddingTop: heightPercentageToDP('1%'),
+    paddingBottom: heightPercentageToDP('1%'),
   },
   IconNextToLabel: {
     marginLeft: widthPercentageToDP('4.27%'),
@@ -49,8 +50,8 @@ const styles = StyleSheet.create({
   addressStyle: {
     width: widthPercentageToDP('82%'),
     backgroundColor: 'white',
-    color: '#333333',
-    fontSize: RF(1.8),
+    color: 'rgb(105, 105, 105)',
+    fontSize: RF(2.4),
   },
   suggestionScrollBox: {
     maxHeight: heightPercentageToDP('100%'),
@@ -140,8 +141,10 @@ export default class RestaurantTextInput extends Component {
               placeID={places.place_id}
               address={places.description}
               placeName={places.structured_formatting.main_text}
-              selectPlace={(placeName, addressDetails, placeID) =>
-                this.onSelectSuggestedPlace(placeName, addressDetails, placeID)
+              selectPlace={
+                (placeName, addressDetails, placeID) => {
+                  this.onSelectSuggestedPlace(placeName, addressDetails, placeID);
+                }
               }
             />
           ))}
