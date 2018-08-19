@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
+import { StyleSheet,
   View,
   Button,
   StatusBar,
-  NativeModules,
-} from 'react-native';
+  NativeModules } from 'react-native';
 import PropTypes from 'prop-types';
 import RNFetchBlob from 'react-native-fetch-blob';
 
@@ -16,8 +14,9 @@ import Imageuploader from '../components/Imageuploader';
 import { heightPercentageToDP } from '../lib/Responsive';
 import Optional from '../components/Optional';
 import EmojiPicker from '../components/EmojiPicker';
-var ImagePicker = NativeModules.ImageCropPicker;
 import firebase from '../lib/FirebaseClient';
+
+const ImagePicker = NativeModules.ImageCropPicker;
 
 // Prepare Blob support
 const [Blob, fs] = [RNFetchBlob.polyfill.Blob, RNFetchBlob.fs];
@@ -77,6 +76,14 @@ export default class Addfood extends Component {
   componentDidMount() {
     const { navigation } = this.props;
     navigation.setParams({ save: this.saveDetails });
+    /* eslint no-underscore-dangle: */
+    this._navListener = navigation.addListener('didFocus', () => {
+      StatusBar.setBarStyle('light-content');
+    });
+  }
+
+  componentWillUnmount() {
+    this._navListener.remove();
   }
 
   onPress = () => {
@@ -85,7 +92,7 @@ export default class Addfood extends Component {
 
   saveDetails = () => {
     const { restaurantData } = this.props.navigation.state.params;
-    restaurantData['food'] = this.state;
+    restaurantData.food = this.state;
     alert(JSON.stringify(restaurantData));
     // console.log('Save');
   };
@@ -94,32 +101,31 @@ export default class Addfood extends Component {
     this.setState({ rating: newRating });
   };
 
-  uploadImage = (uri, mime = 'application/octet-stream') =>
-    new Promise((resolve, reject) => {
-      const uploadUri = uri.replace('file://', '');
-      let uploadBlob = null;
-      const { uid } = firebase.auth().currentUser;
-      console.log(uid);
-      const imageRef = firebase.storage().ref(`${uid}/images/image001.jpg`);
+  uploadImage = (uri, mime = 'application/octet-stream') => new Promise((resolve, reject) => {
+    const uploadUri = uri.replace('file://', '');
+    let uploadBlob = null;
+    const { uid } = firebase.auth().currentUser;
+    console.log(uid);
+    const imageRef = firebase.storage().ref(`${uid}/images/image001.jpg`);
 
-      fs
-        .readFile(uploadUri, 'base64')
-        .then(data => Blob.build(data, { type: `${mime};BASE64` }))
-        .then(blob => {
-          uploadBlob = blob;
-          return imageRef.put(blob, { contentType: mime });
-        })
-        .then(() => {
-          uploadBlob.close();
-          return imageRef.getDownloadURL();
-        })
-        .then(url => {
-          resolve(url);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    fs
+      .readFile(uploadUri, 'base64')
+      .then(data => Blob.build(data, { type: `${mime};BASE64` }))
+      .then(blob => {
+        uploadBlob = blob;
+        return imageRef.put(blob, { contentType: mime });
+      })
+      .then(() => {
+        uploadBlob.close();
+        return imageRef.getDownloadURL();
+      })
+      .then(url => {
+        resolve(url);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
 
   getImage = () => {
     ImagePicker.openPicker({
@@ -145,7 +151,6 @@ export default class Addfood extends Component {
     console.log(`Selected rating: ${rating}`);
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="light-content" />
         <Header text="Add food" />
         <Textbox
           icon="restaurant-menu"
