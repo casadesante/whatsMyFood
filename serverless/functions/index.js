@@ -536,7 +536,9 @@ exports.deleteRestaurant = functions.https.onRequest((req, res) => {
   var deleteRestaurantRef = db.ref('/restaurants/' + parsedRequest.restaurantID);
   var deleteRestaurantsRef = db.ref('/deleteRestaurants');
   var readUserRef = db.ref('/users/' + parsedRequest.firebaseID);
+  var readFoodsRef = db.ref('/foods');
   var retrievedRestaurant = {};
+  var retrievedFoods = {};
 
   async.waterfall([
     (callback) => {
@@ -622,6 +624,51 @@ exports.deleteRestaurant = functions.https.onRequest((req, res) => {
           return callback(null, parsedRequest.restaurantID);
         }
       });
+    },
+    (emptyString, callback) => {
+     // Fetch all the foods associated with the restaurantID
+     readFoodsRef.orderByChild("restaurantID").equalTo(parsedRequest.restaurantID).once("value", (snapshot, readFoodsError) => {
+      if (readFoodsError) {
+        console.log(`readFoodsError: ${readFoodsError}`);
+        return callback(readFoodsError);
+      }
+      retrievedFoods = snapshot.val();
+      console.log(`fetched foods based on ${parsedRequest.restaurantID}: ${JSON.stringify(retrievedFoods)}`);
+      return callback(null, Object.keys(retrievedFoods));
+     });
+    },
+    (toBeDeletedFoodKeys, callback) => {
+      // Delete all the foods with the given key
+      let promises = [];
+      toBeDeletedFoodKeys.map((foodID) => {
+        console.log('====================================');
+        console.log(`ToBe deleted FoodID: ${foodID}`);
+        console.log('====================================');
+        promises.push(deleteFoodByFoodID(foodID));      
+      });
+      Promise.all(promises).then((resolvedFoods) => {
+        console.log('====================================');
+        console.log(`printing deleted foods: ${JSON.stringify(resolvedFoods)}`);
+        console.log('====================================');
+        return callback(null, retrievedFoods);
+      })
+      .catch((err) => {
+        console.log('====================================');
+        console.log(`Error in Promise.all: ${err}`);
+        console.log('====================================');
+        return callback(err);
+      });
+    },
+    (retrievedFoods, callback) => {
+      // Save all the deleted foods to /deleteFoods
+      let deleteFoodsRef = db.ref('/deleteFoods');
+      deleteFoodsRef.update(retrievedFoods, deleteFoodsError => {
+        if (deleteFoodsError) {
+          return callback(deleteFoodsError);
+        } else {
+          return callback(null, 'Foods deleted successfully');
+        }
+      });
     }
   ], (err, result) => {
     if (err) {
@@ -646,6 +693,18 @@ getRestaurantByID = (restaurantID) =>
       console.log('====================================');
       snapshotRestaurant["restaurantID"] = restaurantID;
       resolve(snapshotRestaurant); 
+    });
+  });
+
+deleteFoodByFoodID = (foodID) =>
+  new Promise((resolve, reject) => {
+    let deleteFoodRef = db.ref(`/foods/` + foodID);
+    deleteFoodRef.set(null, deleteFoodError => {
+      if (deleteFoodError) {
+        reject(deleteFoodError);
+      } else {
+        resolve(`Given FoodID ${foodID} Deleted!`);
+      }
     });
   });
 
