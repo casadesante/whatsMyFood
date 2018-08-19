@@ -102,6 +102,7 @@ exports.addRestaurantAndFood = functions.https.onRequest((req, res) => {
           "longitude": parsedRequest.longitude || null,
           "restaurantPhotoURL": parsedRequest.restaurantPhotoURL || null,
           "googlePlacesID": parsedRequest.googlePlacesID || null,
+          "formattedAddress": parsedRequest.formattedAddress || null,
           "createdAt": admin.database.ServerValue.TIMESTAMP
         };
         console.log('====================================');
@@ -337,6 +338,8 @@ exports.updateFood = functions.https.onRequest((req, res) => {
     res.status(500).send("No restaurantID in the request");
   } else if (!parsedRequest.hasOwnProperty("foodID")) {
     res.status(500).send("No foodID in the request");
+  } else if (!parsedRequest.hasOwnProperty("createdAt")) {
+    res.status(500).send("No createdAt in the request");
   }
 
   var readFoodRef = db.ref('/foods/' + parsedRequest.foodID);
@@ -365,6 +368,7 @@ exports.updateFood = functions.https.onRequest((req, res) => {
         "rating": parsedRequest.rating,
         "firebaseID": parsedRequest.firebaseID,
         "restaurantID": parsedRequest.restaurantID,
+        "createdAt": parsedRequest.createdAt,
         "updatedAt": admin.database.ServerValue.TIMESTAMP
       };
 
@@ -433,6 +437,7 @@ exports.updateRestaurant = functions.https.onRequest((req, res) => {
         "longitude": parsedRequest.longitude || null,
         "restaurantPhotoURL": parsedRequest.restaurantPhotoURL || null,
         "googlePlacesID": parsedRequest.googlePlacesID || null,
+        "formattedAddress": parsedRequest.formattedAddress || null,
         "createdAt": parsedRequest.createdAt,
         "updatedAt": admin.database.ServerValue.TIMESTAMP
       };
