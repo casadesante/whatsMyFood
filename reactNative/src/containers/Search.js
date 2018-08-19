@@ -7,6 +7,7 @@ import {
   StatusBar,
   TouchableOpacity,
   TextInput,
+  NetInfo,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -16,6 +17,7 @@ import colors from '../lib/Colors';
 import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
 import RestaurantCard from '../components/RestaurantCard';
 import FoodCard from '../components/FoodCard';
+import OfflineNotice from '../components/Nointernet';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
 import RF from '../../node_modules/react-native-responsive-fontsize';
 
@@ -74,10 +76,33 @@ export default class Search extends Component {
     },
   };
 
-  constructor() {
-    super();
-    this.state = { tabState: 'Restaurant', searchKeyword: '' };
+  state = {
+    tabState: 'Restaurant',
+    searchKeyword: '',
+    isConnected: true,
+  };
+
+  componentDidMount() {
+    NetInfo.isConnected.addEventListener(
+      'connectionChange',
+      this.handleConnectivityChange,
+    );
   }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+      'connectionChange',
+      this.handleConnectivityChange,
+    );
+  }
+
+  handleConnectivityChange = isConnected => {
+    if (isConnected) {
+      this.setState({ isConnected });
+    } else {
+      this.setState({ isConnected });
+    }
+  };
 
   goToRestaurant = (id, name) => {
     const { navigation } = this.props;
@@ -129,9 +154,10 @@ export default class Search extends Component {
   };
 
   render() {
-    const { tabState, searchKeyword } = this.state;
+    const { tabState, searchKeyword, isConnected } = this.state;
     return (
       <View style={styles.container}>
+        {!isConnected ? <OfflineNotice /> : null}
         <StatusBar barStyle="light-content" />
         <View style={styles.headerBackground}>
           <View style={styles.searchBar}>

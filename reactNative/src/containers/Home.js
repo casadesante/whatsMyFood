@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, StatusBar } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  StatusBar,
+  NetInfo,
+} from 'react-native';
 import PropTypes from 'prop-types';
 
 import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
 import RestaurantCard from '../components/RestaurantCard';
 import EmptyHome from '../components/EmptyHome';
+import OfflineNotice from '../components/Nointernet';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
 import RF from '../../node_modules/react-native-responsive-fontsize';
 
@@ -40,6 +48,7 @@ export default class Home extends Component {
 
   state = {
     empty: 0,
+    isConnected: true,
   };
 
   componentWillMount() {
@@ -48,6 +57,28 @@ export default class Home extends Component {
       scrollToTop: this.scrollToTop,
     });
   }
+
+  componentDidMount() {
+    NetInfo.isConnected.addEventListener(
+      'connectionChange',
+      this.handleConnectivityChange,
+    );
+  }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+      'connectionChange',
+      this.handleConnectivityChange,
+    );
+  }
+
+  handleConnectivityChange = isConnected => {
+    if (isConnected) {
+      this.setState({ isConnected });
+    } else {
+      this.setState({ isConnected });
+    }
+  };
 
   getRestaurant = (id, name) => {
     const { navigation } = this.props;
@@ -64,11 +95,12 @@ export default class Home extends Component {
   // if restaurant list is empty, show add button else show the list of restaurants
   render() {
     const { navigation } = this.props;
-    const { empty } = this.state;
+    const { empty, isConnected } = this.state;
 
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
+        {!isConnected ? <OfflineNotice /> : null}
         {empty ? (
           <EmptyHome navigation={navigation} />
         ) : (
