@@ -8,10 +8,48 @@ import {
   Image,
   NetInfo } from 'react-native';
 import { ListItem } from 'react-native-elements';
-
 import PropTypes from 'prop-types';
+import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
+import RF from '../../node_modules/react-native-responsive-fontsize';
+
 import { getProfileInfo, logout } from '../lib/Auth';
 import OfflineNotice from '../components/Nointernet';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  dpImageHolder: {
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowRadius: 3,
+    shadowOpacity: 0.3,
+  },
+  profileImage: {
+    height: widthPercentageToDP('30%'),
+    width: widthPercentageToDP('30%'),
+    borderRadius: widthPercentageToDP('30%') / 2,
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+  },
+  usernameStyle: {
+    fontWeight: 'bold',
+    fontSize: RF(3.8),
+    marginTop: heightPercentageToDP('2%'),
+  },
+});
 
 export default class Profile extends Component {
   static navigationOptions = {
@@ -101,12 +139,15 @@ export default class Profile extends Component {
             alignItems: 'center',
           }}
         >
-          <Image
-            source={{ uri: `${user.photoURL}?height=500` }}
-            style={styles.profileImage}
-            alt
-          />
-          <Text style={{ fontWeight: 'bold', fontSize: 30, marginTop: 20 }}>
+          <View style={styles.dpImageHolder}>
+            <Image
+              source={{ uri: `${user.photoURL}?height=500` }}
+              style={styles.profileImage}
+              alt
+            />
+          </View>
+
+          <Text style={styles.usernameStyle}>
             {user.displayName}
           </Text>
         </View>
@@ -126,28 +167,6 @@ export default class Profile extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  profileImage: {
-    height: 100,
-    width: 100,
-    borderRadius: 50,
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
 
 Profile.propTypes = {
   navigation: PropTypes.shape({
