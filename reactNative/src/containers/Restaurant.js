@@ -2,16 +2,14 @@ import React, { Component } from 'react';
 import HeaderImageScrollView from 'react-native-image-header-scroll-view';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {
-  StyleSheet,
+import { StyleSheet,
   Text,
   View,
   StatusBar,
   Image,
   TouchableOpacity,
   ActionSheetIOS,
-  NetInfo,
-} from 'react-native';
+  NetInfo } from 'react-native';
 import PropTypes from 'prop-types';
 import RF from '../../node_modules/react-native-responsive-fontsize';
 import FoodItems from '../components/FoodItems';
@@ -160,8 +158,9 @@ export default class Restaurant extends Component {
           renderHeader={() => restaurantImage}
           maxOverlayOpacity={restaurantImageLink ? 0.6 : 0.01}
           minOverlayOpacity={restaurantImageLink ? 0.3 : 0.01}
+          showsVerticalScrollIndicator={false}
         >
-          <View>
+          <View style={{ marginBottom: heightPercentageToDP('12%') }}>
             <View style={styles.restaurantTitleBar}>
               <Text style={styles.restaurantNameStyle} numberOfLines={2}>
                 {restaurantName}
@@ -182,37 +181,16 @@ export default class Restaurant extends Component {
               <FoodItems title="😍 My fav" items={foodItems.fav} />
             ) : null}
             {foodItems.good.length !== 0 ? (
-              <FoodItems title="👌 Good" items={foodItems.good} />
+              <FoodItems title="👌🏼 Good" items={foodItems.good} />
             ) : null}
             {foodItems.fav.length !== 0 ? (
-              <FoodItems title="😍 My fav" items={foodItems.fav} />
+              <FoodItems title="😐 Meh" items={foodItems.fav} />
             ) : null}
             {foodItems.good.length !== 0 ? (
-              <FoodItems title="👌 Good" items={foodItems.good} />
+              <FoodItems title="☹️ Not satisfied" items={foodItems.good} />
             ) : null}
             {foodItems.fav.length !== 0 ? (
-              <FoodItems title="😍 My fav" items={foodItems.fav} />
-            ) : null}
-            {foodItems.good.length !== 0 ? (
-              <FoodItems title="👌 Good" items={foodItems.good} />
-            ) : null}
-            {foodItems.fav.length !== 0 ? (
-              <FoodItems title="😍 My fav" items={foodItems.fav} />
-            ) : null}
-            {foodItems.good.length !== 0 ? (
-              <FoodItems title="👌 Good" items={foodItems.good} />
-            ) : null}
-            {foodItems.fav.length !== 0 ? (
-              <FoodItems title="😍 My fav" items={foodItems.fav} />
-            ) : null}
-            {foodItems.good.length !== 0 ? (
-              <FoodItems title="👌 Good" items={foodItems.good} />
-            ) : null}
-            {foodItems.fav.length !== 0 ? (
-              <FoodItems title="😍 My fav" items={foodItems.fav} />
-            ) : null}
-            {foodItems.good.length !== 0 ? (
-              <FoodItems title="👌 Good" items={foodItems.good} />
+              <FoodItems title="🤢 Yuck" items={foodItems.fav} />
             ) : null}
           </View>
         </HeaderImageScrollView>

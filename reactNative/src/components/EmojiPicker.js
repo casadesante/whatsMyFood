@@ -8,9 +8,9 @@ import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 // Emoji and its corresponding rating
 const emojiList = [
   { rating: 1, emoji: '🤢' },
-  { rating: 2, emoji: '🙅' },
+  { rating: 2, emoji: '👎🏼' },
   { rating: 3, emoji: '😐' },
-  { rating: 4, emoji: '👌' },
+  { rating: 4, emoji: '👌🏼' },
   { rating: 5, emoji: '😍' },
 ];
 // Freeze. No one can modify this anymore.
@@ -51,8 +51,8 @@ export default class EmojiPicker extends Component {
 
   emojiToggleStyle = (index, selectedrating) => {
     // Emoji bounce animation settings
-    const emojiOpacity = index === selectedrating ? 1.0 : 0.3;
-    const emojiSize = index === selectedrating ? 1.3 : 1;
+    const emojiOpacity = index === selectedrating ? 1.0 : 0.4;
+    const emojiSize = index === selectedrating ? 1.4 : 1;
     const emojiPosition = index === selectedrating ? RF(0.01) : 0;
 
     return {

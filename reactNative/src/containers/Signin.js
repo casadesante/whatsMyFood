@@ -6,7 +6,6 @@ import SplashScreen from 'react-native-splash-screen';
 import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 import RF from '../../node_modules/react-native-responsive-fontsize';
 import FacebookLoginButton from '../components/FbLoginButton';
-import GoogleLoginButton from '../components/GoogleLoginButton';
 
 const styles = StyleSheet.create({
   linearGradient: {
@@ -21,10 +20,19 @@ const styles = StyleSheet.create({
   },
   container: {
     width: widthPercentageToDP('100%'),
-    marginTop: heightPercentageToDP('14%'),
+    height: heightPercentageToDP('100%'),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+  },
+  splitContainer: {
+    width: widthPercentageToDP('100%'),
+    height: heightPercentageToDP('50%'),
+    display: 'flex',
+    flexDirection: 'column',
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   appTitle: {
     color: 'white',
@@ -35,16 +43,17 @@ const styles = StyleSheet.create({
     opacity: 1,
     width: widthPercentageToDP('60%'),
     height: widthPercentageToDP('60%'),
+    marginTop: heightPercentageToDP('5%'),
   },
   loginButton: {
     marginTop: heightPercentageToDP('20%'),
-    marginBottom: heightPercentageToDP('6%'),
+    marginBottom: heightPercentageToDP('5%'),
   },
   footerText: {
     color: 'white',
     textAlign: 'center',
-    fontSize: RF(2),
-    lineHeight: RF(2.8),
+    fontSize: RF(2.2),
+    lineHeight: RF(3),
   },
 });
 
@@ -69,29 +78,29 @@ export default class Signin extends Component {
           style={styles.linearGradient}
         >
           <View style={styles.container}>
-            <Image
-              source={
+            <View style={styles.splitContainer}>
+              <Image
+                source={
                 require('../assets/img/logo.png')
                 // 1024x1024 imagesize
               }
-              style={styles.logo}
-              resizeMode="contain"
-            />
-            <Text style={styles.appTitle}>WhatsMyFood</Text>
-            <View style={styles.loginButton}>
-              <FacebookLoginButton navigation={navigation} />
-              <GoogleLoginButton
-                navigation={navigation}
-                marginTopPercent="3%"
+                style={styles.logo}
+                resizeMode="contain"
               />
+              <Text style={styles.appTitle}>WhatsMyFood</Text>
             </View>
-            <Text style={styles.footerText}>
+            <View style={styles.splitContainer}>
+              <View style={styles.loginButton}>
+                <FacebookLoginButton navigation={navigation} />
+              </View>
+              <Text style={styles.footerText}>
               By signing up, I agree with WhatsMyFood’s{'\n'}
-              <Text style={{ color: '#FF4444' }}>
+                <Text style={{ color: '#FF4444' }}>
                 Terms of Service
-                <Text style={{ color: 'white' }}> and </Text>Privacy policy.
+                  <Text style={{ color: 'white' }}> and </Text>Privacy policy.
+                </Text>
               </Text>
-            </Text>
+            </View>
           </View>
         </LinearGradient>
       </ImageBackground>
