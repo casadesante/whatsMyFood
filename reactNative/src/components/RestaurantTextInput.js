@@ -99,7 +99,7 @@ export default class RestaurantTextInput extends Component {
                         inputText: val,
                         address: addressDetails },
                     );
-                  })}
+                  }}
                   value={inputText}
                 />
               </React.Fragment>
