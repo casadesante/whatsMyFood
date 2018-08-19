@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TextInput, Text, ScrollView, Keyboard } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  Text,
+  ScrollView,
+  Keyboard,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import RF from 'react-native-responsive-fontsize';
 import { GoogleAutoComplete } from 'react-native-google-autocomplete';
@@ -58,7 +65,11 @@ export default class RestaurantTextInput extends Component {
   };
 
   onSelectSuggestedPlace = (placeName, addressDetails, placeID) => {
-    this.setState({ inputText: placeName, suggestions: [], address: addressDetails });
+    this.setState({
+      inputText: placeName,
+      suggestions: [],
+      address: addressDetails,
+    });
     console.log(placeID);
   };
 
@@ -80,10 +91,7 @@ export default class RestaurantTextInput extends Component {
             minLength={2}
             fetchDetails
           >
-            {({
-              handleTextChange,
-              locationResults,
-            }) => (
+            {({ handleTextChange, locationResults }) => (
               <React.Fragment>
                 <TextInput
                   style={styles.input}
@@ -92,13 +100,13 @@ export default class RestaurantTextInput extends Component {
                   onChangeText={val => {
                     changeText(val);
                     handleTextChange(val);
-                    const googleSuggestions = (val === '') ? [] : locationResults;
-                    const addressDetails = (val.length <= 2) ? '' : address;
-                    this.setState(
-                      { suggestions: googleSuggestions,
-                        inputText: val,
-                        address: addressDetails },
-                    );
+                    const googleSuggestions = val === '' ? [] : locationResults;
+                    const addressDetails = val.length <= 2 ? '' : address;
+                    this.setState({
+                      suggestions: googleSuggestions,
+                      inputText: val,
+                      address: addressDetails,
+                    });
                   }}
                   value={inputText}
                 />
@@ -107,43 +115,36 @@ export default class RestaurantTextInput extends Component {
           </GoogleAutoComplete>
         </View>
 
-        {
-          (address !== '')
-            ? (
-              <View style={styles.addressBar}>
-                <SimpleLineIcons
-                  name="location-pin"
-                  style={styles.IconNextToLabel}
-                  size={RF(3.25)}
-                  color="rgb(105, 105, 105)"
-                />
-                <Text style={styles.addressStyle} numberOfLines={3}>
-                  {address}
-                </Text>
-              </View>
-            ) : null
-        }
+        {address !== '' ? (
+          <View style={styles.addressBar}>
+            <SimpleLineIcons
+              name="location-pin"
+              style={styles.IconNextToLabel}
+              size={RF(3.25)}
+              color="rgb(105, 105, 105)"
+            />
+            <Text style={styles.addressStyle} numberOfLines={3}>
+              {address}
+            </Text>
+          </View>
+        ) : null}
 
         <ScrollView
           style={styles.suggestionScrollBox}
-          onPress={() => (Keyboard.dismiss())}
-          onScrollBeginDrag={() => (Keyboard.dismiss())}
+          onPress={() => Keyboard.dismiss()}
+          onScrollBeginDrag={() => Keyboard.dismiss()}
         >
-          {suggestions.map(
-            (places) => (
-              <PlaceSuggestion
-                key={places.id}
-                placeID={places.place_id}
-                address={places.description}
-                placeName={places.structured_formatting.main_text}
-                selectPlace={
-                  (placeName, addressDetails, placeID) => (
-                    this.onSelectSuggestedPlace(placeName, addressDetails, placeID)
-                  )
-                }
-              />
-            ),
-          )}
+          {suggestions.map(places => (
+            <PlaceSuggestion
+              key={places.id}
+              placeID={places.place_id}
+              address={places.description}
+              placeName={places.structured_formatting.main_text}
+              selectPlace={(placeName, addressDetails, placeID) =>
+                this.onSelectSuggestedPlace(placeName, addressDetails, placeID)
+              }
+            />
+          ))}
         </ScrollView>
       </View>
     );

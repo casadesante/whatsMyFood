@@ -59,44 +59,39 @@ const cardStyle = {
 };
 
 const RestaurantCard = props => {
-  const { restaurant, goToRestaurant } = props;
+  const { restaurant, goToRestaurant, index } = props;
   const redGradient = ['rgb(255, 152, 99)', 'rgb(253, 89, 89)'];
   const blackOverlay = ['rgba(0, 0, 0, 0.50)', 'rgba(0, 0, 0, 0.55)'];
   return (
     <Animatable.View
       animation={cardStyle}
       delay={
-        restaurant.id * 150
+        index * 150
         // List index
       }
     >
       <TouchableOpacity
         onPress={() => {
-          goToRestaurant(restaurant.id, restaurant.name);
+          goToRestaurant(restaurant.restaurantID, restaurant.restaurantName);
         }}
       >
         <ImageBackground
           style={styles.backgroundImage}
           imageStyle={{ borderRadius: 10 }}
           resizeMode="contain"
-          source={
-            require('../assets/img/restaurantImg_16x9.png')
-            // source={{
-            //   uri: restaurant.img,
-            // }}
-          }
+          source={{
+            uri: restaurant.restaurantPhotoURL,
+          }}
         >
           <LinearGradient
-            colors={restaurant.img ? blackOverlay : redGradient}
+            colors={restaurant.restaurantPhotoURL ? blackOverlay : redGradient}
             style={styles.linearGradient}
           >
             <View style={styles.details}>
               <Text style={styles.restaurantName} numberOfLines={2}>
-                {restaurant.name}
+                {restaurant.restaurantName}
               </Text>
-              <Text style={styles.restaurantDistance}>
-                {restaurant.distance} kms away
-              </Text>
+              <Text style={styles.restaurantDistance}>x kms away</Text>
             </View>
           </LinearGradient>
         </ImageBackground>
@@ -109,10 +104,10 @@ export default RestaurantCard;
 
 RestaurantCard.propTypes = {
   restaurant: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
+    restaurantID: PropTypes.string.isRequired,
+    restaurantName: PropTypes.string.isRequired,
     distance: PropTypes.string,
-    img: PropTypes.string,
+    restaurantPhotoURL: PropTypes.string,
   }),
   goToRestaurant: PropTypes.func.isRequired,
 };
