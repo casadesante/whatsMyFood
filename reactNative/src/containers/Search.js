@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
+import { StyleSheet,
   Text,
   View,
   ScrollView,
   StatusBar,
   TouchableOpacity,
   TextInput,
-  NetInfo,
-} from 'react-native';
+  NetInfo } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import PropTypes from 'prop-types';
@@ -83,6 +81,11 @@ export default class Search extends Component {
   };
 
   componentDidMount() {
+    const { navigation } = this.props;
+    /* eslint no-underscore-dangle: */
+    this._navListener = navigation.addListener('didFocus', () => {
+      StatusBar.setBarStyle('light-content');
+    });
     NetInfo.isConnected.addEventListener(
       'connectionChange',
       this.handleConnectivityChange,
@@ -94,6 +97,7 @@ export default class Search extends Component {
       'connectionChange',
       this.handleConnectivityChange,
     );
+    this._navListener.remove();
   }
 
   handleConnectivityChange = isConnected => {
@@ -130,14 +134,12 @@ export default class Search extends Component {
 
   tabSelectorStyle = () => {
     const { tabState } = this.state;
-    const moveLeft =
-      tabState === 'Restaurant'
-        ? widthPercentageToDP('8%')
-        : widthPercentageToDP('65%');
-    const underlineWidth =
-      tabState === 'Restaurant'
-        ? widthPercentageToDP('42%')
-        : widthPercentageToDP('20%');
+    const moveLeft = tabState === 'Restaurant'
+      ? widthPercentageToDP('8%')
+      : widthPercentageToDP('65%');
+    const underlineWidth = tabState === 'Restaurant'
+      ? widthPercentageToDP('42%')
+      : widthPercentageToDP('20%');
     return {
       height: heightPercentageToDP('0.4%'),
       backgroundColor: colors.coral,
@@ -158,7 +160,6 @@ export default class Search extends Component {
     return (
       <View style={styles.container}>
         {!isConnected ? <OfflineNotice /> : null}
-        <StatusBar barStyle="light-content" />
         <View style={styles.headerBackground}>
           <View style={styles.searchBar}>
             <Ionicons
