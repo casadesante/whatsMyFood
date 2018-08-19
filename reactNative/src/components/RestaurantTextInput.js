@@ -90,7 +90,11 @@ export default class RestaurantTextInput extends Component {
           </GoogleAutoComplete>
         </View>
 
-        <ScrollView style={styles.suggestionScrollBox} onPress={() => (Keyboard.dismiss())}>
+        <ScrollView
+          style={styles.suggestionScrollBox}
+          onPress={() => (Keyboard.dismiss())}
+          onScrollBeginDrag={() => (Keyboard.dismiss())}
+        >
           {suggestions.map(
             (places) => (
               <PlaceSuggestion
