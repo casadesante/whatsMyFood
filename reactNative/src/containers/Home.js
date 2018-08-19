@@ -78,13 +78,15 @@ export default class Home extends Component {
     });
     getProfileInfo()
       .then(user => user.uid)
-      .then(firebaseID => fetch(
-        'https://us-central1-whatsmyfood.cloudfunctions.net/fetchRestaurantsAndFoods',
-        {
-          method: 'POST',
-          body: JSON.stringify({ firebaseID: 'sharath123' }),
-        },
-      ))
+      .then(firebaseID =>
+        fetch(
+          'https://us-central1-whatsmyfood.cloudfunctions.net/fetchRestaurantsAndFoods',
+          {
+            method: 'POST',
+            body: JSON.stringify({ firebaseID }),
+          },
+        ),
+      )
       .then(restaurants => restaurants.json())
       .then(parsedRestaurants => this.setState({ restaurants: parsedRestaurants, loading: false }))
       .catch(err => alert(err));
@@ -98,9 +100,9 @@ export default class Home extends Component {
     this._navListener.remove();
   }
 
-  getRestaurant = (id, name) => {
+  getRestaurant = restaurant => {
     const { navigation } = this.props;
-    navigation.navigate('Restaurant', { id, name });
+    navigation.navigate('Restaurant', { restaurant });
   };
 
   handleConnectivityChange = isConnected => {
@@ -126,7 +128,11 @@ export default class Home extends Component {
     if (loading) {
       return (
         <View style={styles.loader}>
-          <ActivityIndicator size="large" color="#FF4444" />
+          <ActivityIndicator
+            size="large"
+            color="#FF4444"
+            style={{ marginBottom: heightPercentageToDP('21.8%') }}
+          />
         </View>
       );
     }

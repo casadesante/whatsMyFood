@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import HeaderImageScrollView from 'react-native-image-header-scroll-view';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { StyleSheet,
+import {
+  StyleSheet,
   Text,
   View,
   StatusBar,
   Image,
   TouchableOpacity,
   ActionSheetIOS,
-  NetInfo } from 'react-native';
+  NetInfo,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import RF from '../../node_modules/react-native-responsive-fontsize';
 import FoodItems from '../components/FoodItems';
@@ -137,15 +139,32 @@ export default class Restaurant extends Component {
     );
   };
 
+  segregateFoodItems = foodItems => {
+    const items = {
+      1: [],
+      2: [],
+      3: [],
+      4: [],
+      5: [],
+    };
+    foodItems.forEach(item => {
+      items[item.rating].push({
+        name: item.foodName,
+        img: item.foodPhotoURL,
+        id: item.foodId,
+      });
+    });
+    return items;
+  };
+
   render() {
     const { navigation } = this.props;
     const { isConnected } = this.state;
-    const foodItems = helper.getFoodItems();
-    const restaurantName = navigation.getParam('name');
-    const restaurantImageLink = 0; // boolean variable to toggle default and real restaurant image
-    const restaurantImage = restaurantImageLink ? (
+    const restaurant = navigation.getParam('restaurant');
+    const restaurantFoodDetails = this.segregateFoodItems(restaurant.foods);
+    const restaurantImage = restaurant.hasOwnProperty('restaurantPhotoURL') ? (
       <Image
-        source={require('../assets/img/restaurantImg_16x9.png')}
+        source={{ uri: restaurant.restaurantPhotoURL }}
         style={styles.headerImage}
       />
     ) : (
@@ -161,14 +180,18 @@ export default class Restaurant extends Component {
           maxHeight={heightPercentageToDP('32%')}
           minHeight={heightPercentageToDP('11%')}
           renderHeader={() => restaurantImage}
-          maxOverlayOpacity={restaurantImageLink ? 0.6 : 0.01}
-          minOverlayOpacity={restaurantImageLink ? 0.3 : 0.01}
+          maxOverlayOpacity={
+            restaurant.hasOwnProperty('restaurantPhotoURL') ? 0.8 : 0.01
+          }
+          minOverlayOpacity={
+            restaurant.hasOwnProperty('restaurantPhotoURL') ? 0.5 : 0.01
+          }
           showsVerticalScrollIndicator={false}
         >
           <View style={{ marginBottom: heightPercentageToDP('12%') }}>
             <View style={styles.restaurantTitleBar}>
               <Text style={styles.restaurantNameStyle} numberOfLines={2}>
-                {restaurantName}
+                {restaurant.restaurantName}
               </Text>
               <TouchableOpacity onPress={this.restaurantActionSheet}>
                 <MaterialCommunityIcons
@@ -182,20 +205,24 @@ export default class Restaurant extends Component {
                 />
               </TouchableOpacity>
             </View>
-            {foodItems.fav.length !== 0 ? (
-              <FoodItems title="😍 My fav" items={foodItems.fav} />
+            {}
+            {restaurantFoodDetails['5'].length !== 0 ? (
+              <FoodItems title="😍 My fav" items={restaurantFoodDetails['5']} />
             ) : null}
-            {foodItems.good.length !== 0 ? (
-              <FoodItems title="👌🏼 Good" items={foodItems.good} />
+            {restaurantFoodDetails['4'].length !== 0 ? (
+              <FoodItems title="👌🏼 Good" items={restaurantFoodDetails['4']} />
             ) : null}
-            {foodItems.fav.length !== 0 ? (
-              <FoodItems title="😐 Meh" items={foodItems.fav} />
+            {restaurantFoodDetails['3'].length !== 0 ? (
+              <FoodItems title="😐 Meh" items={restaurantFoodDetails['3']} />
             ) : null}
-            {foodItems.good.length !== 0 ? (
-              <FoodItems title="☹️ Not satisfied" items={foodItems.good} />
+            {restaurantFoodDetails['2'].length !== 0 ? (
+              <FoodItems
+                title="☹️ Not satisfied"
+                items={restaurantFoodDetails['2']}
+              />
             ) : null}
-            {foodItems.fav.length !== 0 ? (
-              <FoodItems title="🤢 Yuck" items={foodItems.fav} />
+            {restaurantFoodDetails['1'].length !== 0 ? (
+              <FoodItems title="🤢 Yuck" items={restaurantFoodDetails['1']} />
             ) : null}
           </View>
         </HeaderImageScrollView>

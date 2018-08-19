@@ -11,6 +11,7 @@ import { StyleSheet,
 import RNFetchBlob from 'react-native-fetch-blob';
 import PropTypes from 'prop-types';
 /* eslint import/no-unresolved: */
+import uuidv4 from 'uuid/v4';
 import DismissKeyboard from 'dismissKeyboard';
 import RF from 'react-native-responsive-fontsize';
 import Header from '../components/Header';
@@ -73,9 +74,11 @@ export default class Newentry extends Component {
 
   state = {
     uploaded: false,
+    nameError: true,
     url: '',
-    name: '',
-    location: '',
+    lat: '',
+    long: '',
+    restaurantDetails: {},
     isConnected: true,
     uploading: false,
   };
@@ -130,35 +133,59 @@ export default class Newentry extends Component {
 
   saveRestaurantForm = () => {
     const { navigation } = this.props;
-    // alert(JSON.stringify(this.state));
-    navigation.navigate('Addfood', { restaurantData: this.state });
+    const { url, restaurantDetails } = this.state;
+    if (
+      restaurantDetails.hasOwnProperty('inputText') &&
+      restaurantDetails.inputText.length !== 0
+    ) {
+      const restaurantObject = {
+        name: restaurantDetails.inputText,
+        address: restaurantDetails.address,
+        placeID: restaurantDetails.placeID,
+        url,
+      };
+      navigation.navigate('Addfood', { restaurantData: restaurantObject });
+    } else {
+      alert('Name cannot be empty');
+    }
+    // if (
+    //   restaurantDetails.hasOwnProperty('name') &&
+    //   restaurantDetails.name.length !== 0
+    // ) {
+    //   alert(JSON.stringify(this.state));
+    //   // navigation.navigate('Addfood', { restaurantData: this.state });
+    // } else {
+    //   alert('Name cannot be empty');
+    // }
   };
 
-  uploadImage = (uri, mime = 'application/octet-stream') => new Promise((resolve, reject) => {
-    const uploadUri = uri.replace('file://', '');
-    let uploadBlob = null;
-    const { uid } = firebase.auth().currentUser;
-    console.log(uid);
-    const imageRef = firebase.storage().ref(`${uid}/images/image001.jpg`);
+  uploadImage = (uri, mime = 'application/octet-stream') =>
+    new Promise((resolve, reject) => {
+      const uploadUri = uri.replace('file://', '');
+      let uploadBlob = null;
+      let uniqueID = uuidv4();
+      const { uid } = firebase.auth().currentUser;
+      console.log(uid);
+      const imageRef = firebase.storage().ref(`${uid}/images/${uniqueID}.jpg`);
 
-    fs
-      .readFile(uploadUri, 'base64')
-      .then(data => Blob.build(data, { type: `${mime};BASE64` }))
-      .then(blob => {
-        uploadBlob = blob;
-        return imageRef.put(blob, { contentType: mime });
-      })
-      .then(() => {
-        uploadBlob.close();
-        return imageRef.getDownloadURL();
-      })
-      .then(url => {
-        resolve(url);
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
+      fs
+        .readFile(uploadUri, 'base64')
+        .then(data => Blob.build(data, { type: `${mime};BASE64` }))
+        .then(blob => {
+          uploadBlob = blob;
+          return imageRef.put(blob, { contentType: mime });
+        })
+        .then(() => {
+          uploadBlob.close();
+          return imageRef.getDownloadURL();
+        })
+        .then(url => {
+          resolve(url);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
 
   render() {
     const {
@@ -180,8 +207,8 @@ export default class Newentry extends Component {
           {!isConnected ? <OfflineNotice /> : null}
           <Header text="Add restaurant" />
           <RestaurantTextInput
-            changeText={inputName => {
-              this.setState({ name: inputName });
+            changeText={restaurantDetails => {
+              this.setState({ restaurantDetails });
             }}
             text={name}
             field="name"
