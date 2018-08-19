@@ -18,8 +18,14 @@ import OfflineNotice from '../components/Nointernet';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: heightPercentageToDP('100%'),
     backgroundColor: 'white',
+  },
+  headerContainer: {
+    height: heightPercentageToDP('30%'),
+    backgroundColor: 'rgb(248, 248, 248)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   ImageShadow: {
     shadowColor: '#000000',
@@ -36,20 +42,10 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP('40%'),
     borderRadius: widthPercentageToDP('40%') / 2,
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
   usernameStyle: {
     fontWeight: 'bold',
     fontSize: RF(3.8),
-    marginTop: heightPercentageToDP('2%'),
+    margin: heightPercentageToDP('2%'),
   },
   photoHolder: {
     height: widthPercentageToDP('40%'),
@@ -143,12 +139,7 @@ export default class Profile extends Component {
         <StatusBar barStyle="dark-content" />
         {!isConnected ? <OfflineNotice /> : null}
         <View
-          style={{
-            height: 250,
-            backgroundColor: 'rgb(248, 248, 248)',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
+          style={styles.headerContainer}
         >
 
           <View style={styles.photoHolder}>
@@ -169,8 +160,7 @@ export default class Profile extends Component {
           }
           </View>
 
-
-          <Text style={styles.usernameStyle}>
+          <Text style={styles.usernameStyle} numberOfLines={2}>
             {user.displayName}
           </Text>
         </View>
