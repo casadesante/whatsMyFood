@@ -6,10 +6,12 @@ import {
   ScrollView,
   StatusBar,
   NetInfo,
+  ActivityIndicator,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
 import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
+import { getProfileInfo } from '../lib/Auth';
 import RestaurantCard from '../components/RestaurantCard';
 import EmptyHome from '../components/EmptyHome';
 import OfflineNotice from '../components/Nointernet';
@@ -35,6 +37,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: RF(4),
   },
+  loader: {
+    height: heightPercentageToDP('100%'),
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+  },
 });
 
 export default class Home extends Component {
@@ -47,7 +56,8 @@ export default class Home extends Component {
   };
 
   state = {
-    empty: 0,
+    loading: true,
+    restaurants: [],
     isConnected: true,
   };
 
@@ -63,6 +73,22 @@ export default class Home extends Component {
       'connectionChange',
       this.handleConnectivityChange,
     );
+    getProfileInfo()
+      .then(user => user.uid)
+      .then(firebaseID =>
+        fetch(
+          'https://us-central1-whatsmyfood.cloudfunctions.net/fetchRestaurantsAndFoods',
+          {
+            method: 'POST',
+            body: JSON.stringify({ firebaseID: 'sharath123' }),
+          },
+        ),
+      )
+      .then(restaurants => restaurants.json())
+      .then(parsedRestaurants =>
+        this.setState({ restaurants: parsedRestaurants, loading: false }),
+      )
+      .catch(err => alert(err));
   }
 
   componentWillUnmount() {
@@ -72,17 +98,17 @@ export default class Home extends Component {
     );
   }
 
+  getRestaurant = (id, name) => {
+    const { navigation } = this.props;
+    navigation.navigate('Restaurant', { id, name });
+  };
+
   handleConnectivityChange = isConnected => {
     if (isConnected) {
       this.setState({ isConnected });
     } else {
       this.setState({ isConnected });
     }
-  };
-
-  getRestaurant = (id, name) => {
-    const { navigation } = this.props;
-    navigation.navigate('Restaurant', { id, name });
   };
 
   scrollToTop = () => {
@@ -95,38 +121,55 @@ export default class Home extends Component {
   // if restaurant list is empty, show add button else show the list of restaurants
   render() {
     const { navigation } = this.props;
-    const { empty, isConnected } = this.state;
+    const { restaurants, isConnected, loading } = this.state;
 
-    return (
-      <View style={styles.container}>
-        <StatusBar barStyle="dark-content" />
-        {!isConnected ? <OfflineNotice /> : null}
-        {empty ? (
-          <EmptyHome navigation={navigation} />
-        ) : (
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            ref={scrollview => {
-              this.scrollview = scrollview;
-            }}
-          >
-            <View style={styles.restaurantContainer}>
-              <Text style={styles.restaurantLabel}>Nearby restaurants</Text>
-
-              {helper
-                .generateRestaurants()
-                .map(restaurantInfo => (
-                  <RestaurantCard
-                    goToRestaurant={this.getRestaurant}
-                    restaurant={restaurantInfo}
-                    key={restaurantInfo.id}
-                  />
-                ))}
-            </View>
-          </ScrollView>
-        )}
-      </View>
-    );
+    if (loading) {
+      return (
+        <View style={styles.loader}>
+          <ActivityIndicator size="large" color="#FF4444" />
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          <StatusBar barStyle="dark-content" />
+          {!isConnected ? <OfflineNotice /> : null}
+          {restaurants.length === 0 ? (
+            <EmptyHome navigation={navigation} />
+          ) : (
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              ref={scrollview => {
+                this.scrollview = scrollview;
+              }}
+            >
+              <View style={styles.restaurantContainer}>
+                <Text style={styles.restaurantLabel}>Nearby restaurants</Text>
+                {restaurants.map((restaurantInfo, index) => {
+                  return (
+                    <RestaurantCard
+                      goToRestaurant={this.getRestaurant}
+                      restaurant={restaurantInfo}
+                      key={restaurantInfo.restaurantID}
+                      index={index}
+                    />
+                  );
+                })}
+                {/*{helper*/}
+                {/*.generateRestaurants()*/}
+                {/*.map(restaurantInfo => (*/}
+                {/*<RestaurantCard*/}
+                {/*goToRestaurant={this.getRestaurant}*/}
+                {/*restaurant={restaurantInfo}*/}
+                {/*key={restaurantInfo.id}*/}
+                {/*/>*/}
+                {/*))}*/}
+              </View>
+            </ScrollView>
+          )}
+        </View>
+      );
+    }
   }
 }
 
