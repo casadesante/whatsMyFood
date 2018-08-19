@@ -62,20 +62,27 @@ export default class RestaurantTextInput extends Component {
     suggestions: [],
     inputText: '',
     address: '',
+    placeID: '',
   };
 
   onSelectSuggestedPlace = (placeName, addressDetails, placeID) => {
-    this.setState({
-      inputText: placeName,
-      suggestions: [],
-      address: addressDetails,
-    });
-    console.log(placeID);
+    const { changeText } = this.props;
+    this.setState(
+      {
+        inputText: placeName,
+        suggestions: [],
+        address: addressDetails,
+        placeID,
+      },
+      () => {
+        changeText(this.state);
+      },
+    );
   };
 
   render() {
     const { changeText } = this.props;
-    const { suggestions, inputText, address } = this.state;
+    const { suggestions, inputText, address, placeID } = this.state;
 
     return (
       <View style={styles.dropDownContainer}>
@@ -98,15 +105,17 @@ export default class RestaurantTextInput extends Component {
                   placeholder="Restaurant name"
                   placeholderTextColor="rgb(144, 144, 144)"
                   onChangeText={val => {
-                    changeText(val);
                     handleTextChange(val);
                     const googleSuggestions = val === '' ? [] : locationResults;
                     const addressDetails = val.length <= 2 ? '' : address;
-                    this.setState({
-                      suggestions: googleSuggestions,
-                      inputText: val,
-                      address: addressDetails,
-                    });
+                    this.setState(
+                      {
+                        suggestions: googleSuggestions,
+                        inputText: val,
+                        address: addressDetails,
+                      },
+                      () => changeText({ inputText, address, placeID }),
+                    );
                   }}
                   value={inputText}
                 />

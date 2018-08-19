@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import RNFetchBlob from 'react-native-fetch-blob';
+import uuidv4 from 'uuid/v4';
 
 import Header from '../components/Header';
 import Textbox from '../components/Textbox';
@@ -18,6 +19,7 @@ import Optional from '../components/Optional';
 import EmojiPicker from '../components/EmojiPicker';
 var ImagePicker = NativeModules.ImageCropPicker;
 import firebase from '../lib/FirebaseClient';
+import { getProfileInfo } from '../lib/Auth';
 
 // Prepare Blob support
 const [Blob, fs] = [RNFetchBlob.polyfill.Blob, RNFetchBlob.fs];
@@ -84,9 +86,40 @@ export default class Addfood extends Component {
   };
 
   saveDetails = () => {
+    const { navigation } = this.props;
     const { restaurantData } = this.props.navigation.state.params;
-    restaurantData['food'] = this.state;
-    alert(JSON.stringify(restaurantData));
+    const { name, url, rating } = this.state;
+    if (name.length !== 0) {
+      getProfileInfo()
+        .then(user => user.uid)
+        .then(firebaseID => {
+          const restaurantAndFood = {
+            firebaseID,
+            googlePlacesID: restaurantData.placeID,
+            restaurantName: restaurantData.name,
+            formattedAddress: restaurantData.address,
+            restaurantPhotoURL: restaurantData.url,
+            food: {
+              foodName: name,
+              foodPhotoURL: url,
+              rating: rating,
+            },
+          };
+          return fetch(
+            'https://us-central1-whatsmyfood.cloudfunctions.net/addRestaurantAndFood',
+            { method: 'POST', body: JSON.stringify(restaurantAndFood) },
+          );
+        })
+        .then(restaurantAndFoodAdded => {
+          restaurantAndFoodAdded.status === 200
+            ? navigation.navigate('Home')
+            : alert('Error while adding the details');
+        })
+        .catch(err => alert(err));
+    } else {
+      alert('Name cannot be empty');
+    }
+
     // console.log('Save');
   };
 
@@ -98,9 +131,9 @@ export default class Addfood extends Component {
     new Promise((resolve, reject) => {
       const uploadUri = uri.replace('file://', '');
       let uploadBlob = null;
+      const uniqueID = uuidv4();
       const { uid } = firebase.auth().currentUser;
-      console.log(uid);
-      const imageRef = firebase.storage().ref(`${uid}/images/image001.jpg`);
+      const imageRef = firebase.storage().ref(`${uid}/images/${uniqueID}.jpg`);
 
       fs
         .readFile(uploadUri, 'base64')

@@ -126,7 +126,11 @@ export default class Home extends Component {
     if (loading) {
       return (
         <View style={styles.loader}>
-          <ActivityIndicator size="large" color="#FF4444" />
+          <ActivityIndicator
+            size="large"
+            color="#FF4444"
+            style={{ marginBottom: heightPercentageToDP('21.8%') }}
+          />
         </View>
       );
     } else {
