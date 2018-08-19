@@ -6,6 +6,7 @@ import {
   View,
   StatusBar,
   Image,
+  ActivityIndicator,
   NetInfo } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import PropTypes from 'prop-types';
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  dpImageHolder: {
+  ImageShadow: {
     shadowColor: '#000000',
     shadowOffset: {
       width: 0,
@@ -28,6 +29,7 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 3,
     shadowOpacity: 0.2,
+    position: 'absolute',
   },
   profileImage: {
     height: widthPercentageToDP('40%'),
@@ -49,6 +51,10 @@ const styles = StyleSheet.create({
     fontSize: RF(3.8),
     marginTop: heightPercentageToDP('2%'),
   },
+  photoHolder: {
+    height: widthPercentageToDP('40%'),
+    width: widthPercentageToDP('40%'),
+  },
 });
 
 export default class Profile extends Component {
@@ -67,6 +73,7 @@ export default class Profile extends Component {
         'https://ctvalleybrewing.com/wp-content/uploads/2017/04/avatar-placeholder.png',
     },
     isConnected: true,
+    photoLoaded: false,
   };
 
   componentDidMount = () => {
@@ -111,6 +118,10 @@ export default class Profile extends Component {
     });
   };
 
+  showProfilePic = () => {
+    this.setState({ photoLoaded: true });
+  }
+
   render() {
     const list = [
       {
@@ -126,7 +137,7 @@ export default class Profile extends Component {
         title: 'Report a problem',
       },
     ];
-    const { user, isConnected } = this.state;
+    const { user, isConnected, photoLoaded } = this.state;
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
@@ -139,13 +150,25 @@ export default class Profile extends Component {
             alignItems: 'center',
           }}
         >
-          <View style={styles.dpImageHolder}>
-            <Image
-              source={{ uri: `${user.photoURL}?height=500` }}
-              style={styles.profileImage}
-              alt
-            />
+
+          <View style={styles.photoHolder}>
+            <View style={styles.ImageShadow}>
+              <Image
+                source={{ uri: `${user.photoURL}?height=500` }}
+                style={styles.profileImage}
+                onLoadEnd={this.showProfilePic}
+                alt
+              />
+            </View>
+
+            {photoLoaded ? null : (
+              <View style={[styles.profileImage, { justifyContent: 'center', position: 'absolute' }]}>
+                <ActivityIndicator size="large" color="#BFBFBF" />
+              </View>
+            )
+          }
           </View>
+
 
           <Text style={styles.usernameStyle}>
             {user.displayName}
