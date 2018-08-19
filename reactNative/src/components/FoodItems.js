@@ -40,19 +40,22 @@ const FoodItems = props => {
         horizontal
         showsHorizontalScrollIndicator={false}
       >
-        {items.map(item => (
-          <View key={item.img}>
-            <Image
-              style={styles.foodImage}
-              source={{
-                uri: item.img,
-              }}
-            />
-            <Text style={styles.foodName} numberOfLines={2}>
-              {item.name}
-            </Text>
-          </View>
-        ))}
+        {items.map(item => {
+          const foodImgLink = item.img ? {
+            uri: item.img,
+          } : require('../assets/img/default_foodImg.png');
+          return (
+            <View key={item.img}>
+              <Image
+                style={styles.foodImage}
+                source={foodImgLink}
+              />
+              <Text style={styles.foodName} numberOfLines={2}>
+                {item.name}
+              </Text>
+            </View>
+          );
+        })}
       </ScrollView>
     </View>
   );

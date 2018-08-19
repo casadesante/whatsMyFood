@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
+import { StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
   Text,
   View,
-  AsyncStorage,
-} from 'react-native';
+  AsyncStorage } from 'react-native';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Config from 'react-native-config';
@@ -27,9 +25,9 @@ const config = {
 const styles = StyleSheet.create({
   loginButton: {
     width: widthPercentageToDP('89%'),
-    height: heightPercentageToDP('6.5%'),
+    height: heightPercentageToDP('7%'),
     backgroundColor: '#3B5998',
-    borderRadius: heightPercentageToDP('6.5%') / 5,
+    borderRadius: heightPercentageToDP('7%') / 5,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
