@@ -544,20 +544,42 @@ exports.deleteRestaurant = functions.https.onRequest((req, res) => {
           let user = snapshot.val();
           if (user.hasOwnProperty('restaurants')) {
             let userRestaurants = user.restaurants;
-            let index = userRestaurants.indexOf(5);
+            console.log('====================================');
+            console.log(`Type of userRestaurants: ${typeof(userRestaurants)}`);
+            console.log('====================================');
+            console.log('====================================');
+            console.log(`Before Deleting the restaurantID: ${JSON.stringify(userRestaurants)}`);
+            console.log('====================================');
+            let index = userRestaurants.indexOf(parsedRequest.restaurantID);
+            console.log('====================================');
+            console.log(`Index of the restaurantID: ${index}`);
+            console.log('====================================');
             if (index > -1) {
               userRestaurants.splice(index, 1);
             }
-            refactoredUser[firebaseID] = user;
-            refactoredUser[firebaseID]["restaurants"] = userRestaurants;
+            console.log('====================================');
+            console.log(`After Deleting the restaurantID: ${JSON.stringify(userRestaurants)}`);
+            console.log('====================================');
+            refactoredUser[parsedRequest.firebaseID] = user;
+            console.log('====================================');
+            console.log(`Type of user.restaurants before putting it in object: ${typeof(refactoredUser[parsedRequest.firebaseID]["restaurants"])}`);
+            console.log('====================================');
+            refactoredUser[parsedRequest.firebaseID]["restaurants"] = userRestaurants;
             return callback(null, refactoredUser);
-          }  
+          }
         }
       });
     },
     (refactoredUser, callback) => {
       // update the user with updated user.restaurants
-      
+      let usersRef = db.ref('/users');
+      usersRef.update(refactoredUser, userUpdateError => {
+        if (userUpdateError) {
+          return callback(userUpdateError);
+        } else {
+          return callback(null, 'User Successfully updated with updatedRestaurants');
+        }
+      });
     },
     (dummyVariable, callback) => {
       // fetch the restaurant based on restaurantID
@@ -584,19 +606,24 @@ exports.deleteRestaurant = functions.https.onRequest((req, res) => {
       });
     },
     (retrievedRestaurant, callback) => {
-      // push the restaurant to /deleteRestaurants
-      let deleteRestaurantUniqueKey = deleteRestaurantsRef.push(retrievedRestaurant);
-      console.log('====================================');
-      console.log(`Deleted FoodID: ${deleteRestaurantUniqueKey}`);
-      console.log('====================================');
-      callback(null, parsedRequest.restaurantID);
+      // Add the restaurant to /deleteRestaurants
+      let updatedRestaurant = {};
+      updatedRestaurant[parsedRequest.restaurantID] = retrievedRestaurant;
+
+      deleteRestaurantsRef.update(updatedRestaurant, updatedRestaurantError => {
+        if (updatedRestaurantError) {
+          return callback(updatedFoodError);
+        } else {
+          return callback(null, parsedRequest.restaurantID);
+        }
+      });
     }
   ], (err, result) => {
     if (err) {
       console.log(`error: ${err}`);
       res.status(500).send(err);
     }
-    console.log(`Deleted foodID: ${result}`);
+    console.log(`Deleted RestaurantID: ${result}`);
     res.status(200).send(result);
   });
 });
