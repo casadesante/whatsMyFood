@@ -215,7 +215,7 @@ export default class Newentry extends Component {
           <Optional />
           <View>
             {uploaded ? (
-              <View>
+              <View style={styles.imageUploaderLayout}>
                 <Imageupload url={url} />
               </View>
             ) : (
