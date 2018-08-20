@@ -134,9 +134,10 @@ export default class Newentry extends Component {
   saveRestaurantForm = () => {
     const { navigation } = this.props;
     const { url, restaurantDetails } = this.state;
+    /* eslint no-prototype-builtins: */
     if (
-      restaurantDetails.hasOwnProperty('inputText') &&
-      restaurantDetails.inputText.length !== 0
+      restaurantDetails.hasOwnProperty('inputText')
+      && restaurantDetails.inputText.length !== 0
     ) {
       const restaurantObject = {
         name: restaurantDetails.inputText,
