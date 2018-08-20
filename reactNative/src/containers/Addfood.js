@@ -110,7 +110,7 @@ export default class Addfood extends Component {
             food: {
               foodName: name,
               foodPhotoURL: url,
-              rating: rating,
+              rating,
             },
           };
           return fetch(
@@ -134,32 +134,31 @@ export default class Addfood extends Component {
     this.setState({ rating: newRating });
   };
 
-  uploadImage = (uri, mime = 'application/octet-stream') =>
-    new Promise((resolve, reject) => {
-      const uploadUri = uri.replace('file://', '');
-      let uploadBlob = null;
-      const uniqueID = uuidv4();
-      const { uid } = firebase.auth().currentUser;
-      const imageRef = firebase.storage().ref(`${uid}/images/${uniqueID}.jpg`);
+  uploadImage = (uri, mime = 'application/octet-stream') => new Promise((resolve, reject) => {
+    const uploadUri = uri.replace('file://', '');
+    let uploadBlob = null;
+    const uniqueID = uuidv4();
+    const { uid } = firebase.auth().currentUser;
+    const imageRef = firebase.storage().ref(`${uid}/images/${uniqueID}.jpg`);
 
-      fs
-        .readFile(uploadUri, 'base64')
-        .then(data => Blob.build(data, { type: `${mime};BASE64` }))
-        .then(blob => {
-          uploadBlob = blob;
-          return imageRef.put(blob, { contentType: mime });
-        })
-        .then(() => {
-          uploadBlob.close();
-          return imageRef.getDownloadURL();
-        })
-        .then(url => {
-          resolve(url);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    fs
+      .readFile(uploadUri, 'base64')
+      .then(data => Blob.build(data, { type: `${mime};BASE64` }))
+      .then(blob => {
+        uploadBlob = blob;
+        return imageRef.put(blob, { contentType: mime });
+      })
+      .then(() => {
+        uploadBlob.close();
+        return imageRef.getDownloadURL();
+      })
+      .then(url => {
+        resolve(url);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
 
   getImage = () => {
     ImagePicker.openPicker({
@@ -181,7 +180,7 @@ export default class Addfood extends Component {
   };
 
   render() {
-    const { rating, uploaded, url, uploading } = this.state;
+    const { rating, uploaded, url, uploading, name } = this.state;
     console.log(`Selected rating: ${rating}`);
     return (
       <View style={styles.container}>
@@ -189,17 +188,17 @@ export default class Addfood extends Component {
         <Textbox
           icon="restaurant-menu"
           placeholder="Food name"
-          changeText={name => {
-            this.setState({ name });
+          changeText={nameInput => {
+            this.setState({ name: nameInput });
           }}
-          text={this.state.name}
+          text={name}
           field="name"
         />
         <EmojiPicker onEmojiSelect={this.selectedEmoji} />
         <Optional />
         <View>
           {uploaded ? (
-            <View>
+            <View style={styles.imageUploaderLayout}>
               <Imageupload url={url} />
             </View>
           ) : (
