@@ -160,40 +160,38 @@ export default class Newentry extends Component {
     // }
   };
 
-  uploadImage = (uri, mime = 'application/octet-stream') =>
-    new Promise((resolve, reject) => {
-      const uploadUri = uri.replace('file://', '');
-      let uploadBlob = null;
-      let uniqueID = uuidv4();
-      const { uid } = firebase.auth().currentUser;
-      console.log(uid);
-      const imageRef = firebase.storage().ref(`${uid}/images/${uniqueID}.jpg`);
+  uploadImage = (uri, mime = 'application/octet-stream') => new Promise((resolve, reject) => {
+    const uploadUri = uri.replace('file://', '');
+    let uploadBlob = null;
+    const uniqueID = uuidv4();
+    const { uid } = firebase.auth().currentUser;
+    console.log(uid);
+    const imageRef = firebase.storage().ref(`${uid}/images/${uniqueID}.jpg`);
 
-      fs
-        .readFile(uploadUri, 'base64')
-        .then(data => Blob.build(data, { type: `${mime};BASE64` }))
-        .then(blob => {
-          uploadBlob = blob;
-          return imageRef.put(blob, { contentType: mime });
-        })
-        .then(() => {
-          uploadBlob.close();
-          return imageRef.getDownloadURL();
-        })
-        .then(url => {
-          resolve(url);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    fs
+      .readFile(uploadUri, 'base64')
+      .then(data => Blob.build(data, { type: `${mime};BASE64` }))
+      .then(blob => {
+        uploadBlob = blob;
+        return imageRef.put(blob, { contentType: mime });
+      })
+      .then(() => {
+        uploadBlob.close();
+        return imageRef.getDownloadURL();
+      })
+      .then(url => {
+        resolve(url);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
 
   render() {
     const {
       uploaded,
       url,
       name,
-      location,
       uploading,
       isConnected,
     } = this.state;
