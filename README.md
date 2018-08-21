@@ -18,9 +18,23 @@ Install commitzen's plugin named emoji-cz by running `npm install emoji-cz -g`
 - Answer the questions and it will automatically commit
 - Now, push the commits to remote. 
 
-### Serverless:
-- Install functions emulator `npm install -g @google-cloud/functions-emulator` to test your functions locally.
-- Download the service account from firebase console and replace it with `serviceAccoun.copy.json`. Set the name to `serviceAccount.json`.
+### Serverless setup:
+- Check into **serverless** by running `cd serverless/functions`.
+- Run `npm i -g firebase-tools` to deploy firebase functions.
+- Set required **environment variables** by running
+```js
+firebase functions:config:set telegram.groupid="<TELEGRAM-GROUPID>"
+firebase functions:config:set telegram.token="<TELEGRAM-BOT-TOKEN>"
+``` 
+- Check **Telegram Bot** section for any help with telegram environment variable information.
+- After changing the source code in `serverless/functions/index.js`, run `firebase deploy --only functions`.
+
+### Telegram Bot
+- Get the **TELEGRAM-BOT-TOKEN** from **TelegramBotFather** account in telegram.
+
+- To get the telegram **groupID**, hit the following URL:
+`https://api.telegram.org/bot<TELEGRAM-BOT-TOKEN>/getUpdates`
+- Look for the value of `chat.id`.
 
 ### NoSQL Documentation:
 - [Users](https://github.com/sharathvignesh/whatsMyFood/blob/master/doc/db/noSQLSchema.md#users)
