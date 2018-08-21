@@ -125,8 +125,10 @@ exports.addRestaurantAndFood = functions.https.onRequest((req, res) => {
             console.log('====================================');
             // checking whether parsedRequest.googlePlacesID is already available or not
             for (var i=0; i<userRestaurants.length; i++) {
-              if (userRestaurants[i].googlePlacesID === parsedRequest.googlePlacesID) {
-                return res.status(500).send('GooglePlacesID already exists');
+              if (userRestaurants[i].hasOwnProperty("googlePlacesID")) {
+                if (userRestaurants[i].googlePlacesID === parsedRequest.googlePlacesID) {
+                  return res.status(500).send('GooglePlacesID already exists');
+                }
               }
             }
             // else calling the next callback to addRestaurant
