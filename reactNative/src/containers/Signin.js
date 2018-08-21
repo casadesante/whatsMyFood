@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, Image, ImageBackground, View } from 'react-native';
+import { StyleSheet, Text, Image, ImageBackground, View, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import PropTypes from 'prop-types';
 import SplashScreen from 'react-native-splash-screen';
@@ -77,6 +77,7 @@ export default class Signin extends Component {
           colors={['rgba(0, 0, 0, 0.90)', 'rgba(0, 0, 0, 0.4)']}
           style={styles.linearGradient}
         >
+          <StatusBar barStyle="light-content" />
           <View style={styles.container}>
             <View style={styles.splitContainer}>
               <Image

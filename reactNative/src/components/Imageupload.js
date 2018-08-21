@@ -1,22 +1,28 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { View, Image } from 'react-native';
+import { widthPercentageToDP } from '../lib/Responsive';
 
 const Imageupload = params => {
   console.log(params.url);
   return (
-    <Image
-      source={{
-        uri: params.url,
-      }}
-      resizeMode="cover"
-      style={{
-        marginTop: 40,
-        marginLeft: 40,
-        height: 200,
-        width: 300,
-        borderRadius: 10,
-      }}
-    />
+    <View style={{
+      shadowOffset: { width: 1, height: 3 },
+      shadowColor: '#000000',
+      shadowOpacity: 0.2,
+    }}
+    >
+      <Image
+        source={{
+          uri: params.url,
+        }}
+        resizeMode="cover"
+        style={{
+          height: 9 * widthPercentageToDP('86.13%') / 16,
+          width: widthPercentageToDP('86.13%'),
+          borderRadius: widthPercentageToDP('86.13%') / 35,
+        }}
+      />
+    </View>
   );
 };
 

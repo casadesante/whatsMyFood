@@ -1,10 +1,9 @@
 import React from 'react';
-import {
-  TouchableOpacity,
+import { TouchableOpacity,
   Text,
   StyleSheet,
-  ActivityIndicator,
-} from 'react-native';
+  View,
+  ActivityIndicator } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import PropTypes from 'prop-types';
@@ -15,7 +14,7 @@ const styles = StyleSheet.create({
   gradientBox: {
     height: 9 * widthPercentageToDP('86.13%') / 16,
     width: widthPercentageToDP('86.13%'),
-    borderRadius: 10,
+    borderRadius: widthPercentageToDP('86.13%') / 35,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -39,21 +38,29 @@ const Imageuploader = ({ upload, uploading }) => (
       style={styles.gradientBox}
       colors={['rgb(255, 152, 99)', 'rgb(253, 89, 89)']}
     >
-      <SimpleLineIcons
-        style={styles.cameraIcon}
-        name="camera"
-        size={RF(6)}
-        color="white"
-      />
-      <Text style={styles.uploadText}>
-        {uploading ? 'Loading ...' : 'Add photo'}
-      </Text>
+      {uploading ? (
+        <View>
+          <ActivityIndicator size="large" color="#FFFFFF" />
+        </View>
+      ) : (
+        <View>
+          <SimpleLineIcons
+            style={styles.cameraIcon}
+            name="camera"
+            size={RF(6)}
+            color="white"
+          />
+          <Text style={styles.uploadText}>
+            Add photo
+          </Text>
+        </View>
+      )}
     </LinearGradient>
   </TouchableOpacity>
 );
 
 Imageuploader.propTypes = {
-  // eslint-disable-next-line react/require-default-props
-  upload: PropTypes.func,
+  upload: PropTypes.func.isRequired,
+  uploading: PropTypes.bool.isRequired,
 };
 export default Imageuploader;
