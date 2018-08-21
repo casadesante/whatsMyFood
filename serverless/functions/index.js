@@ -71,7 +71,7 @@ exports.addUser = functions.https.onRequest((req, res) => {
 
 exports.addRestaurantAndFood = functions.https.onRequest((req, res) => {
   console.log('====================================');
-  console.log('Received Request for addRestaurant');
+  console.log('Received Request for addRestaurantAndFood');
   console.log(req.body);
   console.log('====================================');
   var parsedRequest = typeof(req.body) === 'object' ? req.body : JSON.parse(req.body);
@@ -99,6 +99,53 @@ exports.addRestaurantAndFood = functions.https.onRequest((req, res) => {
   async.waterfall(
     [
       callback => {
+        // fetching restaurants from user
+        readUserRef.once("value", (snapshot, readUserError) => {
+          if (readUserError) {
+            return callback(readUserError);
+          } else {
+            let user = snapshot.val();
+            return callback(null, user.restaurants)
+          }
+        })
+      },
+      (restaurants, callback) => {
+        var promises = [];
+        if (restaurants !== undefined) {
+          restaurants.map((restaurantID) => {
+            console.log('====================================');
+            console.log(`restaurantID: ${restaurantID}`);
+            console.log('====================================');
+            promises.push(getRestaurantByID(restaurantID));
+          });
+          Promise.all(promises).then((resolvedRestaurants) => {
+            let userRestaurants = resolvedRestaurants;
+            console.log('====================================');
+            console.log(`printing user restaurants: ${JSON.stringify(userRestaurants)}`);
+            console.log('====================================');
+            // checking whether parsedRequest.googlePlacesID is already available or not
+            for (var i=0; i<userRestaurants.length; i++) {
+              if (userRestaurants[i].googlePlacesID === parsedRequest.googlePlacesID) {
+                return res.status(500).send('GooglePlacesID already exists');
+              }
+            }
+            // else calling the next callback to addRestaurant
+            return callback(null, userRestaurants);
+          })
+          .catch((err) => {
+            console.log('====================================');
+            console.log(err);
+            console.log('====================================');
+          });
+        } else {
+          let userRestaurants = [];
+          console.log('====================================');
+          console.log(`Else part: if user.restaurants is undefined. Printing user restaurants: ${JSON.stringify(userRestaurants)}`);
+          console.log('====================================');
+          return callback(null, userRestaurants);
+        }  
+      },
+      (emptyMessage, callback) => {
         // Create Restaurant Object
         restaurant[restaurantID] = {
           "restaurantName": parsedRequest.restaurantName,
