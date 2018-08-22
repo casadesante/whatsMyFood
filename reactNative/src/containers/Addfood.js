@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet,
+import {
+  StyleSheet,
   View,
   Button,
   StatusBar,
-  NativeModules } from 'react-native';
+  NativeModules,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import RNFetchBlob from 'react-native-fetch-blob';
 import uuidv4 from 'uuid/v4';
