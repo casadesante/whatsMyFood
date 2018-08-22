@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet,
+import {
+  StyleSheet,
   Text,
   View,
   TouchableOpacity,
   StatusBar,
   Keyboard,
-  ScrollView } from 'react-native';
+  ScrollView,
+} from 'react-native';
 import RNFetchBlob from 'react-native-fetch-blob';
 import * as ImagePicker from 'react-native-image-picker';
 import PropTypes from 'prop-types';
@@ -125,31 +127,32 @@ export default class EditRestaurant extends Component {
     navigation.navigate('Restaurant', { restaurantData: this.state });
   };
 
-  uploadImage = (uri, mime = 'application/octet-stream') => new Promise((resolve, reject) => {
-    const uploadUri = uri.replace('file://', '');
-    let uploadBlob = null;
-    const { uid } = firebase.auth().currentUser;
-    console.log(uid);
-    const imageRef = firebase.storage().ref(`${uid}/images/image001.jpg`);
+  uploadImage = (uri, mime = 'application/octet-stream') =>
+    new Promise((resolve, reject) => {
+      const uploadUri = uri.replace('file://', '');
+      let uploadBlob = null;
+      const { uid } = firebase.auth().currentUser;
+      console.log(uid);
+      const imageRef = firebase.storage().ref(`${uid}/images/image001.jpg`);
 
-    fs
-      .readFile(uploadUri, 'base64')
-      .then(data => Blob.build(data, { type: `${mime};BASE64` }))
-      .then(blob => {
-        uploadBlob = blob;
-        return imageRef.put(blob, { contentType: mime });
-      })
-      .then(() => {
-        uploadBlob.close();
-        return imageRef.getDownloadURL();
-      })
-      .then(url => {
-        resolve(url);
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
+      fs
+        .readFile(uploadUri, 'base64')
+        .then(data => Blob.build(data, { type: `${mime};BASE64` }))
+        .then(blob => {
+          uploadBlob = blob;
+          return imageRef.put(blob, { contentType: mime });
+        })
+        .then(() => {
+          uploadBlob.close();
+          return imageRef.getDownloadURL();
+        })
+        .then(url => {
+          resolve(url);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
 
   render() {
     const { uploaded, url, name, location } = this.state;

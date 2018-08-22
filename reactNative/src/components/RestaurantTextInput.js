@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet,
+import {
+  StyleSheet,
   View,
   TextInput,
   Text,
   ScrollView,
-  Keyboard } from 'react-native';
+  Keyboard,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import RF from 'react-native-responsive-fontsize';
 import { GoogleAutoComplete } from 'react-native-google-autocomplete';
@@ -150,11 +152,9 @@ export default class RestaurantTextInput extends Component {
               placeID={places.place_id}
               address={places.description}
               placeName={places.structured_formatting.main_text}
-              selectPlace={
-                (placeName, addressDetails, placeID) => {
-                  this.onSelectSuggestedPlace(placeName, addressDetails, placeID);
-                }
-              }
+              selectPlace={(placeName, addressDetails, placeID) => {
+                this.onSelectSuggestedPlace(placeName, addressDetails, placeID);
+              }}
             />
           ))}
         </ScrollView>

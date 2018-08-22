@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { TouchableOpacity,
   Text,
   StyleSheet,
   View,
-  ActivityIndicator } from 'react-native';
+  ActivityIndicator,
+  ActionSheetIOS } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import PropTypes from 'prop-types';
@@ -32,35 +33,54 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
 });
-const Imageuploader = ({ upload, uploading }) => (
-  <TouchableOpacity onPress={() => upload()}>
-    <LinearGradient
-      style={styles.gradientBox}
-      colors={['rgb(255, 152, 99)', 'rgb(253, 89, 89)']}
-    >
-      {uploading ? (
-        <View>
-          <ActivityIndicator size="large" color="#FFFFFF" />
-        </View>
-      ) : (
-        <View>
-          <SimpleLineIcons
-            style={styles.cameraIcon}
-            name="camera"
-            size={RF(6)}
-            color="white"
-          />
-          <Text style={styles.uploadText}>
-            Add photo
-          </Text>
-        </View>
-      )}
-    </LinearGradient>
-  </TouchableOpacity>
-);
+export default class Imageuploader extends Component {
+  handlePress = (upload) => {
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: ['Cancel', 'Upload from Library', 'Open camera'],
+        cancelButtonIndex: 0,
+      },
+      buttonIndex => {
+        if (buttonIndex === 1) {
+          upload('openPicker');
+        } else if (buttonIndex === 2) {
+          upload('openCamera');
+        } 
+      },
+    );
+  }
+  render() {
+    const {upload, uploading} = this.props;
+    return (
+      <TouchableOpacity onPress={() => this.handlePress(upload)}>
+        <LinearGradient
+          style={styles.gradientBox}
+          colors={['rgb(255, 152, 99)', 'rgb(253, 89, 89)']}
+        >
+          {uploading ? (
+            <View>
+              <ActivityIndicator size="large" color="#FFFFFF" />
+            </View>
+          ) : (
+            <View>
+              <SimpleLineIcons
+                style={styles.cameraIcon}
+                name="camera"
+                size={RF(6)}
+                color="white"
+              />
+              <Text style={styles.uploadText}>
+                Add photo
+              </Text>
+            </View>
+          )}
+        </LinearGradient>
+      </TouchableOpacity>
+    )
+  }
+}
 
 Imageuploader.propTypes = {
   upload: PropTypes.func.isRequired,
   uploading: PropTypes.bool.isRequired,
 };
-export default Imageuploader;

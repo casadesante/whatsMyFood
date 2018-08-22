@@ -7,7 +7,8 @@ import {
   StatusBar,
   Image,
   ActivityIndicator,
-  NetInfo } from 'react-native';
+  NetInfo,
+} from 'react-native';
 import { ListItem } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
@@ -122,7 +123,7 @@ export default class Profile extends Component {
 
   showProfilePic = () => {
     this.setState({ photoLoaded: true });
-  }
+  };
 
   render() {
     const list = [
@@ -143,10 +144,7 @@ export default class Profile extends Component {
     return (
       <View style={styles.container}>
         {!isConnected ? <OfflineNotice /> : null}
-        <View
-          style={styles.headerContainer}
-        >
-
+        <View style={styles.headerContainer}>
           <View style={styles.photoHolder}>
             <View style={styles.ImageShadow}>
               <Image
@@ -158,11 +156,15 @@ export default class Profile extends Component {
             </View>
 
             {photoLoaded ? null : (
-              <View style={[styles.profileImage, { justifyContent: 'center', position: 'absolute' }]}>
+              <View
+                style={[
+                  styles.profileImage,
+                  { justifyContent: 'center', position: 'absolute' },
+                ]}
+              >
                 <ActivityIndicator size="large" color="#BFBFBF" />
               </View>
-            )
-          }
+            )}
           </View>
 
           <Text style={styles.usernameStyle} numberOfLines={2}>

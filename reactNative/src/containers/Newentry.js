@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { StyleSheet,
+import {
+  StyleSheet,
   Text,
   View,
   TouchableOpacity,
   TouchableWithoutFeedback,
   StatusBar,
   NativeModules,
-  NetInfo } from 'react-native';
+  NetInfo,
+} from 'react-native';
 
 import RNFetchBlob from 'react-native-fetch-blob';
 import PropTypes from 'prop-types';
@@ -104,8 +106,8 @@ export default class Newentry extends Component {
     this._navListener.remove();
   }
 
-  getImage = () => {
-    ImagePicker.openPicker({
+  getImage = (pickValue) => {
+    ImagePicker[pickValue]({
       cropping: true,
       width: 1920,
       height: 1080,
@@ -149,15 +151,6 @@ export default class Newentry extends Component {
     } else {
       alert('Name cannot be empty');
     }
-    // if (
-    //   restaurantDetails.hasOwnProperty('name') &&
-    //   restaurantDetails.name.length !== 0
-    // ) {
-    //   alert(JSON.stringify(this.state));
-    //   // navigation.navigate('Addfood', { restaurantData: this.state });
-    // } else {
-    //   alert('Name cannot be empty');
-    // }
   };
 
   uploadImage = (uri, mime = 'application/octet-stream') => new Promise((resolve, reject) => {

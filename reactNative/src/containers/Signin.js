@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, Image, ImageBackground, View, StatusBar } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  Image,
+  ImageBackground,
+  View,
+  StatusBar,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import PropTypes from 'prop-types';
 import SplashScreen from 'react-native-splash-screen';
@@ -82,9 +89,9 @@ export default class Signin extends Component {
             <View style={styles.splitContainer}>
               <Image
                 source={
-                require('../assets/img/logo.png')
-                // 1024x1024 imagesize
-              }
+                  require('../assets/img/logo.png')
+                  // 1024x1024 imagesize
+                }
                 style={styles.logo}
                 resizeMode="contain"
               />
@@ -95,9 +102,9 @@ export default class Signin extends Component {
                 <FacebookLoginButton navigation={navigation} />
               </View>
               <Text style={styles.footerText}>
-              By signing up, I agree with WhatsMyFood’s{'\n'}
+                By signing up, I agree with WhatsMyFood’s{'\n'}
                 <Text style={{ color: '#FF4444' }}>
-                Terms of Service
+                  Terms of Service
                   <Text style={{ color: 'white' }}> and </Text>Privacy policy.
                 </Text>
               </Text>
