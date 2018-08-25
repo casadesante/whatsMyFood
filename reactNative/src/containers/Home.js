@@ -154,7 +154,7 @@ export default class Home extends Component {
             }}
           >
             <View style={styles.restaurantContainer}>
-              <Text style={styles.restaurantLabel}>Nearby restaurants</Text>
+              <Text style={styles.restaurantLabel}>Restaurants</Text>
               {restaurants.map((restaurantInfo, index) => (
                 <RestaurantCard
                   goToRestaurant={this.getRestaurant}
