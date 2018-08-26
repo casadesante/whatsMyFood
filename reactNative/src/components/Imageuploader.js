@@ -53,30 +53,38 @@ export default class Imageuploader extends Component {
   render() {
     const { upload, uploading } = this.props;
     return (
-      <TouchableOpacity onPress={() => this.handlePress(upload)}>
-        <LinearGradient
-          style={styles.gradientBox}
-          colors={['rgb(255, 152, 99)', 'rgb(253, 89, 89)']}
-        >
-          {uploading ? (
-            <View>
-              <ActivityIndicator size="large" color="#FFFFFF" />
-            </View>
-          ) : (
-            <View>
-              <SimpleLineIcons
-                style={styles.cameraIcon}
-                name="camera"
-                size={RF(6)}
-                color="white"
-              />
-              <Text style={styles.uploadText}>
+      <View>
+        { !uploading ? (
+          <TouchableOpacity onPress={() => this.handlePress(upload)}>
+            <LinearGradient
+              style={styles.gradientBox}
+              colors={['rgb(255, 152, 99)', 'rgb(253, 89, 89)']}
+            >
+              <View>
+                <SimpleLineIcons
+                  style={styles.cameraIcon}
+                  name="camera"
+                  size={RF(6)}
+                  color="white"
+                />
+                <Text style={styles.uploadText}>
                 Add photo
-              </Text>
-            </View>
-          )}
-        </LinearGradient>
-      </TouchableOpacity>
+                </Text>
+              </View>
+            </LinearGradient>
+          </TouchableOpacity>
+        ) : (
+          <View>
+            <LinearGradient
+              style={styles.gradientBox}
+              colors={['rgb(255, 152, 99)', 'rgb(253, 89, 89)']}
+            >
+              <View>
+                <ActivityIndicator size="large" color="#FFFFFF" />
+              </View>
+            </LinearGradient>
+          </View>)}
+      </View>
     );
   }
 }
