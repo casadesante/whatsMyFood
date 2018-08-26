@@ -45,12 +45,13 @@ export default class Imageuploader extends Component {
           upload('openPicker');
         } else if (buttonIndex === 2) {
           upload('openCamera');
-        } 
+        }
       },
     );
   }
+
   render() {
-    const {upload, uploading} = this.props;
+    const { upload, uploading } = this.props;
     return (
       <TouchableOpacity onPress={() => this.handlePress(upload)}>
         <LinearGradient
@@ -76,7 +77,7 @@ export default class Imageuploader extends Component {
           )}
         </LinearGradient>
       </TouchableOpacity>
-    )
+    );
   }
 }
 
