@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import RF from 'react-native-responsive-fontsize';
 import { GoogleAutoComplete } from 'react-native-google-autocomplete';
 import PropTypes from 'prop-types';
+import Config from 'react-native-config';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
 import PlaceSuggestion from './PlaceSuggestion';
@@ -97,7 +98,7 @@ export default class RestaurantTextInput extends Component {
             color="rgb(105, 105, 105)"
           />
           <GoogleAutoComplete
-            apiKey="AIzaSyDHdH3LF-90nO_OKk16q_8G2x5zLewXDtU"
+            apiKey={Config.AUTO_COMPLETE_API_KEY}
             minLength={2}
             fetchDetails
           >
