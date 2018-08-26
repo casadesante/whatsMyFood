@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Text,
   View,
   ImageBackground,
@@ -49,48 +49,58 @@ const cardStyle = {
   },
 };
 
-const RestaurantCard = props => {
-  const { restaurant, goToRestaurant, index } = props;
-  const redGradient = ['rgb(255, 152, 99)', 'rgb(253, 89, 89)'];
-  const blackOverlay = ['rgba(0, 0, 0, 0.50)', 'rgba(0, 0, 0, 0.55)'];
-  return (
-    <Animatable.View
-      animation={cardStyle}
-      delay={
+export default class RestaurantCard extends Component {
+  state= {
+    loaded: false,
+  };
+
+  showPic = () => {
+    this.setState({ loaded: true });
+  };
+
+  render() {
+    const { restaurant, goToRestaurant, index } = this.props;
+    const { loaded } = this.state;
+    const redGradient = ['rgb(255, 152, 99)', 'rgb(253, 89, 89)'];
+    const blackOverlay = ['rgba(0, 0, 0, 0.50)', 'rgba(0, 0, 0, 0.55)'];
+    return (
+      <Animatable.View
+        animation={cardStyle}
+        delay={
         index * 150
         // List index
       }
-    >
-      <TouchableOpacity
-        onPress={() => {
-          goToRestaurant(restaurant);
-        }}
       >
-        <ImageBackground
-          style={styles.backgroundImage}
-          imageStyle={{ borderRadius: 10 }}
-          resizeMode="contain"
-          source={{
-            uri: restaurant.restaurantPhotoURL,
+        <TouchableOpacity
+          onPress={() => {
+            goToRestaurant(restaurant);
           }}
         >
-          <LinearGradient
-            colors={restaurant.restaurantPhotoURL ? blackOverlay : redGradient}
-            style={styles.linearGradient}
+          <ImageBackground
+            style={styles.backgroundImage}
+            imageStyle={{ borderRadius: 10 }}
+            resizeMode="contain"
+            onLoadEnd={this.showPic}
+            source={{
+              uri: restaurant.restaurantPhotoURL,
+            }}
           >
-            <View style={styles.details}>
-              <Text style={styles.restaurantName} numberOfLines={2}>
-                {restaurant.restaurantName}
-              </Text>
-            </View>
-          </LinearGradient>
-        </ImageBackground>
-      </TouchableOpacity>
-    </Animatable.View>
-  );
-};
-
-export default RestaurantCard;
+            <LinearGradient
+              colors={restaurant.restaurantPhotoURL && loaded ? blackOverlay : redGradient}
+              style={styles.linearGradient}
+            >
+              <View style={styles.details}>
+                <Text style={styles.restaurantName} numberOfLines={2}>
+                  {restaurant.restaurantName }
+                </Text>
+              </View>
+            </LinearGradient>
+          </ImageBackground>
+        </TouchableOpacity>
+      </Animatable.View>
+    );
+  }
+}
 
 RestaurantCard.propTypes = {
   index: PropTypes.number.isRequired,
