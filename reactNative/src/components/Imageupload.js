@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Image, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import RF from 'react-native-responsive-fontsize';
@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
 
 const Imageupload = params => {
   console.log(params.url);
+  console.log(params.cancel);
   const restaurantImage = params.url ? (
     <Image
       source={{
@@ -66,14 +67,14 @@ const Imageupload = params => {
         <View>
           <ActivityIndicator size="large" color="#FFFFFF" />
         </View>
-        <View style={styles.cancelButton}>
+        <TouchableOpacity style={styles.cancelButton} onPress={() => { params.cancel(); }}>
           <Icon
             name="cancel"
 
             size={RF(5.5)}
             color="#FFFFFF"
           />
-        </View>
+        </TouchableOpacity>
         {restaurantImage}
       </LinearGradient>
     </View>

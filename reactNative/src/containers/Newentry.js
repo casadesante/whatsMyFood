@@ -123,6 +123,11 @@ export default class Newentry extends Component {
       .catch(e => alert(e));
   };
 
+  cancelImage = () => {
+    this.setState({ uploaded: false, uploading: false, url: '' });
+  };
+
+
   handleConnectivityChange = isConnected => {
     if (isConnected) {
       this.setState({ isConnected });
@@ -207,7 +212,7 @@ export default class Newentry extends Component {
           <View>
             {uploaded ? (
               <View style={styles.imageUploaderLayout}>
-                <Imageupload url={url} />
+                <Imageupload url={url} cancel={this.cancelImage} />
               </View>
             ) : (
               <View style={styles.imageUploaderLayout}>
