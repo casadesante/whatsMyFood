@@ -733,6 +733,114 @@ exports.deleteRestaurant = functions.https.onRequest((req, res) => {
   });
 });
 
+exports.checkRestaurantIfExists = functions.https.onRequest((req, res) => {
+  console.log('====================================');
+  console.log('Received Request for checkRestaurantIfExists');
+  console.log(req.body);
+  console.log('====================================');
+  var parsedRequest = typeof(req.body) === 'object' ? req.body : JSON.parse(req.body);
+  
+  // check, If all required parameters are passed.
+  if (!parsedRequest.hasOwnProperty('firebaseID')) {
+    return res.status(500).send('No firebaseID in the request');
+  }
+
+  if (parsedRequest.hasOwnProperty('googlePlacesID')) {
+    console.log('====================================');
+    console.log('checkRestaurantIfExists will be based on the googlePlacesID');
+    console.log('====================================');    
+  } else if ((!parsedRequest.hasOwnProperty('googlePlacesID')) && (parsedRequest.hasOwnProperty('restaurantName'))) {
+    console.log('====================================');
+    console.log('checkRestaurantIfExists will be based on the restaurantName');
+    console.log('====================================');    
+  } else {
+    console.log('====================================');
+    console.log('No googlePlacesID or restaurantName');
+    console.log('====================================');
+    return res.status(500).send('No googlePlacesID or restaurantName');
+  }
+
+  var firebaseID = parsedRequest.firebaseID;
+  var readUserRef = db.ref('/users/' + firebaseID);
+
+  async.waterfall(
+    [
+      callback => {
+        // fetching restaurantIDs from user
+        readUserRef.once("value", (snapshot, readUserError) => {
+          if (readUserError) {
+            return callback(readUserError);
+          } else {
+            let user = snapshot.val();
+            return callback(null, user.restaurants)
+          }
+        })
+      },
+      (restaurants, callback) => {
+        // getting all the restaurants based on the restaurantID
+        var promises = [];
+        if (restaurants !== undefined) {
+          restaurants.map((restaurantID) => {
+            // console.log('====================================');
+            // console.log(`restaurantID: ${restaurantID}`);
+            // console.log('====================================');
+            promises.push(getRestaurantByID(restaurantID));
+          });
+          Promise.all(promises).then((resolvedRestaurants) => {
+            let userRestaurants = resolvedRestaurants;
+            console.log('====================================');
+            console.log(`printing user restaurants: ${JSON.stringify(userRestaurants)}`);
+            console.log('====================================');
+            // checking whether parsedRequest.googlePlacesID is already available or not
+            if (parsedRequest.hasOwnProperty('googlePlacesID')) {
+              console.log('====================================');
+              console.log(`checkRestaurantIfExists is based on the googlePlacesID`);
+              console.log('====================================');
+              for (let i=0; i<userRestaurants.length; i++) {
+                if (userRestaurants[i].hasOwnProperty("googlePlacesID")) {
+                  if (userRestaurants[i].googlePlacesID === parsedRequest.googlePlacesID) {
+                    return res.status(500).send('googlePlacesID already exists');
+                  }
+                }
+              }
+            } else if ((!parsedRequest.hasOwnProperty('googlePlacesID')) && (parsedRequest.hasOwnProperty('restaurantName'))) {
+              console.log('====================================');
+              console.log('checkRestaurantIfExists based on the restaurantName');
+              console.log('====================================');    
+              for (let i=0; i<userRestaurants.length; i++) {
+                if (userRestaurants[i].hasOwnProperty("restaurantName")) {
+                  if (userRestaurants[i].restaurantName === parsedRequest.restaurantName) {
+                    return res.status(500).send('restaurantName already exists');
+                  }
+                }
+              }
+            }       
+            // else calling the next callback to addRestaurant
+            return callback(null, "No issues. It is a completely new restaurant to the user");
+          })
+          .catch((err) => {
+            console.log('====================================');
+            console.log(`Error in Promise: ${err}`);
+            console.log('====================================');
+          });
+        } else {
+          let userRestaurants = [];
+          console.log('====================================');
+          console.log(`Else part: if user.restaurants is undefined. Printing user restaurants: ${JSON.stringify(userRestaurants)}`);
+          console.log('====================================');
+          return callback(null, "No issues. This is the first restaurant for the user");
+        } 
+      }
+    ], (err, result) => {
+      if (err) {
+        console.log(`error: ${err}`);
+        res.status(500).send(err);
+      }
+      console.log(`result: ${result}`);
+      res.status(200).send(result);
+    });
+});
+
 getRestaurantByID = (restaurantID) =>
   new Promise((resolve, reject) => {
     db.ref("/restaurants/" + restaurantID).once("value", (snapshot, readRestaurantError) => {
@@ -740,10 +848,10 @@ getRestaurantByID = (restaurantID) =>
         reject(readRestaurantError);
       }
       let snapshotRestaurant = snapshot.val();
-      console.log('====================================');
-      console.log(`typeof: ${typeof(snapshotRestaurant)}`);      
-      console.log(`Specific Restaurant: ${JSON.stringify(snapshotRestaurant)}`);
-      console.log('====================================');
+      // console.log('====================================');
+      // console.log(`typeof: ${typeof(snapshotRestaurant)}`);      
+      // console.log(`Specific Restaurant: ${JSON.stringify(snapshotRestaurant)}`);
+      // console.log('====================================');
       snapshotRestaurant["restaurantID"] = restaurantID;
       resolve(snapshotRestaurant); 
     });
