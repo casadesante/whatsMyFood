@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   backgroundImage: {
-    marginTop: 20,
+    marginTop: heightPercentageToDP('2%'),
     height: widthPercentageToDP('92%') * 0.5625,
   },
   details: {

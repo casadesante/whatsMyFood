@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   restaurantContainer: {
     padding: widthPercentageToDP('4%'),
-    paddingBottom: widthPercentageToDP('0%'),
+    paddingBottom: widthPercentageToDP('92%') * 0.5625,
   },
   restaurantLabel: {
     fontFamily: 'SFProDisplay-Regular',
