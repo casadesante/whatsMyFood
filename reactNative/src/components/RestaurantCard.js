@@ -1,11 +1,9 @@
 import React from 'react';
-import {
-  Text,
+import { Text,
   View,
   ImageBackground,
   StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+  TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import PropTypes from 'prop-types';
@@ -32,13 +30,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'SFProText-Bold',
     fontSize: RF(4),
-    textAlign: 'center',
-  },
-  restaurantDistance: {
-    color: 'white',
-    marginTop: heightPercentageToDP('1%'),
-    fontFamily: 'SFProText-Medium',
-    fontSize: RF(2),
     textAlign: 'center',
   },
 });
@@ -91,7 +82,6 @@ const RestaurantCard = props => {
               <Text style={styles.restaurantName} numberOfLines={2}>
                 {restaurant.restaurantName}
               </Text>
-              <Text style={styles.restaurantDistance}>x kms away</Text>
             </View>
           </LinearGradient>
         </ImageBackground>
@@ -103,10 +93,10 @@ const RestaurantCard = props => {
 export default RestaurantCard;
 
 RestaurantCard.propTypes = {
+  index: PropTypes.number.isRequired,
   restaurant: PropTypes.shape({
     restaurantID: PropTypes.string.isRequired,
     restaurantName: PropTypes.string.isRequired,
-    distance: PropTypes.string,
     restaurantPhotoURL: PropTypes.string,
   }),
   goToRestaurant: PropTypes.func.isRequired,
@@ -114,7 +104,6 @@ RestaurantCard.propTypes = {
 
 RestaurantCard.defaultProps = {
   restaurant: {
-    distance: '',
     img: null,
   },
 };
