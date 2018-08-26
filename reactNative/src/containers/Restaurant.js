@@ -2,22 +2,20 @@ import React, { Component } from 'react';
 import HeaderImageScrollView from 'react-native-image-header-scroll-view';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {
-  StyleSheet,
+import { StyleSheet,
   Text,
   View,
   StatusBar,
   Image,
   TouchableOpacity,
   ActionSheetIOS,
-  NetInfo,
-} from 'react-native';
+  NetInfo } from 'react-native';
 import PropTypes from 'prop-types';
 import RF from '../../node_modules/react-native-responsive-fontsize';
 import { getProfileInfo } from '../lib/Auth';
 import FoodItems from '../components/FoodItems';
 import OfflineNotice from '../components/Nointernet';
-import helper from '../lib/Helper';
+// import helper from '../lib/Helper';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
 
 const styles = StyleSheet.create({
@@ -144,15 +142,13 @@ export default class Restaurant extends Component {
     const { navigation } = this.props;
     getProfileInfo()
       .then(user => user.uid)
-      .then(firebaseID =>
-        fetch(
-          'https://us-central1-whatsmyfood.cloudfunctions.net/deleteRestaurant',
-          {
-            method: 'POST',
-            body: JSON.stringify({ firebaseID, restaurantID }),
-          },
-        ),
-      )
+      .then(firebaseID => fetch(
+        'https://us-central1-whatsmyfood.cloudfunctions.net/deleteRestaurant',
+        {
+          method: 'POST',
+          body: JSON.stringify({ firebaseID, restaurantID }),
+        },
+      ))
       .then(deletedRestaurant => {
         deletedRestaurant.status === 200 ? navigation.navigate('Home') : alert('Error while removing restaurant');
       })
