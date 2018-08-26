@@ -79,15 +79,15 @@ exports.addRestaurantAndFood = functions.https.onRequest((req, res) => {
   
   // check, If all required parameters are passed.
   if (!parsedRequest.hasOwnProperty('firebaseID')) {
-    res.status(500).send('No firebaseID in the request');
+    return res.status(500).send('No firebaseID in the request');
   } else if (!parsedRequest.hasOwnProperty('restaurantName')) {
-    res.status(500).send('No restaurantName in the request');
+    return res.status(500).send('No restaurantName in the request');
   } else if (!parsedRequest.hasOwnProperty('food')) {
-    res.status(500).send('No food in the request');
+    return res.status(500).send('No food in the request');
   } else if (!parsedFood.hasOwnProperty('foodName')) {
-    res.status(500).send('No food.foodName in the request');
+    return res.status(500).send('No food.foodName in the request');
   } else if (!parsedFood.hasOwnProperty('rating')) {
-    res.status(500).send('No food.rating in the request');
+    return res.status(500).send('No food.rating in the request');
   }
 
   var firebaseID = parsedRequest.firebaseID;
@@ -240,7 +240,7 @@ exports.fetchRestaurantsAndFoods = functions.https.onRequest((req, res) => {
 
   // check, If all required parameters are passed.
   if (!parsedRequest.hasOwnProperty("firebaseID")) {
-    res.status(500).send("No firebaseID in the request");
+    return res.status(500).send("No firebaseID in the request");
   }
 
   var firebaseID = parsedRequest.firebaseID;
@@ -406,17 +406,17 @@ exports.updateFood = functions.https.onRequest((req, res) => {
 
   // check, If all required parameters are passed.
   if (!parsedRequest.hasOwnProperty("foodName")) {
-    res.status(500).send("No foodName in the request");
+    return res.status(500).send("No foodName in the request");
   } else if (!parsedRequest.hasOwnProperty("rating")) {
-    res.status(500).send("No food's rating in the request");
+    return res.status(500).send("No food's rating in the request");
   } else if (!parsedRequest.hasOwnProperty("firebaseID")) {
-    res.status(500).send("No firebaseID in the request");
+    return res.status(500).send("No firebaseID in the request");
   } else if (!parsedRequest.hasOwnProperty("restaurantID")) {
-    res.status(500).send("No restaurantID in the request");
+    return res.status(500).send("No restaurantID in the request");
   } else if (!parsedRequest.hasOwnProperty("foodID")) {
-    res.status(500).send("No foodID in the request");
+    return res.status(500).send("No foodID in the request");
   } else if (!parsedRequest.hasOwnProperty("createdAt")) {
-    res.status(500).send("No createdAt in the request");
+    return res.status(500).send("No createdAt in the request");
   }
 
   var readFoodRef = db.ref('/foods/' + parsedRequest.foodID);
@@ -480,11 +480,11 @@ exports.updateRestaurant = functions.https.onRequest((req, res) => {
 
   // check, If all required parameters are passed.
   if (!parsedRequest.hasOwnProperty("restaurantID")) {
-    res.status(500).send("No restaurantID in the request");
+    return res.status(500).send("No restaurantID in the request");
   } else if (!parsedRequest.hasOwnProperty("createdAt")) {
-    res.status(500).send("No createdAt in the request");
+    return res.status(500).send("No createdAt in the request");
   } else if (!parsedRequest.hasOwnProperty("restaurantName")) {
-    res.status(500).send("No restaurantName in the request");
+    return res.status(500).send("No restaurantName in the request");
   }
 
   var readRestaurantRef = db.ref('/restaurants/' + parsedRequest.restaurantID);
@@ -546,7 +546,7 @@ exports.deleteFood = functions.https.onRequest((req, res) => {
 
   // check, If all required parameters are passed.
   if (!parsedRequest.hasOwnProperty("foodID")) {
-    res.status(500).send("No foodID in the request");
+    return res.status(500).send("No foodID in the request");
   }
 
   var deleteFoodRef = db.ref('/foods/' + parsedRequest.foodID);
@@ -605,9 +605,9 @@ exports.deleteRestaurant = functions.https.onRequest((req, res) => {
 
   // check, If all required parameters are passed.
   if (!parsedRequest.hasOwnProperty("restaurantID")) {
-    res.status(500).send("No restaurantID in the request");
+    return res.status(500).send("No restaurantID in the request");
   } else if (!parsedRequest.hasOwnProperty("firebaseID")) {
-    res.status(500).send("No firebaseID in the request");
+    return res.status(500).send("No firebaseID in the request");
   }
 
   var deleteRestaurantRef = db.ref('/restaurants/' + parsedRequest.restaurantID);
