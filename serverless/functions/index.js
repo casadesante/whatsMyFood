@@ -334,16 +334,18 @@ exports.addFood = functions.https.onRequest((req, res) => {
 
   // check, If all required parameters are passed.
   if (!parsedRequest.hasOwnProperty("foodName")) {
-    res.status(500).send("No foodName in the request");
+    return res.status(500).send("No foodName in the request");
   } else if (!parsedRequest.hasOwnProperty("rating")) {
-    res.status(500).send("No food's rating in the request");
+    return res.status(500).send("No food's rating in the request");
   } else if (!parsedRequest.hasOwnProperty("firebaseID")) {
-    res.status(500).send("No firebaseID in the request");
+    return res.status(500).send("No firebaseID in the request");
   } else if (!parsedRequest.hasOwnProperty("restaurantID")) {
-    res.status(500).send("No restaurantID in the request");
+    return res.status(500).send("No restaurantID in the request");
   }
 
   var foodsRef = db.ref('/foods');
+  var readFoodsRef = db.ref("/foods");
+  
   var food = {
     foodName: parsedRequest.foodName,
     rating: parsedRequest.rating,
@@ -357,6 +359,28 @@ exports.addFood = functions.https.onRequest((req, res) => {
 
   async.waterfall([
     (callback) => {
+      // fetching foods based on the restaurantID
+      readFoodsRef.orderByChild("restaurantID").equalTo(parsedRequest.restaurantID).once("value", (snapshot, readFoodsError) => {
+        if (readFoodsError) {
+          console.log(`readFoodsError: ${readFoodsError}`);
+          return callback(readFoodsError);
+        }
+        let foods = snapshot.val();
+        console.log('====================================');
+        console.log(`Snapshot of foods: ${JSON.stringify(foods)}`);
+        console.log('====================================');
+        // Make sure the foodName is not duplicated
+        for (var key in foods) {
+          if (foods.hasOwnProperty(key)) {
+            if (foods[key]["foodName"] === parsedRequest.foodName) {
+              return res.status(500).send("This food already exists");
+            }
+          }
+        }  
+        return callback(null, "Proceed to create the Food");
+      });
+    },
+    (emptyString, callback) => {
       let uniqueFoodKey = foodsRef.push(food);
       console.log('====================================');
       console.log(`Food Key: ${uniqueFoodKey}`);
