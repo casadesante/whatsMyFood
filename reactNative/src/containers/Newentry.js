@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
+import { StyleSheet,
   Text,
   View,
   TouchableOpacity,
   TouchableWithoutFeedback,
   StatusBar,
   NativeModules,
-  NetInfo,
-} from 'react-native';
+  NetInfo } from 'react-native';
 
 import RNFetchBlob from 'react-native-fetch-blob';
 import PropTypes from 'prop-types';
@@ -76,10 +74,10 @@ export default class Newentry extends Component {
 
   state = {
     uploaded: false,
-    nameError: true,
+    // nameError: true,
     url: '',
-    lat: '',
-    long: '',
+    // lat: '',
+    // long: '',
     restaurantDetails: {},
     isConnected: true,
     uploading: false,
@@ -124,6 +122,11 @@ export default class Newentry extends Component {
       })
       .catch(e => alert(e));
   };
+
+  cancelImage = () => {
+    this.setState({ uploaded: false, uploading: false, url: '' });
+  };
+
 
   handleConnectivityChange = isConnected => {
     if (isConnected) {
@@ -209,7 +212,7 @@ export default class Newentry extends Component {
           <View>
             {uploaded ? (
               <View style={styles.imageUploaderLayout}>
-                <Imageupload url={url} />
+                <Imageupload url={url} cancel={this.cancelImage} />
               </View>
             ) : (
               <View style={styles.imageUploaderLayout}>
