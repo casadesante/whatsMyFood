@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
+import { StyleSheet,
   Text,
   View,
   TouchableOpacity,
   TouchableWithoutFeedback,
   StatusBar,
   NativeModules,
-  NetInfo,
-} from 'react-native';
+  NetInfo } from 'react-native';
 
 import RNFetchBlob from 'react-native-fetch-blob';
 import PropTypes from 'prop-types';
@@ -76,10 +74,10 @@ export default class Newentry extends Component {
 
   state = {
     uploaded: false,
-    nameError: true,
+    // nameError: true,
     url: '',
-    lat: '',
-    long: '',
+    // lat: '',
+    // long: '',
     restaurantDetails: {},
     isConnected: true,
     uploading: false,
