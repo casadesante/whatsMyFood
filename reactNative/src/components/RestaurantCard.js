@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
   linearGradient: {
     flex: 1,
     borderRadius: 10,
+    position: 'relative',
   },
   backgroundImage: {
     marginTop: heightPercentageToDP('2%'),
@@ -32,6 +33,35 @@ const styles = StyleSheet.create({
     fontSize: RF(4),
     textAlign: 'center',
   },
+  loader: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  loader1: {
+    backgroundColor: 'white',
+    opacity: 0.4,
+    position: 'absolute',
+    height: '100%',
+    width: '25%',
+    left: '10%',
+    transform: [
+      { skewX: '5deg' },
+    ],
+  },
+  loader2: {
+    backgroundColor: 'white',
+    opacity: 0.2,
+    position: 'absolute',
+    height: '100%',
+    width: '15%',
+    left: '40%',
+    transform: [
+      { skewX: '5deg' },
+    ],
+  },
 });
 
 const cardStyle = {
@@ -46,6 +76,18 @@ const cardStyle = {
   1: {
     opacity: 1,
     marginTop: heightPercentageToDP('0%'),
+  },
+};
+
+const loaderAnimation = {
+  0: {
+    left: '110%',
+  },
+  0.5: {
+    left: '40%',
+  },
+  1: {
+    left: '-110%',
   },
 };
 
@@ -89,11 +131,18 @@ export default class RestaurantCard extends Component {
               colors={restaurant.restaurantPhotoURL && loaded ? blackOverlay : redGradient}
               style={styles.linearGradient}
             >
-              <View style={styles.details}>
-                <Text style={styles.restaurantName} numberOfLines={2}>
-                  {restaurant.restaurantName }
-                </Text>
-              </View>
+              {loaded ? (
+                <View style={styles.details}>
+                  <Text style={styles.restaurantName} numberOfLines={2}>
+                    {loaded ? restaurant.restaurantName : '' }
+                  </Text>
+                </View>
+              ) : (
+                <Animatable.View duration={2000} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
+                  <View style={styles.loader1} />
+                  <View style={styles.loader2} />
+                </Animatable.View>
+              )}
             </LinearGradient>
           </ImageBackground>
         </TouchableOpacity>
