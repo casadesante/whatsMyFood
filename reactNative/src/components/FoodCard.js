@@ -52,6 +52,18 @@ const cardStyle = {
   },
 };
 
+const loaderAnimation = {
+  0: {
+    left: '100%',
+  },
+  0.5: {
+    left: '40%',
+  },
+  1: {
+    left: '-100%',
+  },
+};
+
 export default class FoodCard extends Component {
   state = {
     loaded: false,
@@ -66,6 +78,7 @@ export default class FoodCard extends Component {
     const { loaded } = this.state;
     const redGradient = ['rgb(255, 152, 99)', 'rgb(253, 89, 89)'];
     const blackOverlay = ['rgba(0, 0, 0, 0.50)', 'rgba(0, 0, 0, 0.55)'];
+    const shine = ['rgba(255, 255, 255, 0.03)', 'rgba(255, 255, 255, 0.16)', 'rgba(255, 255, 255, 0.08)'];
     return (
       <Animatable.View animation={cardStyle} delay={food.id * 150}>
         <TouchableOpacity
@@ -86,14 +99,22 @@ export default class FoodCard extends Component {
               colors={food.img ? blackOverlay : redGradient}
               style={styles.linearGradient}
             >
-              <View style={styles.details}>
-                <Text style={styles.foodRating}>👌</Text>
-                <Text style={styles.foodName} numberOfLines={2}>
-                  {loaded ? 'Brownie obsession' : 'Loading'}
-                </Text>
-                <Text style={styles.foodName} numberOfLines={2}>
+              <View>
+                { !loaded ? (
+                  <Animatable.View duration={2000} delay={600} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
+                    <LinearGradient colors={shine} style={styles.loader1} />
+                    <LinearGradient colors={shine} style={styles.loader2} />
+                  </Animatable.View>
+                ) : (true)}
+                <View style={styles.details}>
+                  <Text style={styles.foodRating}>👌</Text>
+                  <Text style={styles.foodName} numberOfLines={2}>
+                    {loaded ? 'Brownie obsession' : 'Loading'}
+                  </Text>
+                  <Text style={styles.foodName} numberOfLines={2}>
                 in T.G.I.Fridays
-                </Text>
+                  </Text>
+                </View>
               </View>
             </LinearGradient>
           </ImageBackground>
