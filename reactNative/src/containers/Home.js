@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import {StyleSheet,
+import { StyleSheet,
   Text,
   View,
   ScrollView,
   StatusBar,
   NetInfo,
-  ActivityIndicator,} from 'react-native';
+  ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 
 import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   restaurantContainer: {
     padding: widthPercentageToDP('4%'),
-    paddingBottom: widthPercentageToDP('0%'),
+    paddingBottom: widthPercentageToDP('92%') * 0.5625,
   },
   restaurantLabel: {
     fontFamily: 'SFProDisplay-Regular',
@@ -78,14 +78,16 @@ export default class Home extends Component {
       getProfileInfo()
         .then(user => user.uid)
         .then(firebaseID => fetch(
-            'https://us-central1-whatsmyfood.cloudfunctions.net/fetchRestaurantsAndFoods',
-            {
-              method: 'POST',
-              body: JSON.stringify({ firebaseID }),
-            },
-          ),)
+          'https://us-central1-whatsmyfood.cloudfunctions.net/fetchRestaurantsAndFoods',
+          {
+            method: 'POST',
+            body: JSON.stringify({ firebaseID }),
+          },
+        ))
         .then(restaurants => restaurants.json())
-        .then(parsedRestaurants => this.setState({ restaurants: parsedRestaurants, loading: false }),)
+        .then(parsedRestaurants => this.setState(
+          { restaurants: parsedRestaurants, loading: false },
+        ))
         .catch(err => alert(err));
     });
   }

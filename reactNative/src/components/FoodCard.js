@@ -1,11 +1,9 @@
-import React from 'react';
-import {
-  Text,
+import React, { Component } from 'react';
+import { Text,
   View,
   ImageBackground,
   StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+  TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
@@ -54,49 +52,56 @@ const cardStyle = {
   },
 };
 
-const FoodCard = props => {
-  const { food, goToRestaurant } = props;
-  const redGradient = ['rgb(255, 152, 99)', 'rgb(253, 89, 89)'];
-  const blackOverlay = ['rgba(0, 0, 0, 0.50)', 'rgba(0, 0, 0, 0.55)'];
-  return (
-    <Animatable.View animation={cardStyle} delay={food.id * 150}>
-      <TouchableOpacity
-        onPress={() => {
-          goToRestaurant(food.id, food.name);
-        }}
-      >
-        <ImageBackground
-          style={styles.backgroundImage}
-          imageStyle={{ borderRadius: 10 }}
-          resizeMode="contain"
-          source={
-            require('../assets/img/foodImg_16x9.png')
-            // source={{
-            //   uri: food.img,
-            // }}
-          }
-        >
-          <LinearGradient
-            colors={food.img ? blackOverlay : redGradient}
-            style={styles.linearGradient}
-          >
-            <View style={styles.details}>
-              <Text style={styles.foodRating}>👌</Text>
-              <Text style={styles.foodName} numberOfLines={2}>
-                Brownie obsession
-              </Text>
-              <Text style={styles.foodName} numberOfLines={2}>
-                in T.G.I.Fridays
-              </Text>
-            </View>
-          </LinearGradient>
-        </ImageBackground>
-      </TouchableOpacity>
-    </Animatable.View>
-  );
-};
+export default class FoodCard extends Component {
+  state = {
+    loaded: false,
+  }
 
-export default FoodCard;
+  showPic = () => {
+    this.setState({ loaded: true });
+  }
+
+  render() {
+    const { food, goToRestaurant } = this.props;
+    const { loaded } = this.state;
+    const redGradient = ['rgb(255, 152, 99)', 'rgb(253, 89, 89)'];
+    const blackOverlay = ['rgba(0, 0, 0, 0.50)', 'rgba(0, 0, 0, 0.55)'];
+    return (
+      <Animatable.View animation={cardStyle} delay={food.id * 150}>
+        <TouchableOpacity
+          onPress={() => {
+            goToRestaurant(food.id, food.name);
+          }}
+        >
+          <ImageBackground
+            style={styles.backgroundImage}
+            imageStyle={{ borderRadius: 10 }}
+            resizeMode="contain"
+            source={{
+              uri: food.img,
+            }}
+            onLoadEnd={this.showPic}
+          >
+            <LinearGradient
+              colors={food.img ? blackOverlay : redGradient}
+              style={styles.linearGradient}
+            >
+              <View style={styles.details}>
+                <Text style={styles.foodRating}>👌</Text>
+                <Text style={styles.foodName} numberOfLines={2}>
+                  {loaded ? 'Brownie obsession' : 'Loading'}
+                </Text>
+                <Text style={styles.foodName} numberOfLines={2}>
+                in T.G.I.Fridays
+                </Text>
+              </View>
+            </LinearGradient>
+          </ImageBackground>
+        </TouchableOpacity>
+      </Animatable.View>
+    );
+  }
+}
 
 FoodCard.propTypes = {
   food: PropTypes.shape({
