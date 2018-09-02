@@ -128,7 +128,6 @@ FoodCard.propTypes = {
   food: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
-    distance: PropTypes.string,
     img: PropTypes.string,
   }),
   goToRestaurant: PropTypes.func.isRequired,
@@ -136,7 +135,6 @@ FoodCard.propTypes = {
 
 FoodCard.defaultProps = {
   food: {
-    distance: '',
     img: null,
   },
 };
