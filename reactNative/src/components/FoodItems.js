@@ -38,8 +38,8 @@ const FoodItems = props => {
         {items.map(item => {
           const foodImgLink = item.img
             ? {
-                uri: item.img,
-              }
+              uri: item.img,
+            }
             : require('../assets/img/default_foodImg.png');
           return (
             <View key={item.img}>
