@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import HeaderImageScrollView from 'react-native-image-header-scroll-view';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import LinearGradient from 'react-native-linear-gradient';
+import * as Animatable from 'react-native-animatable';
 import { StyleSheet,
   Text,
   View,
@@ -23,7 +25,9 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP('100%'),
   },
   linearGradient: {
-    flex: 1,
+    height: '100%',
+    width: '100%',
+    position: 'relative',
   },
   image: {
     height: 200,
@@ -50,7 +54,46 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     resizeMode: 'cover',
   },
+  loader: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  loader1: {
+    borderRadius: 10,
+    position: 'absolute',
+    height: '100%',
+    width: '25%',
+    left: '10%',
+    transform: [
+      { skewX: '5deg' },
+    ],
+  },
+  loader2: {
+    borderRadius: 10,
+    position: 'absolute',
+    height: '100%',
+    width: '15%',
+    left: '40%',
+    transform: [
+      { skewX: '5deg' },
+    ],
+  },
 });
+
+const loaderAnimation = {
+  0: {
+    left: '100%',
+  },
+  0.5: {
+    left: '40%',
+  },
+  1: {
+    left: '-100%',
+  },
+};
 
 export default class Restaurant extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -87,6 +130,7 @@ export default class Restaurant extends Component {
 
   state = {
     isConnected: true,
+    loaded: false,
   };
 
   componentDidMount() {
@@ -173,21 +217,44 @@ export default class Restaurant extends Component {
     return items;
   };
 
+  showPic = () => {
+    this.setState({ loaded: true });
+  };
+
   render() {
     const { navigation } = this.props;
-    const { isConnected } = this.state;
+    const { isConnected, loaded } = this.state;
     const restaurant = navigation.getParam('restaurant');
     const restaurantFoodDetails = this.segregateFoodItems(restaurant.foods);
+    const shine = ['rgba(255, 255, 255, 0.03)', 'rgba(255, 255, 255, 0.16)', 'rgba(255, 255, 255, 0.08)'];
+    const redGradient = ['rgb(255, 152, 99)', 'rgb(253, 89, 89)'];
+    const uploadedRestaurantImage = (
+      <View>
+        {loaded
+          ? (true) : (
+            <LinearGradient
+              colors={redGradient}
+              style={styles.linearGradient}
+            >
+              <Animatable.View duration={2000} delay={600} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
+                <LinearGradient colors={shine} style={styles.loader1} />
+                <LinearGradient colors={shine} style={styles.loader2} />
+              </Animatable.View>
+            </LinearGradient>
+          )}
+        <Image
+          source={{ uri: restaurant.restaurantPhotoURL }}
+          style={styles.headerImage}
+          onLoadEnd={this.showPic}
+        />
+      </View>
+    );
     const restaurantImage = restaurant.restaurantPhotoURL ? (
-      <Image
-        source={{ uri: restaurant.restaurantPhotoURL }}
-        style={styles.headerImage}
-      />
+      uploadedRestaurantImage
     ) : (
       <Image
         source={require('../assets/img/default_restaurantImg.png')}
         style={styles.headerImage}
-        onLoadEnd={this.showPic}
       />
     );
     return (
@@ -198,10 +265,10 @@ export default class Restaurant extends Component {
           minHeight={heightPercentageToDP('11%')}
           renderHeader={() => restaurantImage}
           maxOverlayOpacity={
-            restaurant.restaurantPhotoURL ? 0.8 : 0.01
+            restaurant.restaurantPhotoURL && loaded ? 0.8 : 0.01
           }
           minOverlayOpacity={
-            restaurant.restaurantPhotoURL ? 0.5 : 0.01
+            restaurant.restaurantPhotoURL && loaded ? 0.5 : 0.01
           }
           showsVerticalScrollIndicator={false}
         >
