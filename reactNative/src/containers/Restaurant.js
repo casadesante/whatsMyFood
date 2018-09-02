@@ -150,7 +150,7 @@ export default class Restaurant extends Component {
         },
       ))
       .then(deletedRestaurant => {
-        deletedRestaurant.status === 200 ? navigation.navigate('Home') : alert('Error while removing restaurant');
+        if (deletedRestaurant.status === 200) { navigation.navigate('Home'); } else { alert('Error while removing restaurant'); }
       })
       .catch(err => alert(err));
   }
@@ -178,7 +178,7 @@ export default class Restaurant extends Component {
     const { isConnected } = this.state;
     const restaurant = navigation.getParam('restaurant');
     const restaurantFoodDetails = this.segregateFoodItems(restaurant.foods);
-    const restaurantImage = restaurant.hasOwnProperty('restaurantPhotoURL') ? (
+    const restaurantImage = restaurant.restaurantPhotoURL ? (
       <Image
         source={{ uri: restaurant.restaurantPhotoURL }}
         style={styles.headerImage}
@@ -187,6 +187,7 @@ export default class Restaurant extends Component {
       <Image
         source={require('../assets/img/default_restaurantImg.png')}
         style={styles.headerImage}
+        onLoadEnd={this.showPic}
       />
     );
     return (
@@ -197,10 +198,10 @@ export default class Restaurant extends Component {
           minHeight={heightPercentageToDP('11%')}
           renderHeader={() => restaurantImage}
           maxOverlayOpacity={
-            restaurant.hasOwnProperty('restaurantPhotoURL') ? 0.8 : 0.01
+            restaurant.restaurantPhotoURL ? 0.8 : 0.01
           }
           minOverlayOpacity={
-            restaurant.hasOwnProperty('restaurantPhotoURL') ? 0.5 : 0.01
+            restaurant.restaurantPhotoURL ? 0.5 : 0.01
           }
           showsVerticalScrollIndicator={false}
         >
