@@ -81,13 +81,13 @@ const cardStyle = {
 
 const loaderAnimation = {
   0: {
-    left: '110%',
+    left: '100%',
   },
   0.5: {
     left: '40%',
   },
   1: {
-    left: '-110%',
+    left: '-100%',
   },
 };
 
@@ -131,18 +131,19 @@ export default class RestaurantCard extends Component {
               colors={restaurant.restaurantPhotoURL && loaded ? blackOverlay : redGradient}
               style={styles.linearGradient}
             >
-              {loaded ? (
+              <View>
+                { !loaded ? (
+                  <Animatable.View duration={2000} delay={10} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
+                    <View style={styles.loader1} />
+                    <View style={styles.loader2} />
+                  </Animatable.View>
+                ) : (true)}
                 <View style={styles.details}>
                   <Text style={styles.restaurantName} numberOfLines={2}>
-                    {loaded ? restaurant.restaurantName : '' }
+                    {restaurant.restaurantName}
                   </Text>
                 </View>
-              ) : (
-                <Animatable.View duration={2000} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
-                  <View style={styles.loader1} />
-                  <View style={styles.loader2} />
-                </Animatable.View>
-              )}
+              </View>
             </LinearGradient>
           </ImageBackground>
         </TouchableOpacity>
