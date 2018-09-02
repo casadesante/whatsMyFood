@@ -41,8 +41,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   loader1: {
-    backgroundColor: 'white',
-    opacity: 0.4,
+    borderRadius: 10,
     position: 'absolute',
     height: '100%',
     width: '25%',
@@ -52,8 +51,7 @@ const styles = StyleSheet.create({
     ],
   },
   loader2: {
-    backgroundColor: 'white',
-    opacity: 0.2,
+    borderRadius: 10,
     position: 'absolute',
     height: '100%',
     width: '15%',
@@ -92,9 +90,17 @@ const loaderAnimation = {
 };
 
 export default class RestaurantCard extends Component {
-  state= {
-    loaded: false,
-  };
+  constructor() {
+    super();
+    this.state = {
+      loaded: false,
+    };
+  }
+
+  componentDidMount() {
+    const { restaurant } = this.props;
+    if (!restaurant.restaurantPhotoURL) this.setState({ loaded: true });
+  }
 
   showPic = () => {
     this.setState({ loaded: true });
@@ -104,6 +110,7 @@ export default class RestaurantCard extends Component {
     const { restaurant, goToRestaurant, index } = this.props;
     const { loaded } = this.state;
     const redGradient = ['rgb(255, 152, 99)', 'rgb(253, 89, 89)'];
+    const shine = ['rgba(255, 255, 255, 0.03)', 'rgba(255, 255, 255, 0.16)', 'rgba(255, 255, 255, 0.08)'];
     const blackOverlay = ['rgba(0, 0, 0, 0.50)', 'rgba(0, 0, 0, 0.55)'];
     return (
       <Animatable.View
@@ -133,9 +140,9 @@ export default class RestaurantCard extends Component {
             >
               <View>
                 { !loaded ? (
-                  <Animatable.View duration={2000} delay={10} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
-                    <View style={styles.loader1} />
-                    <View style={styles.loader2} />
+                  <Animatable.View duration={2000} delay={600} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
+                    <LinearGradient colors={shine} style={styles.loader1} />
+                    <LinearGradient colors={shine} style={styles.loader2} />
                   </Animatable.View>
                 ) : (true)}
                 <View style={styles.details}>
