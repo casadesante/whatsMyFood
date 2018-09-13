@@ -7,8 +7,6 @@ import { StyleSheet,
   NetInfo,
   ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
-
-import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
 import { getProfileInfo } from '../lib/Auth';
 import RestaurantCard from '../components/RestaurantCard';
 import EmptyHome from '../components/EmptyHome';
