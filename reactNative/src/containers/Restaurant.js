@@ -126,6 +126,24 @@ export default class Restaurant extends Component {
         />
       </TouchableOpacity>
     ),
+    headerLeft: (
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Addfood', { restaurantData: null });
+        }}
+      >
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Ionicons
+            style={{ paddingLeft: 10 }}
+            name="ios-arrow-back"
+            size={30}
+            color="white"
+          />
+          <Text style={{ paddingLeft: 10, color: '#FFFFFF', fontSize: 18 }}>Home</Text>
+        </View>
+
+      </TouchableOpacity>
+    ),
   });
 
   state = {
