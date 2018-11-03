@@ -115,7 +115,8 @@ export default class Restaurant extends Component {
     headerRight: (
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('Addfood', { restaurantData: null });
+          const restaurant = navigation.getParam('restaurant');
+          navigation.navigate('Addfood', { restaurantData: null, restaurantID: restaurant.restaurantID });
         }}
       >
         <Ionicons
@@ -129,7 +130,7 @@ export default class Restaurant extends Component {
     headerLeft: (
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('Addfood', { restaurantData: null });
+          navigation.navigate('Home');
         }}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -181,6 +182,7 @@ export default class Restaurant extends Component {
 
   restaurantActionSheet = () => {
     const { navigation } = this.props;
+    const restaurant = navigation.getParam('restaurant');
     ActionSheetIOS.showActionSheetWithOptions(
       {
         options: ['Cancel', 'Add food', 'Edit restaurant', 'Remove restaurant'],
@@ -189,11 +191,10 @@ export default class Restaurant extends Component {
       },
       buttonIndex => {
         if (buttonIndex === 1) {
-          navigation.navigate('Addfood', { restaurantData: null });
+          navigation.navigate('Addfood', { restaurantData: null, restaurantID: restaurant.restaurantID });
         } else if (buttonIndex === 2) {
           navigation.navigate('EditRestaurant', { restaurantData: null });
         } else if (buttonIndex === 3) {
-          const restaurant = navigation.getParam('restaurant');
           this.deleteRestaurant(restaurant.restaurantID);
         }
       },
