@@ -96,34 +96,47 @@ export default class Addfood extends Component {
 
   saveDetails = () => {
     const { navigation } = this.props;
-    const { restaurantData } = this.props.navigation.state.params;
-
+    const { restaurantData, restaurantID } = this.props.navigation.state.params;
+    
     const { name, url, rating } = this.state;
     if (name.length !== 0) {
       getProfileInfo()
         .then(user => user.uid)
         .then(firebaseID => {
-          const restaurantAndFood = {
-            firebaseID,
-            googlePlacesID: restaurantData.placeID,
-            restaurantName: restaurantData.name,
-            formattedAddress: restaurantData.address,
-            restaurantPhotoURL: restaurantData.url,
-            food: {
+          if(restaurantData) {
+            const restaurantAndFood = {
+              firebaseID,
+              googlePlacesID: restaurantData.placeID,
+              restaurantName: restaurantData.name,
+              formattedAddress: restaurantData.address,
+              restaurantPhotoURL: restaurantData.url,
+              food: {
+                foodName: name,
+                foodPhotoURL: url,
+                rating,
+              },
+            };
+            return fetch(
+              'https://us-central1-whatsmyfood.cloudfunctions.net/addRestaurantAndFood',
+              { method: 'POST', body: JSON.stringify(restaurantAndFood) },
+            );
+          } else {
+            const addFoodDetails = {
+              firebaseID,
               foodName: name,
               foodPhotoURL: url,
               rating,
-            },
-          };
-          return fetch(
-            'https://us-central1-whatsmyfood.cloudfunctions.net/addRestaurantAndFood',
-            { method: 'POST', body: JSON.stringify(restaurantAndFood) },
-          );
+              restaurantID
+            };
+            return fetch('https://us-central1-whatsmyfood.cloudfunctions.net/addFood',
+              { method: 'POST', body: JSON.stringify(addFoodDetails) },
+            );
+          }
         })
         .then(restaurantAndFoodAdded => {
           restaurantAndFoodAdded.status === 200
             ? navigation.navigate('Home')
-            : alert('Error while adding the details');
+            : alert(restaurantAndFoodAdded.body);
         })
         .catch(err => alert(err));
     } else {
