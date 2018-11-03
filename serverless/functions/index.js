@@ -6,6 +6,7 @@ const admin = require('firebase-admin');
 const async = require('async');
 const uuidv4 = require('uuid/v4');
 const telegraf = require('telegraf');
+const moment = require('moment');
 
 admin.initializeApp();
 
@@ -901,7 +902,7 @@ exports.sendTelegramNotificationOnAddingUser = functions.database.ref('/users/{u
     console.log('====================================');
     console.log(`Snapshot Value: ${JSON.stringify(newUser)}`);
     console.log('====================================');
-    let telegramMessage = `👨${newUser.userName}(${newUser.emailID}) has joined our app🔥🔥`;
+    let telegramMessage = `👨${newUser.userName}(${newUser.emailID}) has joined our app🔥`;
     app.telegram.sendMessage(functions.config().telegram.groupid, telegramMessage, {})
       .then((success, err) =>{
         if (err) {
@@ -916,3 +917,181 @@ exports.sendTelegramNotificationOnAddingUser = functions.database.ref('/users/{u
         console.log('====================================');
       });
   });
+
+exports.sendWeeklyUserReportToTelegram = functions.https.onRequest((req, res) => {
+  console.log('====================================');
+  console.log("Received Request for sendWeeklyReportToTelegram");
+  console.log(req.body);
+  console.log('====================================');
+  let parsedRequest = typeof(req.body) === 'object' ? req.body : JSON.parse(req.body);
+
+  var readUsersRef = db.ref("/users");
+  var userReport = `Here is the List of 👨👨👨 added this week from ${moment().subtract(7, 'days').calendar()} to ${moment().format("MM/DD/YY")}:\n`;
+
+  async.waterfall([
+    (callback) => {
+      // fetching restaurants from user
+      readUsersRef.once("value", (snapshot, readUsersError) => {
+        if (readUsersError) {
+          return callback(readUsersError);
+        } else {
+          let users = snapshot.val();
+          console.log('====================================');
+          console.log(`List of Users: ${JSON.stringify(users)}`);
+          console.log('====================================');
+          for (var key in users) {
+            if (users.hasOwnProperty(key)) {
+              let userMomentObj = moment(users[key]["createdAt"]);
+              let sevenDaysPastmomentObj = moment().subtract(7, 'days');
+              let presentMomentObj = moment();
+              if ((userMomentObj <= presentMomentObj) && (userMomentObj >= sevenDaysPastmomentObj)) {
+                userReport = userReport + `${users[key]["userName"]}(${users[key]["emailID"]})\n`
+              }
+            }
+          }  
+          let telegramMessage = userReport;
+          app.telegram.sendMessage(functions.config().telegram.groupid, telegramMessage, {})
+            .then((success, err) =>{
+              if (err) {
+                throw err;
+              } else {
+                return 0;
+              }
+            })
+            .catch((err) => {
+              console.log('====================================');
+              console.log(`Error: ${err}`);
+              console.log('====================================');
+              return callback(err);
+            });      
+          return callback(null, users)
+        }
+      })
+    }
+  ], (err, result) => {
+    if (err) {
+      console.log(`error: ${err}`);
+      res.status(500).send(err);
+    }
+    console.log(`result: ${result}`);
+    res.status(200).send(result);
+  });
+});
+  
+exports.sendWeeklyRestaurantReportToTelegram = functions.https.onRequest((req, res) => {
+  console.log('====================================');
+  console.log("Received Request for sendWeeklyRestaurantReportToTelegram");
+  console.log(req.body);
+  console.log('====================================');
+
+  var readRestaurantsRef = db.ref("/restaurants");
+  var restaurantReport = `Here is the List of 🏤🏤🏤 added this week from ${moment().subtract(7, 'days').calendar()} to ${moment().format("MM/DD/YY")}:\n`;
+
+  async.waterfall([
+    (callback) => {
+      // fetching all restaurants
+      readRestaurantsRef.once("value", (snapshot, readRestaurantsError) => {
+        if (readRestaurantsError) {
+          return callback(readRestaurantsError);
+        } else {
+          let restaurants = snapshot.val();
+          console.log('====================================');
+          console.log(`List of Restaurants: ${JSON.stringify(restaurants)}`);
+          console.log('====================================');
+          for (var key in restaurants) {
+            if (restaurants.hasOwnProperty(key)) {
+              let restaurantMomentObj = moment(restaurants[key]["createdAt"]);
+              let sevenDaysPastmomentObj = moment().subtract(7, 'days');
+              let presentMomentObj = moment();
+              if ((restaurantMomentObj <= presentMomentObj) && (restaurantMomentObj >= sevenDaysPastmomentObj)) {
+                restaurantReport = restaurantReport + `${restaurants[key]["restaurantName"]}(${restaurants[key]["formattedAddress"]})\n`;
+              }
+            }
+          }  
+          let telegramMessage = restaurantReport;
+          app.telegram.sendMessage(functions.config().telegram.groupid, telegramMessage, {})
+            .then((success, err) =>{
+              if (err) {
+                throw err;
+              } else {
+                return 0;
+              }
+            })
+            .catch((err) => {
+              console.log('====================================');
+              console.log(`Error: ${err}`);
+              console.log('====================================');
+              return callback(err);
+            });      
+          return callback(null, restaurants)
+        }
+      })
+    }
+  ], (err, result) => {
+    if (err) {
+      console.log(`error: ${err}`);
+      res.status(500).send(err);
+    }
+    console.log(`result: ${result}`);
+    res.status(200).send(result);
+  });
+});
+
+exports.sendWeeklyFoodReportToTelegram = functions.https.onRequest((req, res) => {
+  console.log('====================================');
+  console.log("Received Request for sendWeeklyFoodReportToTelegram");
+  console.log(req.body);
+  console.log('====================================');
+
+  var readFoodsRef = db.ref("/foods");
+  var foodReport = `Here is the List of 🥑🍙🥐 added this week from ${moment().subtract(7, 'days').calendar()} to ${moment().format("MM/DD/YY")}:\n`;
+
+  async.waterfall([
+    (callback) => {
+      // fetching all foods
+      readFoodsRef.once("value", (snapshot, readFoodsError) => {
+        if (readFoodsError) {
+          return callback(readFoodsError);
+        } else {
+          let foods = snapshot.val();
+          console.log('====================================');
+          console.log(`List of Foods: ${JSON.stringify(foods)}`);
+          console.log('====================================');
+          for (var key in foods) {
+            if (foods.hasOwnProperty(key)) {
+              let foodMomentObj = moment(foods[key]["createdAt"]);
+              let sevenDaysPastmomentObj = moment().subtract(7, 'days');
+              let presentMomentObj = moment();
+              if ((foodMomentObj <= presentMomentObj) && (foodMomentObj >= sevenDaysPastmomentObj)) {
+                foodReport = foodReport + `${foods[key]["foodName"]}(Rating: ${foods[key]["rating"]})\n`;
+              }
+            }
+          }  
+          let telegramMessage = foodReport;
+          app.telegram.sendMessage(functions.config().telegram.groupid, telegramMessage, {})
+            .then((success, err) =>{
+              if (err) {
+                throw err;
+              } else {
+                return 0;
+              }
+            })
+            .catch((err) => {
+              console.log('====================================');
+              console.log(`Error: ${err}`);
+              console.log('====================================');
+              return callback(err);
+            });      
+          return callback(null, foods)
+        }
+      })
+    }
+  ], (err, result) => {
+    if (err) {
+      console.log(`error: ${err}`);
+      res.status(500).send(err);
+    }
+    console.log(`result: ${result}`);
+    res.status(200).send(result);
+  });
+});
