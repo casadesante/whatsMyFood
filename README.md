@@ -36,7 +36,7 @@ firebase functions:config:set telegram.token="<TELEGRAM-BOT-TOKEN>"
 - Look for the value of `chat.id`.
 
 ### Cron Job
-We need to send a weekly report of users, restuarnts & foods added to our database. This requires cron feature in firebase functions. This is not supported for the moment. So, we have used [cron-jon](https://cron-job.org), an external resource to invoke the respective functions which sends a weekly report to telegram group.
+We need to send a weekly report of users, restuarnts & foods added to our database. This requires cron feature in firebase functions. This is not supported for the moment. So, we have used [cron-jon](https://cronless.com), an external resource to invoke the respective functions which sends a weekly report to telegram group.
 
 ### NoSQL Documentation:
 - [Users](https://github.com/sharathvignesh/whatsMyFood/blob/master/doc/db/noSQLSchema.md#users)
