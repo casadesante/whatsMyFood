@@ -52,6 +52,7 @@ const Textbox = props => {
         placeholder={placeholder}
         placeholderTextColor="rgb(144, 144, 144)"
         onChangeText={changeText}
+        value={text}
       />
     </View>
   );

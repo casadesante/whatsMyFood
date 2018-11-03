@@ -193,7 +193,7 @@ export default class Restaurant extends Component {
         if (buttonIndex === 1) {
           navigation.navigate('Addfood', { restaurantData: null, restaurantID: restaurant.restaurantID });
         } else if (buttonIndex === 2) {
-          navigation.navigate('EditRestaurant', { restaurantData: null });
+          navigation.navigate('EditRestaurant', { restaurantData: restaurant });
         } else if (buttonIndex === 3) {
           this.deleteRestaurant(restaurant.restaurantID);
         }
@@ -244,6 +244,7 @@ export default class Restaurant extends Component {
     const { navigation } = this.props;
     const { isConnected, loaded } = this.state;
     const restaurant = navigation.getParam('restaurant');
+    console.log(restaurant);
     const restaurantFoodDetails = this.segregateFoodItems(restaurant.foods);
     const shine = ['rgba(255, 255, 255, 0.03)', 'rgba(255, 255, 255, 0.16)', 'rgba(255, 255, 255, 0.08)'];
     const redGradient = ['rgb(255, 152, 99)', 'rgb(253, 89, 89)'];

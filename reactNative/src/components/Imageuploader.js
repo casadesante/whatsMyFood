@@ -89,7 +89,7 @@ export default class Imageuploader extends Component {
   }
 }
 
-Imageuploader.propTypes = {
-  upload: PropTypes.func.isRequired,
-  uploading: PropTypes.bool.isRequired,
-};
+// Imageuploader.propTypes = {
+//   upload: PropTypes.func.isRequired,
+//   uploading: PropTypes.bool.isRequired,
+// };

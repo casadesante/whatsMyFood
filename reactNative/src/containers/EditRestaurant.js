@@ -79,16 +79,26 @@ export default class EditRestaurant extends Component {
     };
   };
 
-  state = {
-    uploaded: false,
-    url: '',
-    name: '',
-    location: '',
-  };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
+    const { navigation } = props;
+    const restaurantData = navigation.getParam('restaurantData');
+
+    console.log(restaurantData);
+
+    this.state = {
+      uploaded: restaurantData.restaurantPhotoURL ? true : false,
+      url: restaurantData.restaurantPhotoURL || '',
+      name: restaurantData.restaurantName || '',
+      location: restaurantData.formattedAddress || '',
+    }
+  }
+
+  componentDidMount = () => {
     const { navigation } = this.props;
     navigation.setParams({ save: this.saveRestaurantForm });
+
     /* eslint no-underscore-dangle: */
     this._navListener = navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('light-content');
@@ -123,8 +133,24 @@ export default class EditRestaurant extends Component {
 
   saveRestaurantForm = () => {
     const { navigation } = this.props;
-    // alert(JSON.stringify(this.state));
-    navigation.navigate('Restaurant', { restaurantData: this.state });
+    const restaurantData = navigation.getParam('restaurantData');
+
+    const { name, location, url } = this.state;
+
+    const updatedData = {
+      restaurantID: restaurantData.restaurantID,
+      formattedAddress: location,
+      restaurantName: name,
+      restaurantPhotoURL: url,
+      createdAt: restaurantData.createdAt
+    };
+
+    console.log(updatedData);
+    // fetch('https://us-central1-whatsmyfood.cloudfunctions.net/updateRestaurant', 
+    //   { method: 'POST', body: JSON.stringify({asd: 'asd'}) 
+    // })
+    // .then()
+    // navigation.navigate('Restaurant', { restaurantData: this.state });
   };
 
   uploadImage = (uri, mime = 'application/octet-stream') =>
