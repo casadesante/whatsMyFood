@@ -41,6 +41,8 @@ const styles = StyleSheet.create({
   },
 });
 
+const emojiList = ['🤢', '👎🏼', '😐', '👌🏼', '😍'];
+
 const loaderAnimation = {
   0: {
     left: '100%',
@@ -102,12 +104,12 @@ export default class FoodCard extends Component {
                   </Animatable.View>
                 ) : (true)}
                 <View style={styles.details}>
-                  <Text style={styles.foodRating}>👌</Text>
+                  <Text style={styles.foodRating}>{emojiList[food.rating - 1]}</Text>
                   <Text style={styles.foodName} numberOfLines={2}>
                     {loaded ? food.foodName : 'Loading'}
                   </Text>
                   <Text style={styles.foodName} numberOfLines={2}>
-                    in T.G.I.Fridays
+                    in {food.restaurantName}
                   </Text>
                 </View>
               </View>
@@ -124,6 +126,7 @@ FoodCard.propTypes = {
     restaurantID: PropTypes.string.isRequired,
     foodName: PropTypes.string.isRequired,
     foodPhotoURL: PropTypes.string,
+    restaurantName: PropTypes.string.isRequired,
   }),
   goToRestaurant: PropTypes.func.isRequired,
 };
