@@ -278,13 +278,17 @@ export default class Search extends Component {
             </View>
           ) : (
             <View style={styles.restaurantContainer}>
-              {foods.map(foodInfo => (
-                <FoodCard
-                  key={foodInfo.restaurantID}
-                  goToRestaurant={this.getRestaurantFromFood}
-                  food={foodInfo}
-                />
-              ))}
+              {foods
+                .filter(
+                  (food) => (food.foodName.includes(searchKeyword)),
+                )
+                .map(foodInfo => (
+                  <FoodCard
+                    key={foodInfo.restaurantID}
+                    goToRestaurant={this.getRestaurantFromFood}
+                    food={foodInfo}
+                  />
+                ))}
             </View>
           )}
         </ScrollView>
