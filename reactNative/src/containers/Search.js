@@ -132,9 +132,11 @@ export default class Search extends Component {
     navigation.navigate('Restaurant', { restaurant });
   };
 
-  getRestaurantFromFood = restaurant => {
+  getRestaurantFromFood = restaurantID => {
     const { navigation } = this.props;
-    navigation.navigate('Restaurant', { restaurant });
+    const { restaurants } = this.state;
+    const restaurantToGo = restaurants.find((hotel) => hotel.restaurantID === restaurantID);
+    navigation.navigate('Restaurant', { restaurant: restaurantToGo });
   };
 
   toggleSearchTab = selectedTab => {
