@@ -65,6 +65,18 @@ const styles = StyleSheet.create({
     marginLeft: widthPercentageToDP('1%'),
     marginTop: heightPercentageToDP('0.2%'),
   },
+  noResults: {
+    height: heightPercentageToDP('60%'),
+    width: widthPercentageToDP('92%'),
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noResultsText: {
+    fontSize: RF(4),
+    color: '#999',
+  },
 });
 
 export default class Search extends Component {
@@ -258,27 +270,38 @@ export default class Search extends Component {
 
           {tabState === 'Restaurant' ? (
             <View style={styles.restaurantContainer}>
-              {restaurants.length === 0 ? (
-                <Text>No restaurants found</Text>
-              ) : (
-                <View>
-                  {restaurants
-                    .filter(
-                      (hotel) => (
-                        (hotel.restaurantName).toLowerCase()
-                          .includes((searchKeyword).toLowerCase())),
-                    )
-                    .map((restaurantInfo, index) => (
-                      <RestaurantCard
-                        goToRestaurant={this.getRestaurant}
-                        restaurant={restaurantInfo}
-                        key={restaurantInfo.restaurantID}
-                        index={index}
-                        disableAnimation
-                      />
-                    ))}
-                </View>
-              )}
+              <View>
+                {restaurants
+                  .filter(
+                    (hotel) => (
+                      (hotel.restaurantName).toLowerCase()
+                        .includes((searchKeyword).toLowerCase())),
+                  ).length === 0
+                  ? (
+                    <View style={styles.noResults}>
+                      <Text style={styles.noResultsText}>
+                    No results found
+                      </Text>
+                    </View>
+                  )
+                  : (
+                    restaurants
+                      .filter(
+                        (hotel) => (
+                          (hotel.restaurantName).toLowerCase()
+                            .includes((searchKeyword).toLowerCase())),
+                      )
+                      .map((restaurantInfo, index) => (
+                        <RestaurantCard
+                          goToRestaurant={this.getRestaurant}
+                          restaurant={restaurantInfo}
+                          key={restaurantInfo.restaurantID}
+                          index={index}
+                          disableAnimation
+                        />
+                      ))
+                  )}
+              </View>
             </View>
           ) : (
             <View style={styles.restaurantContainer}>
@@ -287,14 +310,27 @@ export default class Search extends Component {
                   (food) => (
                     (food.foodName).toLowerCase()
                       .includes((searchKeyword).toLowerCase())),
+                ).length === 0
+                ? (
+                  <View
+                    style={styles.noResults}
+                  >
+                    <Text style={styles.noResultsText}>No results found
+                    </Text>
+                  </View>
                 )
-                .map(foodInfo => (
-                  <FoodCard
-                    key={foodInfo.restaurantID}
-                    goToRestaurant={this.getRestaurantFromFood}
-                    food={foodInfo}
-                  />
-                ))}
+                : (foods
+                  .filter(
+                    (food) => (
+                      (food.foodName).toLowerCase()
+                        .includes((searchKeyword).toLowerCase())),
+                  ).map(foodInfo => (
+                    <FoodCard
+                      key={foodInfo.restaurantID}
+                      goToRestaurant={this.getRestaurantFromFood}
+                      food={foodInfo}
+                    />
+                  )))}
             </View>
           )}
         </ScrollView>
