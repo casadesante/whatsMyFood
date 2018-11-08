@@ -6,13 +6,14 @@ import { StyleSheet,
   StatusBar,
   TouchableOpacity,
   TextInput,
-  NetInfo } from 'react-native';
+  NetInfo,
+  AsyncStorage } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
 import colors from '../lib/Colors';
-import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
+// import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
 import RestaurantCard from '../components/RestaurantCard';
 import FoodCard from '../components/FoodCard';
 import OfflineNotice from '../components/Nointernet';
@@ -78,6 +79,9 @@ export default class Search extends Component {
     tabState: 'Restaurant',
     searchKeyword: '',
     isConnected: true,
+    restaurants: [],
+    foods: [],
+    loading: true,
   };
 
   componentDidMount() {
@@ -90,6 +94,7 @@ export default class Search extends Component {
       'connectionChange',
       this.handleConnectivityChange,
     );
+    this.getRestaurantsFromAsyncStorage();
   }
 
   componentWillUnmount() {
@@ -100,17 +105,17 @@ export default class Search extends Component {
     this._navListener.remove();
   }
 
-  handleConnectivityChange = isConnected => {
-    if (isConnected) {
-      this.setState({ isConnected });
-    } else {
-      this.setState({ isConnected });
+  getRestaurantsFromAsyncStorage = async () => {
+    try {
+      const retrievedItem = await AsyncStorage.getItem('restaurants');
+      console.log(`Async store restaurants : ${retrievedItem}`);
+      // return JSON.parse(retrievedItem);
+      this.setState({ restaurants: JSON.parse(retrievedItem), loading: false });
+      return true;
+    } catch (error) {
+      console.log(`Async store : ${error}`);
+      return false;
     }
-  };
-
-  goToRestaurant = (id, name) => {
-    const { navigation } = this.props;
-    navigation.navigate('Restaurant', { id, name });
   };
 
   toggleSearchTab = selectedTab => {
@@ -149,6 +154,19 @@ export default class Search extends Component {
     };
   };
 
+  goToRestaurant = (id, name) => {
+    const { navigation } = this.props;
+    navigation.navigate('Restaurant', { id, name });
+  };
+
+  handleConnectivityChange = isConnected => {
+    if (isConnected) {
+      this.setState({ isConnected });
+    } else {
+      this.setState({ isConnected });
+    }
+  };
+
   searchClearStyle = () => {
     const { searchKeyword } = this.state;
     const crossOpacity = searchKeyword === '' ? 0 : 1;
@@ -156,7 +174,7 @@ export default class Search extends Component {
   };
 
   render() {
-    const { tabState, searchKeyword, isConnected } = this.state;
+    const { tabState, searchKeyword, isConnected, restaurants, foods, loading } = this.state;
     return (
       <View style={styles.container}>
         {!isConnected ? <OfflineNotice /> : null}
@@ -222,7 +240,7 @@ export default class Search extends Component {
 
           {tabState === 'Restaurant' ? (
             <View style={styles.restaurantContainer}>
-              {helper
+              {/* {helper
                 .generateRestaurants()
                 .map(restaurantInfo => (
                   <RestaurantCard
@@ -230,11 +248,14 @@ export default class Search extends Component {
                     restaurant={restaurantInfo}
                     key={restaurantInfo.id}
                   />
-                ))}
+                ))} */}
+              <Text>{JSON.stringify(restaurants)}</Text>
+              {loading}
             </View>
           ) : (
             <View style={styles.restaurantContainer}>
-              {helper
+              <Text>{foods}</Text>
+              {/* {helper
                 .generateRestaurants()
                 .map(foodInfo => (
                   <FoodCard
@@ -242,7 +263,7 @@ export default class Search extends Component {
                     food={foodInfo}
                     key={foodInfo.id}
                   />
-                ))}
+                ))} */}
             </View>
           )}
         </ScrollView>
