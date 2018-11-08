@@ -173,8 +173,11 @@ export default class Search extends Component {
     return `rgba(255,255,255,${crossOpacity})`;
   };
 
+  handleSearchInput = (KeyWord) => {
+    this.setState({ searchKeyword: KeyWord });
+  }
+
   render() {
-    const { navigation } = this.props;
     const { tabState, searchKeyword, isConnected, restaurants, foods } = this.state;
     return (
       <View style={styles.container}>
@@ -191,9 +194,7 @@ export default class Search extends Component {
               style={styles.searchInput}
               placeholder="Search"
               placeholderTextColor="rgba(255, 255, 255, 0.7)"
-              onChangeText={KeyWord => {
-                this.setState({ searchKeyword: KeyWord });
-              }}
+              onChangeText={this.handleSearchInput}
               value={searchKeyword}
               selectionColor="white"
             />
@@ -242,17 +243,21 @@ export default class Search extends Component {
           {tabState === 'Restaurant' ? (
             <View style={styles.restaurantContainer}>
               {restaurants.length === 0 ? (
-                <EmptyHome navigation={navigation} />
+                <Text>No restaurants found</Text>
               ) : (
                 <View>
-                  {restaurants.map((restaurantInfo, index) => (
-                    <RestaurantCard
-                      goToRestaurant={this.getRestaurant}
-                      restaurant={restaurantInfo}
-                      key={restaurantInfo.restaurantID}
-                      index={index}
-                    />
-                  ))}
+                  {restaurants
+                    .filter(
+                      (hotel) => (hotel.restaurantName.includes(searchKeyword)),
+                    )
+                    .map((restaurantInfo, index) => (
+                      <RestaurantCard
+                        goToRestaurant={this.getRestaurant}
+                        restaurant={restaurantInfo}
+                        key={restaurantInfo.restaurantID}
+                        index={index}
+                      />
+                    ))}
                 </View>
               )}
             </View>
