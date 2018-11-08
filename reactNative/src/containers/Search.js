@@ -110,7 +110,14 @@ export default class Search extends Component {
       const retrievedItem = await AsyncStorage.getItem('restaurants');
       console.log(`Async store restaurants : ${retrievedItem}`);
       // return JSON.parse(retrievedItem);
-      this.setState({ restaurants: JSON.parse(retrievedItem) });
+      const restaurants = JSON.parse(retrievedItem);
+      const foods = [];
+      restaurants.forEach((hotel) => {
+        hotel.foods.forEach((food) => {
+          foods.push(food);
+        });
+      });
+      this.setState({ restaurants, foods });
       return true;
     } catch (error) {
       console.log(`Async store : ${error}`);
@@ -264,7 +271,7 @@ export default class Search extends Component {
             </View>
           ) : (
             <View style={styles.restaurantContainer}>
-              <Text>{foods}</Text>
+              <Text>{JSON.stringify(foods)}</Text>
 
             </View>
           )}

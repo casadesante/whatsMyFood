@@ -114,7 +114,7 @@ export default class RestaurantCard extends Component {
     const blackOverlay = ['rgba(0, 0, 0, 0.50)', 'rgba(0, 0, 0, 0.55)'];
     return (
       <Animatable.View
-        animation={disableAnimation ? undefined: cardStyle}
+        animation={disableAnimation ? undefined : cardStyle}
         delay={
         index * 150
         // List index
