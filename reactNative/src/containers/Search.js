@@ -256,6 +256,7 @@ export default class Search extends Component {
                         restaurant={restaurantInfo}
                         key={restaurantInfo.restaurantID}
                         index={index}
+                        disableAnimation
                       />
                     ))}
                 </View>

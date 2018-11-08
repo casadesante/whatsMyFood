@@ -107,14 +107,14 @@ export default class RestaurantCard extends Component {
   };
 
   render() {
-    const { restaurant, goToRestaurant, index } = this.props;
+    const { restaurant, goToRestaurant, index, disableAnimation } = this.props;
     const { loaded } = this.state;
     const redGradient = ['rgb(255, 152, 99)', 'rgb(253, 89, 89)'];
     const shine = ['rgba(255, 255, 255, 0.03)', 'rgba(255, 255, 255, 0.16)', 'rgba(255, 255, 255, 0.08)'];
     const blackOverlay = ['rgba(0, 0, 0, 0.50)', 'rgba(0, 0, 0, 0.55)'];
     return (
       <Animatable.View
-        animation={cardStyle}
+        animation={disableAnimation ? undefined: cardStyle}
         delay={
         index * 150
         // List index
@@ -167,10 +167,12 @@ RestaurantCard.propTypes = {
     restaurantPhotoURL: PropTypes.string,
   }),
   goToRestaurant: PropTypes.func.isRequired,
+  disableAnimation: PropTypes.bool,
 };
 
 RestaurantCard.defaultProps = {
   restaurant: {
     img: null,
   },
+  disableAnimation: false,
 };
