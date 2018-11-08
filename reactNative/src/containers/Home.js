@@ -5,9 +5,10 @@ import { StyleSheet,
   ScrollView,
   StatusBar,
   NetInfo,
-  ActivityIndicator } from 'react-native';
+  ActivityIndicator,
+  AsyncStorage } from 'react-native';
 import PropTypes from 'prop-types';
-import { getProfileInfo } from '../lib/Auth';
+// import { getProfileInfo } from '../lib/Auth';
 import RestaurantCard from '../components/RestaurantCard';
 import EmptyHome from '../components/EmptyHome';
 import OfflineNotice from '../components/Nointernet';
@@ -73,20 +74,7 @@ export default class Home extends Component {
     /* eslint no-underscore-dangle: */
     this._navListener = navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('dark-content');
-      getProfileInfo()
-        .then(user => user.uid)
-        .then(firebaseID => fetch(
-          'https://us-central1-whatsmyfood.cloudfunctions.net/fetchRestaurantsAndFoods',
-          {
-            method: 'POST',
-            body: JSON.stringify({ firebaseID }),
-          },
-        ))
-        .then(restaurants => restaurants.json())
-        .then(parsedRestaurants => this.setState(
-          { restaurants: parsedRestaurants, loading: false },
-        ))
-        .catch(err => alert(err));
+      this.getRestaurantsFromAsyncStorage();
     });
   }
 
@@ -101,6 +89,19 @@ export default class Home extends Component {
   getRestaurant = restaurant => {
     const { navigation } = this.props;
     navigation.navigate('Restaurant', { restaurant });
+  };
+
+  getRestaurantsFromAsyncStorage = async () => {
+    try {
+      const retrievedItem = await AsyncStorage.getItem('restaurants');
+      console.log(`Async store restaurants : ${retrievedItem}`);
+      // return JSON.parse(retrievedItem);
+      this.setState({ restaurants: JSON.parse(retrievedItem), loading: false });
+      return true;
+    } catch (error) {
+      console.log(`Async store : ${error}`);
+      return false;
+    }
   };
 
   handleConnectivityChange = isConnected => {
