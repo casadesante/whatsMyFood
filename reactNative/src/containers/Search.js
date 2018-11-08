@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   restaurantContainer: {
     padding: widthPercentageToDP('4%'),
-    paddingBottom: widthPercentageToDP('50%') * 0.5625,
+    paddingBottom: widthPercentageToDP('92%') * 0.5625,
     paddingTop: widthPercentageToDP('2%'),
   },
   searchInput: {
@@ -244,7 +244,7 @@ export default class Search extends Component {
               {restaurants.length === 0 ? (
                 <EmptyHome navigation={navigation} />
               ) : (
-                <View style={styles.restaurantContainer}>
+                <View>
                   {restaurants.map((restaurantInfo, index) => (
                     <RestaurantCard
                       goToRestaurant={this.getRestaurant}
