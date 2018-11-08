@@ -262,7 +262,9 @@ export default class Search extends Component {
                 <View>
                   {restaurants
                     .filter(
-                      (hotel) => (hotel.restaurantName.includes(searchKeyword)),
+                      (hotel) => (
+                        (hotel.restaurantName).toLowerCase()
+                          .includes((searchKeyword).toLowerCase())),
                     )
                     .map((restaurantInfo, index) => (
                       <RestaurantCard
@@ -280,7 +282,9 @@ export default class Search extends Component {
             <View style={styles.restaurantContainer}>
               {foods
                 .filter(
-                  (food) => (food.foodName.includes(searchKeyword)),
+                  (food) => (
+                    (food.foodName).toLowerCase()
+                      .includes((searchKeyword).toLowerCase())),
                 )
                 .map(foodInfo => (
                   <FoodCard
