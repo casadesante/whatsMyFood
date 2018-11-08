@@ -172,7 +172,7 @@ RestaurantCard.propTypes = {
 
 RestaurantCard.defaultProps = {
   restaurant: {
-    img: null,
+    restaurantPhotoURL: null,
   },
   disableAnimation: false,
 };

@@ -41,17 +41,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const cardStyle = {
-  0: {
-    opacity: 0,
-    marginTop: heightPercentageToDP('5%'),
-  },
-  1: {
-    opacity: 1,
-    marginTop: heightPercentageToDP('0%'),
-  },
-};
-
 const loaderAnimation = {
   0: {
     left: '100%',
@@ -69,21 +58,27 @@ export default class FoodCard extends Component {
     loaded: false,
   }
 
+  componentDidMount() {
+    const { food } = this.props;
+    if (!food.foodPhotoURL) this.setState({ loaded: true });
+  }
+
   showPic = () => {
     this.setState({ loaded: true });
   }
 
   render() {
     const { food, goToRestaurant } = this.props;
+    console.log(food);
     const { loaded } = this.state;
     const redGradient = ['rgb(255, 152, 99)', 'rgb(253, 89, 89)'];
     const blackOverlay = ['rgba(0, 0, 0, 0.50)', 'rgba(0, 0, 0, 0.55)'];
     const shine = ['rgba(255, 255, 255, 0.03)', 'rgba(255, 255, 255, 0.16)', 'rgba(255, 255, 255, 0.08)'];
     return (
-      <Animatable.View animation={cardStyle} delay={food.id * 150}>
+      <Animatable.View animation={undefined}>
         <TouchableOpacity
           onPress={() => {
-            goToRestaurant(food.id, food.name);
+            goToRestaurant(food.restaurantID);
           }}
         >
           <ImageBackground
@@ -91,12 +86,12 @@ export default class FoodCard extends Component {
             imageStyle={{ borderRadius: 10 }}
             resizeMode="contain"
             source={{
-              uri: food.img,
+              uri: food.foodPhotoURL,
             }}
             onLoadEnd={this.showPic}
           >
             <LinearGradient
-              colors={food.img ? blackOverlay : redGradient}
+              colors={food.foodPhotoURL && loaded ? blackOverlay : redGradient}
               style={styles.linearGradient}
             >
               <View>
@@ -109,10 +104,10 @@ export default class FoodCard extends Component {
                 <View style={styles.details}>
                   <Text style={styles.foodRating}>👌</Text>
                   <Text style={styles.foodName} numberOfLines={2}>
-                    {loaded ? 'Brownie obsession' : 'Loading'}
+                    {loaded ? food.foodName : 'Loading'}
                   </Text>
                   <Text style={styles.foodName} numberOfLines={2}>
-                in T.G.I.Fridays
+                    in T.G.I.Fridays
                   </Text>
                 </View>
               </View>
@@ -126,15 +121,15 @@ export default class FoodCard extends Component {
 
 FoodCard.propTypes = {
   food: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    img: PropTypes.string,
+    restaurantID: PropTypes.string.isRequired,
+    foodName: PropTypes.string.isRequired,
+    foodPhotoURL: PropTypes.string,
   }),
   goToRestaurant: PropTypes.func.isRequired,
 };
 
 FoodCard.defaultProps = {
   food: {
-    img: null,
+    foodPhotoURL: null,
   },
 };

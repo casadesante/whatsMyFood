@@ -15,7 +15,6 @@ import * as Animatable from 'react-native-animatable';
 import colors from '../lib/Colors';
 // import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
 import RestaurantCard from '../components/RestaurantCard';
-import EmptyHome from '../components/EmptyHome';
 import FoodCard from '../components/FoodCard';
 import OfflineNotice from '../components/Nointernet';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
@@ -114,7 +113,10 @@ export default class Search extends Component {
       const foods = [];
       restaurants.forEach((hotel) => {
         hotel.foods.forEach((food) => {
-          foods.push(food);
+          const f = food;
+          if (f.foodPhotoURL === '') { delete f.foodPhotoURL; }
+          f.restaurantName = hotel.restaurantName;
+          foods.push(f);
         });
       });
       this.setState({ restaurants, foods });
@@ -126,6 +128,11 @@ export default class Search extends Component {
   };
 
   getRestaurant = restaurant => {
+    const { navigation } = this.props;
+    navigation.navigate('Restaurant', { restaurant });
+  };
+
+  getRestaurantFromFood = restaurant => {
     const { navigation } = this.props;
     navigation.navigate('Restaurant', { restaurant });
   };
@@ -271,8 +278,13 @@ export default class Search extends Component {
             </View>
           ) : (
             <View style={styles.restaurantContainer}>
-              <Text>{JSON.stringify(foods)}</Text>
-
+              {foods.map(foodInfo => (
+                <FoodCard
+                  key={foodInfo.restaurantID}
+                  goToRestaurant={this.getRestaurantFromFood}
+                  food={foodInfo}
+                />
+              ))}
             </View>
           )}
         </ScrollView>
