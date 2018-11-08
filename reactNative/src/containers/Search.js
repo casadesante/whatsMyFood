@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
+import { StyleSheet,
   Text,
   View,
   ScrollView,
   StatusBar,
   TouchableOpacity,
   TextInput,
-  NetInfo,
-} from 'react-native';
+  NetInfo } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import PropTypes from 'prop-types';
@@ -136,14 +134,12 @@ export default class Search extends Component {
 
   tabSelectorStyle = () => {
     const { tabState } = this.state;
-    const moveLeft =
-      tabState === 'Restaurant'
-        ? widthPercentageToDP('8%')
-        : widthPercentageToDP('65%');
-    const underlineWidth =
-      tabState === 'Restaurant'
-        ? widthPercentageToDP('42%')
-        : widthPercentageToDP('20%');
+    const moveLeft = tabState === 'Restaurant'
+      ? widthPercentageToDP('8%')
+      : widthPercentageToDP('65%');
+    const underlineWidth = tabState === 'Restaurant'
+      ? widthPercentageToDP('42%')
+      : widthPercentageToDP('20%');
     return {
       height: heightPercentageToDP('0.4%'),
       backgroundColor: colors.coral,
