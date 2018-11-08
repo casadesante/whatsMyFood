@@ -15,6 +15,7 @@ import * as Animatable from 'react-native-animatable';
 import colors from '../lib/Colors';
 // import helper from '../lib/Helper'; // to generate sample data. Remove once API is implemented
 import RestaurantCard from '../components/RestaurantCard';
+import EmptyHome from '../components/EmptyHome';
 import FoodCard from '../components/FoodCard';
 import OfflineNotice from '../components/Nointernet';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
   },
   restaurantContainer: {
     padding: widthPercentageToDP('4%'),
-    paddingBottom: widthPercentageToDP('0%'),
+    paddingBottom: widthPercentageToDP('50%') * 0.5625,
     paddingTop: widthPercentageToDP('2%'),
   },
   searchInput: {
@@ -81,7 +82,6 @@ export default class Search extends Component {
     isConnected: true,
     restaurants: [],
     foods: [],
-    loading: true,
   };
 
   componentDidMount() {
@@ -110,12 +110,17 @@ export default class Search extends Component {
       const retrievedItem = await AsyncStorage.getItem('restaurants');
       console.log(`Async store restaurants : ${retrievedItem}`);
       // return JSON.parse(retrievedItem);
-      this.setState({ restaurants: JSON.parse(retrievedItem), loading: false });
+      this.setState({ restaurants: JSON.parse(retrievedItem) });
       return true;
     } catch (error) {
       console.log(`Async store : ${error}`);
       return false;
     }
+  };
+
+  getRestaurant = restaurant => {
+    const { navigation } = this.props;
+    navigation.navigate('Restaurant', { restaurant });
   };
 
   toggleSearchTab = selectedTab => {
@@ -154,11 +159,6 @@ export default class Search extends Component {
     };
   };
 
-  goToRestaurant = (id, name) => {
-    const { navigation } = this.props;
-    navigation.navigate('Restaurant', { id, name });
-  };
-
   handleConnectivityChange = isConnected => {
     if (isConnected) {
       this.setState({ isConnected });
@@ -174,7 +174,8 @@ export default class Search extends Component {
   };
 
   render() {
-    const { tabState, searchKeyword, isConnected, restaurants, foods, loading } = this.state;
+    const { navigation } = this.props;
+    const { tabState, searchKeyword, isConnected, restaurants, foods } = this.state;
     return (
       <View style={styles.container}>
         {!isConnected ? <OfflineNotice /> : null}
@@ -240,30 +241,25 @@ export default class Search extends Component {
 
           {tabState === 'Restaurant' ? (
             <View style={styles.restaurantContainer}>
-              {/* {helper
-                .generateRestaurants()
-                .map(restaurantInfo => (
-                  <RestaurantCard
-                    goToRestaurant={this.goToRestaurant}
-                    restaurant={restaurantInfo}
-                    key={restaurantInfo.id}
-                  />
-                ))} */}
-              <Text>{JSON.stringify(restaurants)}</Text>
-              {loading}
+              {restaurants.length === 0 ? (
+                <EmptyHome navigation={navigation} />
+              ) : (
+                <View style={styles.restaurantContainer}>
+                  {restaurants.map((restaurantInfo, index) => (
+                    <RestaurantCard
+                      goToRestaurant={this.getRestaurant}
+                      restaurant={restaurantInfo}
+                      key={restaurantInfo.restaurantID}
+                      index={index}
+                    />
+                  ))}
+                </View>
+              )}
             </View>
           ) : (
             <View style={styles.restaurantContainer}>
               <Text>{foods}</Text>
-              {/* {helper
-                .generateRestaurants()
-                .map(foodInfo => (
-                  <FoodCard
-                    goToRestaurant={this.goToRestaurant}
-                    food={foodInfo}
-                    key={foodInfo.id}
-                  />
-                ))} */}
+
             </View>
           )}
         </ScrollView>
