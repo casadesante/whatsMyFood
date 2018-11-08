@@ -88,7 +88,7 @@ export default class Home extends Component {
 
   getRestaurant = restaurant => {
     const { navigation } = this.props;
-    navigation.navigate('Restaurant', { restaurant });
+    navigation.navigate('Restaurant', { restaurant, parentPage: 'Home' });
   };
 
   getRestaurantsFromAsyncStorage = async () => {

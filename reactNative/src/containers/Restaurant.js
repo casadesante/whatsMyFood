@@ -4,6 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
+import { NavigationActions } from 'react-navigation';
 import { StyleSheet,
   Text,
   View,
@@ -130,7 +131,7 @@ export default class Restaurant extends Component {
     headerLeft: (
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('Home');
+          navigation.dispatch(NavigationActions.back());
         }}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -140,7 +141,7 @@ export default class Restaurant extends Component {
             size={30}
             color="white"
           />
-          <Text style={{ paddingLeft: 10, color: '#FFFFFF', fontSize: 18 }}>Home</Text>
+          <Text style={{ paddingLeft: 10, color: '#FFFFFF', fontSize: 18 }}>{navigation.getParam('parentPage')}</Text>
         </View>
 
       </TouchableOpacity>
