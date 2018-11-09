@@ -57,7 +57,9 @@ export default class Feedback extends Component {
     headerRight: (
       <TouchableOpacity
         onPress={() => {
-          alert('Waiting for Feedback API');
+          const { firebaseID, emailID, displayName } = navigation.state.params.user;
+          const { reportMessage } = navigation.state.params;
+          alert(`Message to be sent to API: ${firebaseID} ${emailID} ${displayName} ${reportMessage}`);
         }}
       >
         <Ionicons
@@ -121,8 +123,18 @@ export default class Feedback extends Component {
   };
 
   handleInput = (KeyWord) => {
+    const { navigation } = this.props;
     this.setState({ reportMessage: KeyWord });
-  }
+    navigation.setParams({
+      reportMessage: KeyWord,
+    });
+  };
+
+  sendFeedbackToFirebase = () => {
+    const { navigation } = this.props;
+    const { user } = navigation.getParam('user');
+    alert(`Waiting for Feedback API ${user}`);
+  };
 
 
   render() {

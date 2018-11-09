@@ -67,6 +67,8 @@ export default class Profile extends Component {
       displayName: 'Loading...',
       photoURL:
         'https://ctvalleybrewing.com/wp-content/uploads/2017/04/avatar-placeholder.png',
+      email: '',
+      firebaseID: 0,
     },
     isConnected: true,
     photoLoaded: false,
@@ -85,6 +87,8 @@ export default class Profile extends Component {
     getProfileInfo()
       .then(res => {
         const user = {
+          firebaseID: res.uid,
+          emailID: res.email,
           displayName: res.displayName,
           photoURL: res.photoURL,
         };
@@ -177,7 +181,7 @@ export default class Profile extends Component {
               onPress={() => {
                 switch (item.id) {
                   case 3:
-                    navigation.navigate('Feedback');
+                    navigation.navigate('Feedback', { user });
                     break;
 
                   default:
