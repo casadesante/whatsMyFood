@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
+  TextInput,
   View,
   StatusBar,
   NetInfo,
@@ -15,7 +16,36 @@ import RF from '../../node_modules/react-native-responsive-fontsize';
 import OfflineNotice from '../components/Nointernet';
 
 const styles = StyleSheet.create({
-
+  container: {
+    height: heightPercentageToDP('100%'),
+    backgroundColor: 'white',
+  },
+  messageInputContainer: {
+    borderColor: '#ff4444',
+    borderBottomWidth: 1,
+    paddingBottom: heightPercentageToDP('1%'),
+    marginLeft: widthPercentageToDP('4%'),
+    width: widthPercentageToDP('92%'),
+    marginTop: heightPercentageToDP('4%'),
+  },
+  reportInput: {
+    color: '#222',
+    fontFamily: 'SFProText-Light',
+    fontSize: RF(2.5),
+    letterSpacing: 0.41,
+    paddingLeft: widthPercentageToDP('1%'),
+  },
+  disclaimerContainer: {
+    marginLeft: widthPercentageToDP('4%'),
+    width: widthPercentageToDP('92%'),
+    marginTop: heightPercentageToDP('1.5%'),
+  },
+  disclaimer: {
+    fontSize: RF(1.8),
+    fontFamily: 'SFProText-Light',
+    color: '#666',
+    letterSpacing: 0.41,
+  },
 });
 
 export default class Feedback extends Component {
@@ -34,7 +64,7 @@ export default class Feedback extends Component {
           style={{ paddingRight: widthPercentageToDP('5%') }}
           name="ios-checkmark"
           size={60}
-          color="#FF4444"
+          color="#ff4444"
         />
       </TouchableOpacity>
     ),
@@ -59,6 +89,7 @@ export default class Feedback extends Component {
 
   state = {
     isConnected: true,
+    reportMessage: '',
   };
 
   componentDidMount = () => {
@@ -89,15 +120,35 @@ export default class Feedback extends Component {
     }
   };
 
+  handleInput = (KeyWord) => {
+    this.setState({ reportMessage: KeyWord });
+  }
+
 
   render() {
-    const { isConnected } = this.state;
+    const { isConnected, reportMessage } = this.state;
     return (
       <View style={styles.container}>
         {!isConnected ? <OfflineNotice /> : null}
-        <View style={styles.headerContainer} />
-        <Text>Feedback</Text>
-        <View />
+        <View style={styles.messageInputContainer}>
+          <TextInput
+            style={styles.reportInput}
+            placeholder="Briefly explain what happened"
+            placeholderTextColor="rgba(0,0,0, 0.7)"
+            onChangeText={this.handleInput}
+            value={reportMessage}
+            selectionColor="#777"
+            numberOfLines={4}
+            multiline
+          />
+        </View>
+        <View style={styles.disclaimerContainer}>
+          <Text style={styles.disclaimer}>
+          Please only leave feedback about WhatsMyFood and our features.
+          All reports are subject to our Terms of Use.
+          </Text>
+        </View>
+
       </View>
     );
   }
