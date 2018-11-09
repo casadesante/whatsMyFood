@@ -16,6 +16,7 @@ import Profile from './containers/Profile';
 import Restaurant from './containers/Restaurant';
 import EditRestaurant from './containers/EditRestaurant';
 import EditFood from './containers/EditFood';
+import Feedback from './containers/Feedback';
 
 export const SignedOut = createStackNavigator({
   SignIn: {
@@ -97,7 +98,10 @@ export const SignedIn = createBottomTabNavigator(
       },
     },
     Profile: {
-      screen: createStackNavigator({ Profile: { screen: Profile } }),
+      screen: createStackNavigator({
+        Profile: { screen: Profile },
+        Feedback: { screen: Feedback },
+      }),
       path: '',
       navigationOptions: {
         tabBarIcon: ProfileTabBarIcon,

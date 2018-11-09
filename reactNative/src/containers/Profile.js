@@ -7,8 +7,7 @@ import {
   StatusBar,
   Image,
   ActivityIndicator,
-  NetInfo,
-} from 'react-native';
+  NetInfo } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
@@ -140,6 +139,7 @@ export default class Profile extends Component {
         title: 'Report a problem',
       },
     ];
+    const { navigation } = this.props;
     const { user, isConnected, photoLoaded } = this.state;
     return (
       <View style={styles.container}>
@@ -175,7 +175,15 @@ export default class Profile extends Component {
           {list.map(item => (
             <ListItem
               onPress={() => {
-                alert(item.title);
+                switch (item.id) {
+                  case 3:
+                    navigation.navigate('Feedback');
+                    break;
+
+                  default:
+                    alert(item.title);
+                    break;
+                }
               }}
               key={item.id}
               title={item.title}
