@@ -140,7 +140,7 @@ export default class Profile extends Component {
       },
       {
         id: 3,
-        title: 'Report a problem',
+        title: 'Feedback / Report a problem',
       },
     ];
     const { navigation } = this.props;

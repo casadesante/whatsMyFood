@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 
 export default class Feedback extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: 'Report a problem',
+    title: 'Your feedback',
     headerStyle: {
       backgroundColor: 'rgb(248, 248, 248)',
     },
