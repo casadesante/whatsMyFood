@@ -62,12 +62,17 @@ const styles = StyleSheet.create({
 });
 
 export default class RestaurantTextInput extends Component {
-  state = {
-    suggestions: [],
-    inputText: '',
-    address: '',
-    placeID: '',
-  };
+  constructor(props) {
+    super(props);
+
+    const { text, location } = props;
+    this.state = {
+      suggestions: [],
+      inputText: text || '',
+      address: location || '',
+      placeID: '',
+    };
+  }
 
   onSelectSuggestedPlace = (placeName, addressDetails, placeID) => {
     const { changeText } = this.props;
