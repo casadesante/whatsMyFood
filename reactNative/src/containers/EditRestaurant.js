@@ -1,26 +1,29 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
+import { StyleSheet,
   Text,
   View,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   StatusBar,
-  Keyboard,
-  ScrollView,
-} from 'react-native';
-import RNFetchBlob from 'react-native-fetch-blob';
-import * as ImagePicker from 'react-native-image-picker';
-import PropTypes from 'prop-types';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
+  NativeModules,
+  NetInfo } from 'react-native';
 
+import RNFetchBlob from 'react-native-fetch-blob';
+import PropTypes from 'prop-types';
+/* eslint import/no-unresolved: */
+import uuidv4 from 'uuid/v4';
+import DismissKeyboard from 'dismissKeyboard';
 import RF from 'react-native-responsive-fontsize';
 import Header from '../components/Header';
-import Textbox from '../components/Textbox';
 import firebase from '../lib/FirebaseClient';
 import Imageupload from '../components/Imageupload';
 import Imageuploader from '../components/Imageuploader';
+import OfflineNotice from '../components/Nointernet';
 import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 import Optional from '../components/Optional';
+import RestaurantTextInput from '../components/RestaurantTextInput';
+
+const ImagePicker = NativeModules.ImageCropPicker;
 
 // Prepare Blob support
 const [Blob, fs] = [RNFetchBlob.polyfill.Blob, RNFetchBlob.fs];
@@ -41,15 +44,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const options = {
-  title: 'Select Avatar',
-  customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
-  storageOptions: {
-    skipBackup: true,
-    path: 'images',
-  },
-};
-
 export default class EditRestaurant extends Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
@@ -61,7 +55,6 @@ export default class EditRestaurant extends Component {
       headerTitleStyle: {
         color: 'white',
       },
-      headerTintColor: 'white',
       headerBackTitle: 'Back',
       headerRight: (
         <TouchableOpacity onPress={() => params.save()}>
@@ -79,15 +72,35 @@ export default class EditRestaurant extends Component {
     };
   };
 
-  state = {
-    uploaded: false,
-    url: '',
-    name: '',
-    location: '',
-  };
+  constructor(props) {
+    super(props);
+
+    const { navigation } = props;
+    const restaurantData = navigation.getParam('restaurantData');
+
+    console.log(restaurantData);
+
+    this.state = {
+      uploaded: restaurantData.restaurantPhotoURL ? true : false,
+      url: restaurantData.restaurantPhotoURL || '',
+      restaurantID: restaurantData.restaurantID,
+      createdAt: restaurantData.createdAt,
+      restaurantDetails: {
+        inputText: restaurantData.restaurantName || '',
+        address: restaurantData.formattedAddress || '',
+        placeID: restaurantData.googlePlacesID || '',
+      },
+      isConnected: true,
+      uploading: false,
+    };
+  }
 
   componentDidMount() {
     const { navigation } = this.props;
+    NetInfo.isConnected.addEventListener(
+      'connectionChange',
+      this.handleConnectivityChange,
+    );
     navigation.setParams({ save: this.saveRestaurantForm });
     /* eslint no-underscore-dangle: */
     this._navListener = navigation.addListener('didFocus', () => {
@@ -96,106 +109,145 @@ export default class EditRestaurant extends Component {
   }
 
   componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+      'connectionChange',
+      this.handleConnectivityChange,
+    );
     this._navListener.remove();
   }
 
-  getImage = () => {
-    ImagePicker.showImagePicker(options, response => {
-      console.log('Response = ', response);
-
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        console.log(response.uri);
-        this.uploadImage(response.uri)
+  getImage = (pickValue) => {
+    ImagePicker[pickValue]({
+      cropping: true,
+      width: 1920,
+      height: 1080,
+    })
+      .then(response => {
+        console.log(response.path);
+        this.setState({ uploading: true });
+        this.uploadImage(response.path)
           .then(url => {
-            this.setState({ uploaded: true, url });
+            this.setState({ uploaded: true, uploading: false, url });
             console.log(url);
           })
           .catch(error => console.log(error));
-      }
-    });
+      })
+      .catch(e => alert(e));
+  };
+
+  cancelImage = () => {
+    this.setState({ uploaded: false, uploading: false, url: '' });
+  };
+
+
+  handleConnectivityChange = isConnected => {
+    if (isConnected) {
+      this.setState({ isConnected });
+    } else {
+      this.setState({ isConnected });
+    }
   };
 
   saveRestaurantForm = () => {
     const { navigation } = this.props;
-    // alert(JSON.stringify(this.state));
-    navigation.navigate('Restaurant', { restaurantData: this.state });
+    const { url, restaurantDetails, createdAt, restaurantID } = this.state;
+    /* eslint no-prototype-builtins: */
+    if (
+      restaurantDetails.hasOwnProperty('inputText')
+      && restaurantDetails.inputText.length !== 0
+    ) {
+      const restaurantObject = {
+        restaurantID,
+        googlePlacesID: restaurantDetails.placeID,
+        formattedAddress: restaurantDetails.address,
+        restaurantName: restaurantDetails.inputText,
+        restaurantPhotoURL: url,
+        createdAt
+      };
+      console.log(restaurantObject);
+      fetch('https://us-central1-whatsmyfood.cloudfunctions.net/updateRestaurant', 
+        { method: 'POST', body: JSON.stringify(restaurantObject) },
+      )
+      .then((editedRestaurantResponse) => {
+        editedRestaurantResponse.status === 200
+            ? navigation.navigate('Home')
+            : alert(editedRestaurantResponse.body);
+      })
+      .catch(err => alert(err))
+    } else {
+      alert('Name cannot be empty');
+    }
   };
 
-  uploadImage = (uri, mime = 'application/octet-stream') =>
-    new Promise((resolve, reject) => {
-      const uploadUri = uri.replace('file://', '');
-      let uploadBlob = null;
-      const { uid } = firebase.auth().currentUser;
-      console.log(uid);
-      const imageRef = firebase.storage().ref(`${uid}/images/image001.jpg`);
+  uploadImage = (uri, mime = 'application/octet-stream') => new Promise((resolve, reject) => {
+    const uploadUri = uri.replace('file://', '');
+    let uploadBlob = null;
+    const uniqueID = uuidv4();
+    const { uid } = firebase.auth().currentUser;
+    console.log(uid);
+    const imageRef = firebase.storage().ref(`${uid}/images/${uniqueID}.jpg`);
 
-      fs
-        .readFile(uploadUri, 'base64')
-        .then(data => Blob.build(data, { type: `${mime};BASE64` }))
-        .then(blob => {
-          uploadBlob = blob;
-          return imageRef.put(blob, { contentType: mime });
-        })
-        .then(() => {
-          uploadBlob.close();
-          return imageRef.getDownloadURL();
-        })
-        .then(url => {
-          resolve(url);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    fs
+      .readFile(uploadUri, 'base64')
+      .then(data => Blob.build(data, { type: `${mime};BASE64` }))
+      .then(blob => {
+        uploadBlob = blob;
+        return imageRef.put(blob, { contentType: mime });
+      })
+      .then(() => {
+        uploadBlob.close();
+        return imageRef.getDownloadURL();
+      })
+      .then(url => {
+        resolve(url);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
 
   render() {
-    const { uploaded, url, name, location } = this.state;
+    const {
+      uploaded,
+      url,
+      restaurantDetails,
+      uploading,
+      isConnected,
+    } = this.state;
+
+    const { inputText: name, address: location} = restaurantDetails;
+
     return (
-      <View style={styles.container}>
-        <Header text="Edit restaurant" />
-        {/* <KeyboardAwareScrollView */}
-        {/* scrollEnabled={false} */}
-        {/* onPress={Keyboard.dismiss()} */}
-        {/* > */}
-        <Textbox
-          icon="restaurant"
-          placeholder="Restaurant name"
-          changeText={inputName => {
-            this.setState({ name: inputName });
-          }}
-          text={name}
-          field="name"
-        />
-        <Optional />
-        {/* Location must be fetched from google places or something */}
-        <Textbox
-          icon="location"
-          placeholder="Restaurant location"
-          changeText={inputLocation => {
-            this.setState({ location: inputLocation });
-          }}
-          text={location}
-          field="location"
-        />
-        <View>
-          {uploaded ? (
-            <View>
-              <Imageupload url={url} />
-            </View>
-          ) : (
-            <View style={styles.imageUploaderLayout}>
-              <Imageuploader upload={this.getImage} />
-            </View>
-          )}
+      <TouchableWithoutFeedback
+        onPress={() => {
+          DismissKeyboard();
+        }}
+      >
+        <View style={styles.container}>
+          {!isConnected ? <OfflineNotice /> : null}
+          <Header text="Edit restaurant" />
+          <RestaurantTextInput
+            changeText={restaurantDetails => {
+              this.setState({ restaurantDetails });
+            }}
+            text={name}
+            field="name"
+            location={location}
+          />
+          <Optional />
+          <View>
+            {uploaded ? (
+              <View style={styles.imageUploaderLayout}>
+                <Imageupload url={url} cancel={this.cancelImage} />
+              </View>
+            ) : (
+              <View style={styles.imageUploaderLayout}>
+                <Imageuploader upload={this.getImage} uploading={uploading} />
+              </View>
+            )}
+          </View>
         </View>
-        {/* </KeyboardAwareScrollView> */}
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

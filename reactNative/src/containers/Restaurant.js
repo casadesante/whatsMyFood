@@ -194,7 +194,7 @@ export default class Restaurant extends Component {
         if (buttonIndex === 1) {
           navigation.navigate('Addfood', { restaurantData: null, restaurantID: restaurant.restaurantID });
         } else if (buttonIndex === 2) {
-          navigation.navigate('EditRestaurant', { restaurantData: null });
+          navigation.navigate('EditRestaurant', { restaurantData: restaurant });
         } else if (buttonIndex === 3) {
           this.deleteRestaurant(restaurant.restaurantID);
         }
