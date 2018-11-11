@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView, StyleSheet } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, ActionSheetIOS } from 'react-native';
 import PropTypes from 'prop-types';
 import RF from 'react-native-responsive-fontsize';
 import SmallFoodCard from './SmallFoodCard';
@@ -16,8 +16,42 @@ const styles = StyleSheet.create({
   },
 });
 
+foodActionSheet = (id) => {
+  ActionSheetIOS.showActionSheetWithOptions(
+    {
+      options: ['Cancel', 'Edit food', 'Remove food'],
+      destructiveButtonIndex: 2,
+      cancelButtonIndex: 0,
+    },
+    buttonIndex => {
+      if (buttonIndex === 1) {
+        alert('edit food');
+        // navigation.navigate('Addfood', { restaurantData: null, restaurantID: restaurant.restaurantID });
+      } else if (buttonIndex === 2) {
+        this.deleteFood(id);
+        // navigation.navigate('EditRestaurant', { restaurantData: restaurant });
+      }
+    },
+  );
+}
+
+deleteFood = (foodID) => {
+  fetch('https://us-central1-whatsmyfood.cloudfunctions.net/deleteFood', {
+    method: 'POST',
+    body: JSON.stringify({foodID})
+  })
+  .then((deleteFoodResponse) => {
+    deleteFoodResponse.status === 200 ?
+      this.navigation.navigate('Home') : 
+      alert(deleteFoodResponse.body)
+  })
+  .catch(err => alert(err))
+}
+
 const FoodItems = props => {
-  const { title, items } = props;
+  const { title, items, navigation } = props;
+  this.navigation = navigation;
+
   return (
     <View style={styles.container}>
       <Text style={styles.categoryLabelStyle}>{title}</Text>
@@ -26,7 +60,7 @@ const FoodItems = props => {
           console.log(item);
           const foodImgLink = item.img || null;
           return (
-            <SmallFoodCard key={item.img} foodName={item.name} foodImage={foodImgLink} />
+            <SmallFoodCard foodAction={this.foodActionSheet} key={item.id} foodID={item.id} foodName={item.name} foodImage={foodImgLink} />
           );
         })}
       </ScrollView>

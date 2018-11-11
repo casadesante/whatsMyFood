@@ -219,7 +219,7 @@ export default class Restaurant extends Component {
       .catch(err => alert(err));
   }
 
-  segregateFoodItems = foodItems => {
+  segregateFoodItems = (foodItems, createdAt) => {
     const items = {
       1: [],
       2: [],
@@ -232,6 +232,9 @@ export default class Restaurant extends Component {
         name: item.foodName,
         img: item.foodPhotoURL,
         id: item.foodId,
+        firebaseID: item.firebaseID,
+        restaurantID: item.restaurantID,
+        createdAt
       });
     });
     return items;
@@ -245,7 +248,9 @@ export default class Restaurant extends Component {
     const { navigation } = this.props;
     const { isConnected, loaded } = this.state;
     const restaurant = navigation.getParam('restaurant');
-    const restaurantFoodDetails = this.segregateFoodItems(restaurant.foods);
+    const restaurantFoodDetails = this.segregateFoodItems(restaurant.foods, restaurant.createdAt);
+
+    console.log(restaurantFoodDetails);
     const shine = ['rgba(255, 255, 255, 0.03)', 'rgba(255, 255, 255, 0.16)', 'rgba(255, 255, 255, 0.08)'];
     const redGradient = ['rgb(255, 152, 99)', 'rgb(253, 89, 89)'];
     const uploadedRestaurantImage = (
@@ -311,22 +316,23 @@ export default class Restaurant extends Component {
             </View>
             {}
             {restaurantFoodDetails['5'].length !== 0 ? (
-              <FoodItems title="😍 My fav" items={restaurantFoodDetails['5']} />
+              <FoodItems navigation={navigation} title="😍 My fav" items={restaurantFoodDetails['5']} />
             ) : null}
             {restaurantFoodDetails['4'].length !== 0 ? (
-              <FoodItems title="👌🏼 Good" items={restaurantFoodDetails['4']} />
+              <FoodItems navigation={navigation} title="👌🏼 Good" items={restaurantFoodDetails['4']} />
             ) : null}
             {restaurantFoodDetails['3'].length !== 0 ? (
-              <FoodItems title="😐 Meh" items={restaurantFoodDetails['3']} />
+              <FoodItems navigation={navigation} title="😐 Meh" items={restaurantFoodDetails['3']} />
             ) : null}
             {restaurantFoodDetails['2'].length !== 0 ? (
               <FoodItems
+                navigation={navigation}
                 title="☹️ Not satisfied"
                 items={restaurantFoodDetails['2']}
               />
             ) : null}
             {restaurantFoodDetails['1'].length !== 0 ? (
-              <FoodItems title="🤢 Yuck" items={restaurantFoodDetails['1']} />
+              <FoodItems navigation={navigation} title="🤢 Yuck" items={restaurantFoodDetails['1']} />
             ) : null}
           </View>
         </HeaderImageScrollView>
