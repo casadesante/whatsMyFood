@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Button, StatusBar } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Button,
+  StatusBar,
+  NativeModules,
+} from 'react-native';
 import PropTypes from 'prop-types';
-
-import * as ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'react-native-fetch-blob';
+import uuidv4 from 'uuid/v4';
+
 import Header from '../components/Header';
 import Textbox from '../components/Textbox';
 import Imageupload from '../components/Imageupload';
@@ -12,6 +18,9 @@ import { heightPercentageToDP } from '../lib/Responsive';
 import Optional from '../components/Optional';
 import EmojiPicker from '../components/EmojiPicker';
 import firebase from '../lib/FirebaseClient';
+import { getProfileInfo } from '../lib/Auth';
+
+const ImagePicker = NativeModules.ImageCropPicker;
 
 // Prepare Blob support
 const [Blob, fs] = [RNFetchBlob.polyfill.Blob, RNFetchBlob.fs];
@@ -41,15 +50,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const options = {
-  title: 'Select Avatar',
-  customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
-  storageOptions: {
-    skipBackup: true,
-    path: 'images',
-  },
-};
-
 export default class EditFood extends Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
@@ -69,11 +69,25 @@ export default class EditFood extends Component {
     };
   };
 
-  state = {
-    uploaded: false,
-    url: '',
-    name: '',
-    rating: 5,
+  constructor(props) {
+    super(props);
+
+    const { navigation } = props;
+
+    const item = navigation.getParam('item');
+    console.log(navigation);
+
+    this.state = {
+      uploaded: item.img === '' ? false : true,
+      url: item.img || '',
+      name: item.name || '',
+      rating: item.rating || '',
+      uploading: false,
+    }
+  }
+
+  cancelImage = () => {
+    this.setState({ uploaded: false, uploading: false, url: '' });
   };
 
   componentDidMount() {
@@ -94,90 +108,110 @@ export default class EditFood extends Component {
   };
 
   saveDetails = () => {
-    const { restaurantData } = this.props.navigation.state.params;
-    restaurantData.food = this.state;
-    alert(JSON.stringify(restaurantData));
-    // console.log('Save');
+    const { navigation } = this.props;
+    const { firebaseID, createdAt, id: foodID, restaurantID } = this.props.navigation.state.params.item;
+    
+    const { name: foodName, url: foodPhotoURL, rating } = this.state;
+
+    const foodObject = {
+      foodID,	
+      foodName,
+      rating,
+      restaurantID,
+      firebaseID,
+      foodPhotoURL,
+      createdAt
+    };
+    if (foodName.length !== 0) {
+      fetch('https://us-central1-whatsmyfood.cloudfunctions.net/updateFood', {
+        method: 'POST',
+        body: JSON.stringify(foodObject)
+      })
+      .then((editedFoodResponse) => {
+        editedFoodResponse.status === 200
+            ? navigation.navigate('Home')
+            : alert(editedFoodResponse.body);
+      })
+      .catch(err => alert(err))
+    } else {
+      alert('Name cannot be empty');
+    }
   };
 
   selectedEmoji = newRating => {
     this.setState({ rating: newRating });
   };
 
-  uploadImage = (uri, mime = 'application/octet-stream') =>
-    new Promise((resolve, reject) => {
-      const uploadUri = uri.replace('file://', '');
-      let uploadBlob = null;
-      const { uid } = firebase.auth().currentUser;
-      console.log(uid);
-      const imageRef = firebase.storage().ref(`${uid}/images/image001.jpg`);
+  uploadImage = (uri, mime = 'application/octet-stream') => new Promise((resolve, reject) => {
+    const uploadUri = uri.replace('file://', '');
+    let uploadBlob = null;
+    const uniqueID = uuidv4();
+    const { uid } = firebase.auth().currentUser;
+    const imageRef = firebase.storage().ref(`${uid}/images/${uniqueID}.jpg`);
 
-      fs
-        .readFile(uploadUri, 'base64')
-        .then(data => Blob.build(data, { type: `${mime};BASE64` }))
-        .then(blob => {
-          uploadBlob = blob;
-          return imageRef.put(blob, { contentType: mime });
-        })
-        .then(() => {
-          uploadBlob.close();
-          return imageRef.getDownloadURL();
-        })
-        .then(url => {
-          resolve(url);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    fs
+      .readFile(uploadUri, 'base64')
+      .then(data => Blob.build(data, { type: `${mime};BASE64` }))
+      .then(blob => {
+        uploadBlob = blob;
+        return imageRef.put(blob, { contentType: mime });
+      })
+      .then(() => {
+        uploadBlob.close();
+        return imageRef.getDownloadURL();
+      })
+      .then(url => {
+        resolve(url);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
 
   getImage = () => {
-    ImagePicker.showImagePicker(options, response => {
-      console.log('Response = ', response);
-
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        console.log(response.uri);
-        this.uploadImage(response.uri)
+    ImagePicker.openPicker({
+      cropping: true,
+      width: 1920,
+      height: 1080,
+    })
+      .then(response => {
+        console.log(response.path);
+        this.setState({ uploading: true });
+        this.uploadImage(response.path)
           .then(url => {
-            this.setState({ uploaded: true, url });
+            this.setState({ uploaded: true, uploading: false, url });
             console.log(url);
           })
           .catch(error => console.log(error));
-      }
-    });
+      })
+      .catch(e => alert(e));
   };
 
   render() {
-    const { rating, uploaded, url } = this.state;
+    const { rating, uploaded, url, uploading, name } = this.state;
     console.log(`Selected rating: ${rating}`);
     return (
       <View style={styles.container}>
-        <Header text="Edit food" />
+        <Header text="Add food" />
         <Textbox
           icon="restaurant-menu"
           placeholder="Food name"
-          changeText={name => {
-            this.setState({ name });
+          changeText={nameInput => {
+            this.setState({ name: nameInput });
           }}
-          text={this.state.name}
+          text={name}
           field="name"
         />
-        <EmojiPicker onEmojiSelect={this.selectedEmoji} />
+        <EmojiPicker rating={rating} onEmojiSelect={this.selectedEmoji} />
         <Optional />
         <View>
           {uploaded ? (
-            <View>
-              <Imageupload url={url} />
+            <View style={styles.imageUploaderLayout}>
+              <Imageupload url={url} cancel={this.cancelImage} />
             </View>
           ) : (
             <View style={styles.imageUploaderLayout}>
-              <Imageuploader upload={this.getImage} />
+              <Imageuploader upload={this.getImage} uploading={uploading} />
             </View>
           )}
         </View>

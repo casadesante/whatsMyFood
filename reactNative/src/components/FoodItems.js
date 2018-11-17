@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   },
 });
 
-foodActionSheet = (id) => {
+foodActionSheet = (item) => {
   ActionSheetIOS.showActionSheetWithOptions(
     {
       options: ['Cancel', 'Edit food', 'Remove food'],
@@ -25,10 +25,10 @@ foodActionSheet = (id) => {
     },
     buttonIndex => {
       if (buttonIndex === 1) {
-        alert('edit food');
-        // navigation.navigate('Addfood', { restaurantData: null, restaurantID: restaurant.restaurantID });
+        console.log(item);
+        navigation.navigate('EditFood', { item });
       } else if (buttonIndex === 2) {
-        this.deleteFood(id);
+        this.deleteFood(item.id);
         // navigation.navigate('EditRestaurant', { restaurantData: restaurant });
       }
     },
@@ -57,10 +57,9 @@ const FoodItems = props => {
       <Text style={styles.categoryLabelStyle}>{title}</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {items.map(item => {
-          console.log(item);
           const foodImgLink = item.img || null;
           return (
-            <SmallFoodCard foodAction={this.foodActionSheet} key={item.id} foodID={item.id} foodName={item.name} foodImage={foodImgLink} />
+            <SmallFoodCard foodAction={this.foodActionSheet} item={item} key={item.id} foodID={item.id} foodName={item.name} foodImage={foodImgLink} />
           );
         })}
       </ScrollView>

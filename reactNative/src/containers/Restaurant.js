@@ -234,7 +234,8 @@ export default class Restaurant extends Component {
         id: item.foodId,
         firebaseID: item.firebaseID,
         restaurantID: item.restaurantID,
-        createdAt
+        createdAt, 
+        rating: item.rating
       });
     });
     return items;
