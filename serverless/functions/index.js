@@ -1095,3 +1095,67 @@ exports.sendWeeklyFoodReportToTelegram = functions.https.onRequest((req, res) =>
     res.status(200).send(result);
   });
 });
+
+exports.addFeedbackAndSendNotificationToTelegram = functions.https.onRequest((req, res) => {
+  console.log('====================================');
+  console.log("Received Request for addFeedbackAndSendNotificationToTelegram");
+  console.log(req.body);
+  console.log('====================================');
+  let parsedRequest = typeof(req.body) === 'object' ? req.body : JSON.parse(req.body);
+
+  // check, If all required parameters are passed.
+  if (!parsedRequest.hasOwnProperty("feedback")) {
+    return res.status(500).send("No feedback in the request");
+  } else if (!parsedRequest.hasOwnProperty("userName")) {
+    return res.status(500).send("No userName rating in the request");
+  } else if (!parsedRequest.hasOwnProperty("emailID")) {
+    return res.status(500).send("No emailID in the request");
+  }
+
+  var feedbacksRef = db.ref('/feedbacks');
+  var feedbackTelegramMessage = `Here is the feedback that we received from 👨 ${parsedRequest.userName}(${parsedRequest.emailID}) at ${moment().format('MMMM Do YYYY, h:mm:ss a')}:\n`;
+  feedbackTelegramMessage = feedbackTelegramMessage + parsedRequest.feedback;
+
+  var feedback = {
+    feedback: parsedRequest.feedback,
+    userName: parsedRequest.userName,
+    emailID: parsedRequest.emailID
+  };
+
+  async.waterfall([
+    (callback) => {
+      // adding feedback received to feedbacks collection
+      let uniqueFeedbackKey = feedbacksRef.push(feedback);
+      console.log('====================================');
+      console.log(`Feedback Key: ${uniqueFeedbackKey}`);
+      console.log('====================================');
+      callback(null, uniqueFeedbackKey);
+    },
+    (uniqueFeedbackKey, callback) => {
+      // sending a notification to telegram about the added feedback
+      let telegramMessage = feedbackTelegramMessage;
+      app.telegram.sendMessage(functions.config().telegram.groupid, telegramMessage, {})
+        .then((success, err) => {
+          if (err) {
+            throw err;
+          } else {
+            return 0;
+          }
+        })
+        .catch((err) => {
+          console.log('====================================');
+          console.log(`Error: ${err}`);
+          console.log('====================================');
+          return callback(err);
+        });      
+      return callback(null, uniqueFeedbackKey)
+    }
+  ], (err, result) => {
+    if (err) {
+      console.log(`error: ${err}`);
+      res.status(500).send(err);
+    }
+    console.log(`Feedback has been sucessfully added and notified to telegram with feedbackID: ${result}`);
+    res.status(200).send(result);
+  });
+});

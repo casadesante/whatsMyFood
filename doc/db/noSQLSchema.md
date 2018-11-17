@@ -82,3 +82,21 @@ The `noSQLASCIITableFiles` dir contains the ASCII table files, which can be used
 |         updatedAt        |   String  |                Date of updation                |                Timestamp of the updation                |  no (in code)  |
 +--------------------------+-----------+------------------------------------------------+---------------------------------------------------------+----------------+
 ```
+
+### feedbacks
+
+```
++----------+-----------+----------------------------+---------+----------------+
+| Property | Data Type |         Description        | Remarks | Required items |
+|          |           |                            |         |   at the time  |
+|          |           |                            |         |   of creation  |
++----------+-----------+----------------------------+---------+----------------+
+|    _id   |    UUID   |         feedback id        |         | no (automated) |
++----------+-----------+----------------------------+---------+----------------+
+| userName |   String  |      Name of the user      |         |       yes      |
++----------+-----------+----------------------------+---------+----------------+
+|  emailID |   String  |    e-mail id of the user   |         |       yes      |
++----------+-----------+----------------------------+---------+----------------+
+| feedback |   String  | feedback given by the user |         |       yes      |
++----------+-----------+----------------------------+---------+----------------+
+```
