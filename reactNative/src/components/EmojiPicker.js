@@ -44,9 +44,11 @@ const styles = StyleSheet.create({
 });
 
 export default class EmojiPicker extends Component {
-  constructor() {
-    super();
-    this.state = { selectedRating: 5 };
+  constructor(props) {
+    super(props);
+    this.state = { 
+      selectedRating: props.rating ? props.rating : 5 
+    };
   }
 
   emojiToggleStyle = (index, selectedrating) => {

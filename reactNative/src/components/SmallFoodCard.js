@@ -101,7 +101,7 @@ export default class SmallFoodCard extends Component {
   }
 
   render() {
-    const { foodImage, foodName } = this.props;
+    const { foodImage, foodName, foodAction, foodID, item } = this.props;
     const foodImageLink = foodImage ? { uri: foodImage } : require('../assets/img/default_foodImg.png');
 
     const { loaded } = this.state;
@@ -109,7 +109,7 @@ export default class SmallFoodCard extends Component {
     const shine = ['rgba(255, 255, 255, 0.03)', 'rgba(255, 255, 255, 0.16)', 'rgba(255, 255, 255, 0.08)'];
     return (
       <TouchableOpacity
-        onPress={() => { alert('Food clicked'); }}
+        onPress={() => { foodAction(item) }}
       >
         <View style={styles.imageHolder}>
           { !loaded ? (

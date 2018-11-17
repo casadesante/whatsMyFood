@@ -94,6 +94,10 @@ export default class Addfood extends Component {
     console.log('pressed');
   };
 
+  cancelImage = () => {
+    this.setState({ uploaded: false, uploading: false, url: '' });
+  };
+
   saveDetails = () => {
     const { navigation } = this.props;
     const { restaurantData, restaurantID } = this.props.navigation.state.params;
@@ -214,7 +218,7 @@ export default class Addfood extends Component {
         <View>
           {uploaded ? (
             <View style={styles.imageUploaderLayout}>
-              <Imageupload url={url} />
+              <Imageupload url={url} cancel={this.cancelImage} />
             </View>
           ) : (
             <View style={styles.imageUploaderLayout}>
