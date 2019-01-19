@@ -19,7 +19,7 @@ const isSignedIn = () =>
 
 const saveInAsyncStorage = async () => {
   try {
-    var asyncSave = await AsyncStorage.setItem(
+    await AsyncStorage.setItem(
       'whatsMyFoodLogin',
       JSON.stringify(true),
     );
@@ -39,22 +39,19 @@ const getFromAsyncStorage = async () => {
     console.log(`Async store : ${error}`);
     return false;
   }
-  return;
 };
 
-const getProfileInfo = () => {
-  return new Promise((resolve, reject) => {
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        user === null
-          ? reject(new Error('Hmmm, seems like a problem at our end. Sorry ! '))
-          : resolve(user);
-      } else {
-        reject(new Error('Unable to fetch data from fb ! '));
-      }
-    });
+const getProfileInfo = () => new Promise((resolve, reject) => {
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      user === null
+        ? reject(new Error('Hmmm, seems like a problem at our end. Sorry ! '))
+        : resolve(user);
+    } else {
+      reject(new Error('Unable to fetch data from fb ! '));
+    }
   });
-};
+});
 
 const logout = () =>
   new Promise(resolve => {

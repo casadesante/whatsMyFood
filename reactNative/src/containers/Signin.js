@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
+import { StyleSheet,
   Text,
   Image,
   ImageBackground,
   View,
-  StatusBar,
-} from 'react-native';
+  StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import PropTypes from 'prop-types';
 import SplashScreen from 'react-native-splash-screen';
