@@ -8,7 +8,7 @@ import { StyleSheet,
   ActivityIndicator,
   AsyncStorage } from 'react-native';
 import PropTypes from 'prop-types';
-// import { getProfileInfo } from '../lib/Auth';
+import { getFromAsyncStorage, getProfileInfo } from '../lib/Auth';
 import RestaurantCard from '../components/RestaurantCard';
 import EmptyHome from '../components/EmptyHome';
 import OfflineNotice from '../components/Nointernet';
@@ -94,15 +94,45 @@ export default class Home extends Component {
   getRestaurantsFromAsyncStorage = async () => {
     try {
       const retrievedItem = await AsyncStorage.getItem('restaurants');
-      console.log(`Async store restaurants : ${retrievedItem}`);
-      // return JSON.parse(retrievedItem);
-      this.setState({ restaurants: JSON.parse(retrievedItem), loading: false });
-      return true;
+      if(retrievedItem !== null) {
+        this.setState({ restaurants: JSON.parse(retrievedItem), loading: false });
+      } else {
+        this.fetchRestaurantsAndFood();
+      }
     } catch (error) {
-      console.log(`Async store : ${error}`);
+      console.error(`Async store : ${error}`);
       return false;
     }
   };
+
+  saveRestaurantsInAsyncStorage = async (restaurants) => {
+    try {
+      await AsyncStorage.setItem(
+        'restaurants',
+        JSON.stringify(restaurants),
+      );
+      this.setState({ restaurants: restaurants, loading: false });
+      return true;
+    } catch (error) {
+      alert('Async store error');
+      return false;
+    }
+  };
+
+  async fetchRestaurantsAndFood() {
+    getProfileInfo()
+      .then(user => user.uid)
+      .then(firebaseID => fetch(
+        'https://us-central1-whatsmyfood.cloudfunctions.net/fetchRestaurantsAndFoods',
+        {
+          method: 'POST',
+          body: JSON.stringify({ firebaseID }),
+        },
+      ))
+      .then(restaurants => restaurants.json())
+      .then(parsedRestaurants => this.saveRestaurantsInAsyncStorage(parsedRestaurants))
+      .catch(err => alert(err));
+  }
 
   handleConnectivityChange = isConnected => {
     if (isConnected) {
@@ -158,15 +188,6 @@ export default class Home extends Component {
                   index={index}
                 />
               ))}
-              {/* {helper */}
-              {/* .generateRestaurants() */}
-              {/* .map(restaurantInfo => ( */}
-              {/* <RestaurantCard */}
-              {/* goToRestaurant={this.getRestaurant} */}
-              {/* restaurant={restaurantInfo} */}
-              {/* key={restaurantInfo.id} */}
-              {/* /> */}
-              {/* ))} */}
             </View>
           </ScrollView>
         )}

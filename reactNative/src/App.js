@@ -25,18 +25,9 @@ export default class App extends Component {
   }
 
   async componentWillMount() {
-    getProfileInfo()
-      .then(user => user.uid)
-      .then(firebaseID => fetch(
-        'https://us-central1-whatsmyfood.cloudfunctions.net/fetchRestaurantsAndFoods',
-        {
-          method: 'POST',
-          body: JSON.stringify({ firebaseID }),
-        },
-      ))
-      .then(restaurants => restaurants.json())
-      .then(parsedRestaurants => this.saveRestaurantsInAsyncStorage(parsedRestaurants))
-      .catch(err => alert(err));
+    getFromAsyncStorage().then(res => {
+      this.setState({ signedIn: res, promiseResolve: true });
+    });
   }
 
   componentDidMount() {

@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -320,6 +321,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 9350E0F11CE3B0920041D815;
 			remoteInfo = RCTFBSDK;
+		};
+		E48563EE21F46D6C009E8902 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92A5B84624324B8FB050101C /* ReactNativeConfig.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3DF7F6AC203AA09B00D0EAB7;
+			remoteInfo = "ReactNativeConfig-tvOS";
 		};
 		E495724E205FE1FA0099521B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -933,6 +941,7 @@
 			isa = PBXGroup;
 			children = (
 				E4957276205FE1FA0099521B /* libReactNativeConfig.a */,
+				E48563EF21F46D6C009E8902 /* libReactNativeConfig-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1069,7 +1078,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = NLYVXHKD84;
+						DevelopmentTeam = D7DDK43HAL;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1400,6 +1409,13 @@
 			fileType = archive.ar;
 			path = libRCTFBSDK.a;
 			remoteRef = E4284B7E2042E57B000B56B4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E48563EF21F46D6C009E8902 /* libReactNativeConfig-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libReactNativeConfig-tvOS.a";
+			remoteRef = E48563EE21F46D6C009E8902 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		E495724F205FE1FA0099521B /* libfishhook.a */ = {
@@ -1785,7 +1801,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = NLYVXHKD84;
+				DEVELOPMENT_TEAM = D7DDK43HAL;
 				FRAMEWORK_SEARCH_PATHS = "\"$(HOME)/Documents/FacebookSDK\"";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1817,6 +1833,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.whatsMyFoodasd;
 				PRODUCT_NAME = whatsMyFood;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1827,7 +1844,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = NLYVXHKD84;
+				DEVELOPMENT_TEAM = D7DDK43HAL;
 				FRAMEWORK_SEARCH_PATHS = "\"$(HOME)/Documents/FacebookSDK\"";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1860,6 +1877,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.whatsMyFoodasd;
 				PRODUCT_NAME = whatsMyFood;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
