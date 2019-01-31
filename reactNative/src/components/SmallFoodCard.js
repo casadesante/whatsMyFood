@@ -101,15 +101,15 @@ export default class SmallFoodCard extends Component {
   }
 
   render() {
-    const { foodImage, foodName, foodAction, foodID, item } = this.props;
+    const { foodImage, foodName, foodAction, item } = this.props;
     const foodImageLink = foodImage ? { uri: foodImage } : require('../assets/img/default_foodImg.png');
 
     const { loaded } = this.state;
     const redGradient = ['rgb(255, 152, 99)', 'rgb(253, 89, 89)'];
-    const shine = ['rgba(255, 255, 255, 0.03)', 'rgba(255, 255, 255, 0.16)', 'rgba(255, 255, 255, 0.08)'];
+    const shine = ['rgba(255, 255, 255, 0.01)', 'rgba(255, 255, 255, 0.05)', 'rgba(255, 255, 255, 0.03)'];
     return (
       <TouchableOpacity
-        onPress={() => { foodAction(item) }}
+        onPress={() => { foodAction(item); }}
       >
         <View style={styles.imageHolder}>
           { !loaded ? (
@@ -117,7 +117,7 @@ export default class SmallFoodCard extends Component {
               colors={redGradient}
               style={styles.foodImage}
             >
-              <Animatable.View duration={2000} delay={600} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
+              <Animatable.View duration={2300} delay={600} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
                 <LinearGradient colors={shine} style={styles.loader1} />
                 <LinearGradient colors={shine} style={styles.loader2} />
               </Animatable.View>
@@ -140,6 +140,7 @@ export default class SmallFoodCard extends Component {
 SmallFoodCard.propTypes = {
   foodName: PropTypes.string.isRequired,
   foodImage: PropTypes.string,
+  foodAction: PropTypes.func.isRequired,
 };
 
 SmallFoodCard.defaultProps = {
