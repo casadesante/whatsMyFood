@@ -8,7 +8,7 @@ import { StyleSheet,
   ActivityIndicator,
   AsyncStorage } from 'react-native';
 import PropTypes from 'prop-types';
-import { getFromAsyncStorage, getProfileInfo } from '../lib/Auth';
+import { getProfileInfo } from '../lib/Auth';
 import RestaurantCard from '../components/RestaurantCard';
 import EmptyHome from '../components/EmptyHome';
 import OfflineNotice from '../components/Nointernet';
@@ -94,7 +94,7 @@ export default class Home extends Component {
   getRestaurantsFromAsyncStorage = async () => {
     try {
       const retrievedItem = await AsyncStorage.getItem('restaurants');
-      if(retrievedItem !== null) {
+      if (retrievedItem !== null) {
         this.setState({ restaurants: JSON.parse(retrievedItem), loading: false });
       } else {
         this.fetchRestaurantsAndFood();
@@ -111,11 +111,26 @@ export default class Home extends Component {
         'restaurants',
         JSON.stringify(restaurants),
       );
-      this.setState({ restaurants: restaurants, loading: false });
+      this.setState({ restaurants, loading: false });
       return true;
     } catch (error) {
       alert('Async store error');
       return false;
+    }
+  };
+
+  handleConnectivityChange = isConnected => {
+    if (isConnected) {
+      this.setState({ isConnected });
+    } else {
+      this.setState({ isConnected });
+    }
+  };
+
+  scrollToTop = () => {
+    console.log('scroll to top');
+    if (this.scrollview) {
+      this.scrollview.scrollTo({ x: 0, y: 0, animated: true });
     }
   };
 
@@ -133,21 +148,6 @@ export default class Home extends Component {
       .then(parsedRestaurants => this.saveRestaurantsInAsyncStorage(parsedRestaurants))
       .catch(err => alert(err));
   }
-
-  handleConnectivityChange = isConnected => {
-    if (isConnected) {
-      this.setState({ isConnected });
-    } else {
-      this.setState({ isConnected });
-    }
-  };
-
-  scrollToTop = () => {
-    console.log('scroll to top');
-    if (this.scrollview) {
-      this.scrollview.scrollTo({ x: 0, y: 0, animated: true });
-    }
-  };
 
   // if restaurant list is empty, show add button else show the list of restaurants
   render() {
