@@ -107,6 +107,7 @@ export default class Addfood extends Component {
       getProfileInfo()
         .then(user => user.uid)
         .then(firebaseID => {
+          // Add new restaurant ------> Add food
           if(restaurantData) {
             const restaurantAndFood = {
               firebaseID,
@@ -125,6 +126,7 @@ export default class Addfood extends Component {
               { method: 'POST', body: JSON.stringify(restaurantAndFood) },
             );
           } else {
+            // Existing restaurant -----> add food
             const addFoodDetails = {
               firebaseID,
               foodName: name,
