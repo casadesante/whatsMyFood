@@ -352,6 +352,7 @@ exports.addFood = functions.https.onRequest((req, res) => {
     rating: parsedRequest.rating,
     firebaseID: parsedRequest.firebaseID,
     restaurantID: parsedRequest.restaurantID,
+    createdAt: admin.database.ServerValue.TIMESTAMP
   };
 
   if (parsedRequest.hasOwnProperty("foodPhotoURL")) {
