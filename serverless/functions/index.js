@@ -388,13 +388,58 @@ exports.addFood = functions.https.onRequest((req, res) => {
       console.log(`Food Key: ${uniqueFoodKey}`);
       console.log('====================================');
       callback(null, uniqueFoodKey);
+    },
+    (uniqueFoodKey, callback) => {
+      console.log(`Food created with unique Key: ${uniqueFoodKey}`);
+      // fetching restaurant based on reastaurantID
+      db.ref("/restaurants/" + parsedRequest.restaurantID).once("value", (snapshot, readRestaurantError) => {
+        if (readRestaurantError) {
+          return callback(readUserError);
+        }
+        let snapshotRestaurant = snapshot.val();
+        // console.log('====================================');
+        // console.log(`typeof: ${typeof(snapshotRestaurant)}`);      
+        // console.log(`Specific Restaurant: ${JSON.stringify(snapshotRestaurant)}`);
+        // console.log('====================================');
+        snapshotRestaurant["restaurantID"] = parsedRequest.restaurantID;
+        console.log('====================================');
+        console.log(JSON.stringify('Printing the restaurant here'));
+        console.log(JSON.stringify(snapshotRestaurant));
+        console.log('====================================');  
+        return callback(null, snapshotRestaurant);
+      });
+    },
+    (userRestaurant, callback) => {
+      // fetching foods based on restaurantID & firebaseID
+      readFoodsRef.orderByChild("firebaseID").equalTo(parsedRequest.firebaseID).once("value", (snapshot, readFoodsError) => {
+        if (readFoodsError) {
+          console.log(`readFoodsError: ${readFoodsError}`);
+          throw readFoodsError;
+        }
+        console.log(`Snapshot of foods: ${snapshot}`);
+        let foods = snapshot.val();
+        console.log(`foods: ${JSON.stringify(foods)}`);
+        let filteredFoods = [];
+        for (var key in foods) {
+          if (foods.hasOwnProperty(key)) {
+            let modifiedFood = foods[key];
+            console.log(`modified food: ${JSON.stringify(modifiedFood)}`);
+            if (modifiedFood["restaurantID"] === parsedRequest.restaurantID) {
+              modifiedFood["foodId"] = key;
+              filteredFoods.push(modifiedFood);
+            }
+          }
+        }  
+        userRestaurant["foods"] = filteredFoods;
+        return callback(null, userRestaurant);
+      });
     }
   ], (err, result) => {
     if (err) {
       console.log(`error: ${err}`);
       res.status(500).send(err);
     }
-    console.log(`Food created with unique Key: ${result}`);
+    console.log(`result: ${result}`);
     res.status(200).send(result);
   });
 });
