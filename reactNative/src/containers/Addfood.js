@@ -140,15 +140,25 @@ export default class Addfood extends Component {
           }
         })
         .then(restaurantAndFoodAdded => {
-          restaurantAndFoodAdded.status === 200
-            ? navigation.navigate('Home')
-            : alert(restaurantAndFoodAdded.body);
+          if(restaurantAndFoodAdded.status === 200) {
+            return restaurantAndFoodAdded.json();
+          } else {
+            throw new Error({message: "add food error"})
+          }
+        })
+        .then((restaurantObject) => {
+          this.getRestaurant(restaurantObject);
         })
         .catch(err => alert(err));
     } else {
       alert('Name cannot be empty');
     }
     // console.log('Save');
+  };
+
+  getRestaurant = restaurant => {
+    const { navigation } = this.props;
+    navigation.navigate('Restaurant', { restaurant, parentPage: 'Home' });
   };
 
   selectedEmoji = newRating => {
