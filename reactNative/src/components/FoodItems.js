@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { Text, View, ScrollView, StyleSheet, ActionSheetIOS } from 'react-native';
 import PropTypes from 'prop-types';
 import RF from 'react-native-responsive-fontsize';
@@ -16,43 +16,59 @@ const styles = StyleSheet.create({
   },
 });
 
-foodActionSheet = (item) => {
-  ActionSheetIOS.showActionSheetWithOptions(
-    {
-      options: ['Cancel', 'Edit food', 'Remove food'],
-      destructiveButtonIndex: 2,
-      cancelButtonIndex: 0,
-    },
-    buttonIndex => {
-      if (buttonIndex === 1) {
-        console.log(item);
-        navigation.navigate('EditFood', { item });
-      } else if (buttonIndex === 2) {
-        this.deleteFood(item.id);
-        // navigation.navigate('EditRestaurant', { restaurantData: restaurant });
+class FoodItems extends Component {
+  foodActionSheet = (item) => {
+    const { navigation } = this.props;
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: ['Cancel', 'Edit food', 'Remove food'],
+        destructiveButtonIndex: 2,
+        cancelButtonIndex: 0,
+      },
+      buttonIndex => {
+        if (buttonIndex === 1) {
+          console.log(item);
+          navigation.navigate('EditFood', { item });
+        } else if (buttonIndex === 2) {
+          this.deleteFood(item);
+          // navigation.navigate('EditRestaurant', { restaurantData: restaurant });
+        }
+      },
+    );
+  }
+  
+  deleteFood = (item) => {
+    const { navigation } = this.props;
+    const deleteFoodRequest = {
+      foodID: item.id,
+      firebaseID: item.firebaseID,
+      restaurantID: item.restaurantID
+     };
+
+    fetch('https://us-central1-whatsmyfood.cloudfunctions.net/deleteFood',
+     { 
+       method: 'POST', 
+       body: JSON.stringify(deleteFoodRequest) 
+     },
+    )
+    .then(foodAdded => {
+      if(foodAdded.status === 200) {
+        return foodAdded.json()
+      } else {
+        throw new Error({message: "add food error"})
       }
-    },
-  );
-}
+    })
+    .then((restaurant) => {
+      navigation.navigate('Restaurant', { restaurant, parentPage: 'Home' });
+    })
+    .catch(err => alert(err));
+  }
 
-deleteFood = (foodID) => {
-  fetch('https://us-central1-whatsmyfood.cloudfunctions.net/deleteFood', {
-    method: 'POST',
-    body: JSON.stringify({foodID})
-  })
-  .then((deleteFoodResponse) => {
-    deleteFoodResponse.status === 200 ?
-      this.navigation.navigate('Home') : 
-      alert(deleteFoodResponse.body)
-  })
-  .catch(err => alert(err))
-}
-
-const FoodItems = props => {
-  const { title, items, navigation } = props;
+  render() {
+  const { title, navigation, items } = this.props;
   this.navigation = navigation;
 
-  return (
+    return (
     <View style={styles.container}>
       <Text style={styles.categoryLabelStyle}>{title}</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -64,8 +80,9 @@ const FoodItems = props => {
         })}
       </ScrollView>
     </View>
-  );
-};
+    )
+  }
+}
 
 FoodItems.propTypes = {
   title: PropTypes.string,

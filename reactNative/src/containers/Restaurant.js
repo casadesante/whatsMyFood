@@ -251,7 +251,7 @@ export default class Restaurant extends Component {
     const restaurant = navigation.getParam('restaurant');
     const restaurantFoodDetails = this.segregateFoodItems(restaurant.foods, restaurant.createdAt);
 
-    console.log(restaurantFoodDetails);
+    console.log(restaurant);
     const shine = ['rgba(255, 255, 255, 0.03)', 'rgba(255, 255, 255, 0.16)', 'rgba(255, 255, 255, 0.08)'];
     const redGradient = ['rgb(255, 152, 99)', 'rgb(253, 89, 89)'];
     const uploadedRestaurantImage = (
