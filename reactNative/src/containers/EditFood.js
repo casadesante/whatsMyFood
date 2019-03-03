@@ -128,9 +128,14 @@ export default class EditFood extends Component {
         body: JSON.stringify(foodObject)
       })
       .then((editedFoodResponse) => {
-        editedFoodResponse.status === 200
-            ? navigation.navigate('Home')
-            : alert(editedFoodResponse.body);
+        if(editedFoodResponse.status === 200) {
+          return editedFoodResponse.json();
+        } else {
+          throw new Error({message: "add food error"})
+        }
+      })
+      .then((restaurant) => {
+        navigation.navigate('Restaurant', { restaurant, parentPage: 'Home' });
       })
       .catch(err => alert(err))
     } else {
