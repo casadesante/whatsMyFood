@@ -197,7 +197,7 @@ export default class EditFood extends Component {
     console.log(`Selected rating: ${rating}`);
     return (
       <View style={styles.container}>
-        <Header text="Add food" />
+        <Header text="Edit food" />
         <Textbox
           icon="restaurant-menu"
           placeholder="Food name"
