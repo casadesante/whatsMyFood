@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
+import { StyleSheet,
   View,
   Button,
   StatusBar,
-  NativeModules,
-} from 'react-native';
+  NativeModules } from 'react-native';
 import PropTypes from 'prop-types';
 import RNFetchBlob from 'react-native-fetch-blob';
 import uuidv4 from 'uuid/v4';
@@ -100,80 +98,78 @@ export default class Addfood extends Component {
   };
 
   saveDetails = () => {
-    const { restaurantData, restaurantID } = this.props.navigation.state.params;
+    const { restaurantData } = this.props.navigation.state.params;
     const { name, url, rating } = this.state;
 
-    if(name.length !== 0) {
+    if (name.length !== 0) {
       getProfileInfo()
-      .then(user => user.uid)
-      .then(firebaseID => {
-        if(restaurantData) {
-          const restaurantAndFood = {
-            firebaseID,
-            googlePlacesID: restaurantData.placeID,
-            restaurantName: restaurantData.name,
-            formattedAddress: restaurantData.address,
-            restaurantPhotoURL: restaurantData.url,
-            food: {
+        .then(user => user.uid)
+        .then(firebaseID => {
+          if (restaurantData) {
+            const restaurantAndFood = {
+              firebaseID,
+              googlePlacesID: restaurantData.placeID,
+              restaurantName: restaurantData.name,
+              formattedAddress: restaurantData.address,
+              restaurantPhotoURL: restaurantData.url,
+              food: {
+                foodName: name,
+                foodPhotoURL: url,
+                rating,
+              },
+            };
+            this.addNewRestaurantAndFood(restaurantAndFood);
+          } else {
+            const addFoodDetails = {
+              firebaseID,
               foodName: name,
               foodPhotoURL: url,
               rating,
-            },
-          };
-          this.addNewRestaurantAndFood(restaurantAndFood)
-        } else {
-          const addFoodDetails = {
-            firebaseID,
-            foodName: name,
-            foodPhotoURL: url,
-            rating,
-            restaurantID
-          };
-          this.addNewFoodToRestaurant(addFoodDetails)
-        }
-      })
-      .catch(err => alert(err))
+              restaurantID: restaurantData.restaurantID,
+            };
+            this.addNewFoodToRestaurant(addFoodDetails);
+          }
+        })
+        .catch(err => alert(err));
     } else {
-        alert('Name cannot be empty');
+      alert('Name cannot be empty');
     }
   }
 
   addNewRestaurantAndFood = (restaurantAndFood) => {
     const { navigation } = this.props;
-    fetch('https://us-central1-whatsmyfood.cloudfunctions.net/addRestaurantAndFood', 
-      { 
-        method: 'POST', 
-        body: JSON.stringify(restaurantAndFood) 
-      })  
-      .then(restaurantAndFoodAdded => {
-         if(restaurantAndFoodAdded.status === 200) {
-           navigation.navigate('Home')
-         } else {
-           throw new Error({message: 'add restaurant and food error'})
-         }
+    fetch('https://us-central1-whatsmyfood.cloudfunctions.net/addRestaurantAndFood',
+      {
+        method: 'POST',
+        body: JSON.stringify(restaurantAndFood),
       })
-      .catch(err => alert(err))
-    }
+      .then(restaurantAndFoodAdded => {
+        if (restaurantAndFoodAdded.status === 200) {
+          navigation.navigate('Home');
+        } else {
+          throw new Error({ message: 'add restaurant and food error' });
+        }
+      })
+      .catch(err => alert(err));
+  }
 
   addNewFoodToRestaurant = (addFoodDetails) => {
     fetch('https://us-central1-whatsmyfood.cloudfunctions.net/addFood',
-      { 
-        method: 'POST', 
-        body: JSON.stringify(addFoodDetails) 
-      },
-    )
-    .then(foodAdded => {
-      if(foodAdded.status === 200) {
-        return foodAdded.json();
-      } else {
-        throw new Error({message: "add food error"})
-      }
-    })
-    .then((restaurantObject) => {
-      this.getRestaurant(restaurantObject);
-    })
-    .catch(err => alert(err));
-  } 
+      {
+        method: 'POST',
+        body: JSON.stringify(addFoodDetails),
+      })
+      .then(foodAdded => {
+        if (foodAdded.status === 200) {
+          return foodAdded.json();
+        }
+        throw new Error({ message: 'add food error' });
+      })
+      .then((restaurantObject) => {
+        this.getRestaurant(restaurantObject);
+      })
+      .catch(err => alert(err));
+  }
 
   getRestaurant = restaurant => {
     const { navigation } = this.props;

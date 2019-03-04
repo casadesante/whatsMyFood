@@ -117,7 +117,8 @@ export default class Restaurant extends Component {
       <TouchableOpacity
         onPress={() => {
           const restaurant = navigation.getParam('restaurant');
-          navigation.navigate('Addfood', { restaurantData: null, restaurantID: restaurant.restaurantID });
+          restaurant.name = restaurant.restaurantName;
+          navigation.navigate('Addfood', { restaurantData: restaurant });
         }}
       >
         <Ionicons
@@ -192,7 +193,7 @@ export default class Restaurant extends Component {
       },
       buttonIndex => {
         if (buttonIndex === 1) {
-          navigation.navigate('Addfood', { restaurantData: null, restaurantID: restaurant.restaurantID });
+          navigation.navigate('Addfood', { restaurantData: restaurant });
         } else if (buttonIndex === 2) {
           navigation.navigate('EditRestaurant', { restaurantData: restaurant });
         } else if (buttonIndex === 3) {
@@ -234,8 +235,8 @@ export default class Restaurant extends Component {
         id: item.foodId,
         firebaseID: item.firebaseID,
         restaurantID: item.restaurantID,
-        createdAt, 
-        rating: item.rating
+        createdAt,
+        rating: item.rating,
       });
     });
     return items;
