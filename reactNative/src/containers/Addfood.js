@@ -54,7 +54,7 @@ export default class Addfood extends Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     return {
-      title: "T.G.I. Friday's", // Add restaurant title from props here
+      title: params.restaurantName, // Add restaurant title from props here
       headerStyle: {
         backgroundColor: 'rgb(255, 68, 68)',
         borderBottomWidth: 0,
@@ -79,7 +79,8 @@ export default class Addfood extends Component {
 
   componentDidMount() {
     const { navigation } = this.props;
-    navigation.setParams({ save: this.saveDetails });
+    const { name } = navigation.state.params.restaurantData;
+    navigation.setParams({ save: this.saveDetails, restaurantName: name });
     /* eslint no-underscore-dangle: */
     this._navListener = navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('light-content');
