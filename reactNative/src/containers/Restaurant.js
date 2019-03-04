@@ -185,6 +185,7 @@ export default class Restaurant extends Component {
   restaurantActionSheet = () => {
     const { navigation } = this.props;
     const restaurant = navigation.getParam('restaurant');
+    restaurant.name = restaurant.restaurantName;
     ActionSheetIOS.showActionSheetWithOptions(
       {
         options: ['Cancel', 'Add food', 'Edit restaurant', 'Remove restaurant'],
