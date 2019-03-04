@@ -317,23 +317,24 @@ export default class Restaurant extends Component {
             </View>
             {}
             {restaurantFoodDetails['5'].length !== 0 ? (
-              <FoodItems navigation={navigation} title="😍 My fav" items={restaurantFoodDetails['5']} />
+              <FoodItems navigation={navigation} title="😍 My fav" items={restaurantFoodDetails['5']} restaurantName={restaurant.restaurantName} />
             ) : null}
             {restaurantFoodDetails['4'].length !== 0 ? (
-              <FoodItems navigation={navigation} title="👌🏼 Good" items={restaurantFoodDetails['4']} />
+              <FoodItems navigation={navigation} title="👌🏼 Good" items={restaurantFoodDetails['4']} restaurantName={restaurant.restaurantName} />
             ) : null}
             {restaurantFoodDetails['3'].length !== 0 ? (
-              <FoodItems navigation={navigation} title="😐 Meh" items={restaurantFoodDetails['3']} />
+              <FoodItems navigation={navigation} title="😐 Meh" items={restaurantFoodDetails['3']} restaurantName={restaurant.restaurantName} />
             ) : null}
             {restaurantFoodDetails['2'].length !== 0 ? (
               <FoodItems
                 navigation={navigation}
                 title="☹️ Not satisfied"
                 items={restaurantFoodDetails['2']}
+                restaurantName={restaurant.restaurantName}
               />
             ) : null}
             {restaurantFoodDetails['1'].length !== 0 ? (
-              <FoodItems navigation={navigation} title="🤢 Yuck" items={restaurantFoodDetails['1']} />
+              <FoodItems navigation={navigation} title="🤢 Yuck" items={restaurantFoodDetails['1']} restaurantName={restaurant.restaurantName} />
             ) : null}
           </View>
         </HeaderImageScrollView>

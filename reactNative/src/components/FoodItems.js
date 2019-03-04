@@ -17,8 +17,9 @@ const styles = StyleSheet.create({
 });
 
 class FoodItems extends Component {
-  foodActionSheet = (item) => {
+  foodActionSheet = (item, restaurantName) => {
     const { navigation } = this.props;
+    item.restaurantName = restaurantName;
     ActionSheetIOS.showActionSheetWithOptions(
       {
         options: ['Cancel', 'Edit food', 'Remove food'],
@@ -28,7 +29,7 @@ class FoodItems extends Component {
       buttonIndex => {
         if (buttonIndex === 1) {
           console.log(item);
-          navigation.navigate('EditFood', { item });
+          navigation.navigate('EditFood', { item: item });
         } else if (buttonIndex === 2) {
           this.deleteFood(item);
           // navigation.navigate('EditRestaurant', { restaurantData: restaurant });
@@ -65,7 +66,7 @@ class FoodItems extends Component {
   }
 
   render() {
-  const { title, navigation, items } = this.props;
+  const { title, navigation, items, restaurantName } = this.props;
   this.navigation = navigation;
 
     return (
@@ -75,7 +76,7 @@ class FoodItems extends Component {
         {items.map(item => {
           const foodImgLink = item.img || null;
           return (
-            <SmallFoodCard foodAction={this.foodActionSheet} item={item} key={item.id} foodID={item.id} foodName={item.name} foodImage={foodImgLink} />
+            <SmallFoodCard foodAction={this.foodActionSheet} item={item} restaurantName={restaurantName} key={item.id} foodID={item.id} foodName={item.name} foodImage={foodImgLink} />
           );
         })}
       </ScrollView>
