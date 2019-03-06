@@ -105,7 +105,7 @@ export default class Addfood extends Component {
       getProfileInfo()
         .then(user => user.uid)
         .then(firebaseID => {
-          if (restaurantData) {
+          if (restaurantData.addNewRestaurant) {
             const restaurantAndFood = {
               firebaseID,
               googlePlacesID: restaurantData.placeID,

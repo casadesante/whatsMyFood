@@ -148,6 +148,7 @@ export default class Newentry extends Component {
         name: restaurantDetails.inputText,
         address: restaurantDetails.address,
         placeID: restaurantDetails.placeID,
+        addNewRestaurant: true,
         url,
       };
       navigation.navigate('Addfood', { restaurantData: restaurantObject });
