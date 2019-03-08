@@ -216,19 +216,42 @@ exports.addRestaurantAndFood = functions.https.onRequest((req, res) => {
           }  
         }
 
-        let uniqueFoodKey = foodsRef.push(food);
+        let uniqueFoodID = foodsRef.push(food);
         console.log('====================================');
-        console.log(`Food Key: ${uniqueFoodKey}`);
+        console.log(`Food Key: ${uniqueFoodID}`);
         console.log('====================================');
-        callback(null, 'Added Restaurant & Food');
+        callback(null, uniqueFoodID);
       },
-    ], (err, result) => {
+    ], (err, foodID) => {
       if (err) {
         console.log(`error: ${err}`);
         res.status(500).send(err);
       }
-      console.log(`result: ${result}`);
-      res.status(200).send(result);
+      console.log(`foodID: ${foodID}`);
+      // Building the restaurant object
+      let restaurantResponseObject = {
+        "restaurantName": parsedRequest.restaurantName,
+        "latitude": parsedRequest.latitude || null,
+        "longitude": parsedRequest.longitude || null,
+        "restaurantPhotoURL": parsedRequest.restaurantPhotoURL || null,
+        "googlePlacesID": parsedRequest.googlePlacesID || null,
+        "formattedAddress": parsedRequest.formattedAddress || null,
+        "createdAt": admin.database.ServerValue.TIMESTAMP,
+        "restaurantID": restaurantID,
+        "foods": [
+          {
+            "foodName": parsedRequest.food.foodName,
+            "rating": parsedRequest.food.rating,
+            "firebaseID": parsedRequest.firebaseID,
+            "restaurantID": restaurantID,
+            "createdAt": admin.database.ServerValue.TIMESTAMP,
+            "foodPhotoURL": parsedRequest.food.foodPhotoURL || null,
+            "foodId": foodID
+          }
+        ]
+      }
+
+      res.status(200).send(restaurantResponseObject);
     });
 });
 
