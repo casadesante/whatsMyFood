@@ -145,10 +145,12 @@ export default class Addfood extends Component {
       })
       .then(restaurantAndFoodAdded => {
         if (restaurantAndFoodAdded.status === 200) {
-          navigation.navigate('Home');
-        } else {
-          throw new Error({ message: 'add restaurant and food error' });
+          return restaurantAndFoodAdded.json();
         }
+        throw new Error({ message: 'add restaurant and food error' });
+      })
+      .then((restaurantObject) => {
+        this.getRestaurant(restaurantObject, 'addNewRestaurantAndFood');
       })
       .catch(err => alert(err));
   }
@@ -166,14 +168,15 @@ export default class Addfood extends Component {
         throw new Error({ message: 'add food error' });
       })
       .then((restaurantObject) => {
-        this.getRestaurant(restaurantObject);
+        this.getRestaurant(restaurantObject, 'addNewFoodToRestaurant');
       })
       .catch(err => alert(err));
   }
 
-  getRestaurant = restaurant => {
+  getRestaurant = (restaurant, navigatedFrom) => {
     const { navigation } = this.props;
-    navigation.navigate('Restaurant', { restaurant, parentPage: 'Home' });
+    console.log(navigation);
+    navigation.navigate('Restaurant', { restaurant, parentPage: 'Home', navigatedFrom });
   };
 
   selectedEmoji = newRating => {

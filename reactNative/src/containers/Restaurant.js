@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
-import { NavigationActions } from 'react-navigation';
+import { StackActions, NavigationActions } from 'react-navigation';
 import { StyleSheet,
   Text,
   View,
@@ -132,7 +132,16 @@ export default class Restaurant extends Component {
     headerLeft: (
       <TouchableOpacity
         onPress={() => {
-          navigation.dispatch(NavigationActions.back());
+          if (navigation.getParam('navigatedFrom') === 'addNewRestaurantAndFood') {
+            const resetAction = StackActions.reset({
+              index: 0,
+              actions: [NavigationActions.navigate({ routeName: 'Newentry' })],
+            });
+            navigation.dispatch(resetAction);
+            navigation.navigate('Home');
+          } else {
+            navigation.dispatch(NavigationActions.back());
+          }
         }}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
