@@ -58,6 +58,13 @@ export const SignedIn = createBottomTabNavigator(
         Addfood: { screen: Addfood },
         EditRestaurant: { screen: EditRestaurant },
         EditFood: { screen: EditFood },
+      },
+      {
+        transitionConfig: () => ({
+          transitionSpec: {
+            duration: 0,
+          },
+        }),
       }),
       path: '',
       navigationOptions: {
@@ -79,6 +86,13 @@ export const SignedIn = createBottomTabNavigator(
         Restaurant: { screen: Restaurant },
         EditRestaurant: { screen: EditRestaurant },
         EditFood: { screen: EditFood },
+      },
+      {
+        transitionConfig: () => ({
+          transitionSpec: {
+            duration: 0,
+          },
+        }),
       }),
       path: '',
       navigationOptions: {
@@ -91,6 +105,13 @@ export const SignedIn = createBottomTabNavigator(
         Restaurant: { screen: Restaurant },
         Addfood: { screen: Addfood },
         EditRestaurant: { screen: EditRestaurant },
+      },
+      {
+        transitionConfig: () => ({
+          transitionSpec: {
+            duration: 0,
+          },
+        }),
       }),
       path: '',
       navigationOptions: {
@@ -101,6 +122,13 @@ export const SignedIn = createBottomTabNavigator(
       screen: createStackNavigator({
         Profile: { screen: Profile },
         Feedback: { screen: Feedback },
+      },
+      {
+        transitionConfig: () => ({
+          transitionSpec: {
+            duration: 0,
+          },
+        }),
       }),
       path: '',
       navigationOptions: {
