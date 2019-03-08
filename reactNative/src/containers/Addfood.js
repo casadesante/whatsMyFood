@@ -176,7 +176,7 @@ export default class Addfood extends Component {
   getRestaurant = (restaurant, navigatedFrom) => {
     const { navigation } = this.props;
     console.log(navigation);
-    navigation.navigate('Restaurant', { restaurant, parentPage: 'Home', navigatedFrom });
+    navigation.navigate('Restaurant', { restaurant, parentPage: 'Home', navigatedFrom }); // parentPage must be dynamic. Change parentpage string based on stack.
   };
 
   selectedEmoji = newRating => {
