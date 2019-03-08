@@ -2,7 +2,8 @@
 A mobile app to remember your fav food at each restaurant you eat.
 
 ### Setting up React native:
-Please follow the instructions [here](/doc/reactNative/setup.md) to set up React Native.  
+1. Please follow the instructions [here](/doc/reactNative/setup.md) to set up React Native.
+2. Create the `.env` file in root directory of the project with the requird keys
 
 ### Contributing:
 This repo uses [Commitzen](https://www.npmjs.com/package/commitizen) to make the commits more readable and understandable. **cz-conventional-changelog** commitzen adapter is added at the root's `package.json`.
@@ -27,7 +28,7 @@ firebase functions:config:set telegram.groupid="<TELEGRAM-GROUPID>"
 firebase functions:config:set telegram.token="<TELEGRAM-BOT-TOKEN>"
 ``` 
 - Check **Telegram Bot** section for any help with telegram environment variable information.
-- After changing the source code in `serverless/functions/index.js`, run `firebase deploy --only functions`.
+- After changing the source code in `serverless/functions/index.js`, CD `whatsMyFood/serverless/functions` and run `firebase deploy --only functions`.
 
 ### Telegram Bot
 - Get the **TELEGRAM-BOT-TOKEN** from **TelegramBotFather** account in telegram.
