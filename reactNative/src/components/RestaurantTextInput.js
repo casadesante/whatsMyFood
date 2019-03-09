@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
+import { StyleSheet,
   View,
   TextInput,
   Text,
   ScrollView,
-  Keyboard,
-} from 'react-native';
+  Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import RF from 'react-native-responsive-fontsize';
 import { GoogleAutoComplete } from 'react-native-google-autocomplete';
@@ -123,7 +121,10 @@ export default class RestaurantTextInput extends Component {
                         inputText: val,
                         address: addressDetails,
                       },
-                      () => changeText({ inputText, address, placeID }),
+                      () => {
+                        // eslint-disable-next-line react/destructuring-assignment
+                        changeText({ inputText: this.state.inputText, address, placeID });
+                      },
                     );
                   }}
                   value={inputText}
