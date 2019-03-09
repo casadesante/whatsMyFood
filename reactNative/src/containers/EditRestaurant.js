@@ -52,6 +52,7 @@ export default class EditRestaurant extends Component {
         backgroundColor: 'rgb(255, 68, 68)',
         borderBottomWidth: 0,
       },
+      headerTintColor: 'white',
       headerTitleStyle: {
         color: 'white',
       },
@@ -81,7 +82,7 @@ export default class EditRestaurant extends Component {
     console.log(restaurantData);
 
     this.state = {
-      uploaded: restaurantData.restaurantPhotoURL ? true : false,
+      uploaded: !!restaurantData.restaurantPhotoURL,
       url: restaurantData.restaurantPhotoURL || '',
       restaurantID: restaurantData.restaurantID,
       createdAt: restaurantData.createdAt,
@@ -162,18 +163,17 @@ export default class EditRestaurant extends Component {
         formattedAddress: restaurantDetails.address,
         restaurantName: restaurantDetails.inputText,
         restaurantPhotoURL: url,
-        createdAt
+        createdAt,
       };
       console.log(restaurantObject);
-      fetch('https://us-central1-whatsmyfood.cloudfunctions.net/updateRestaurant', 
-        { method: 'POST', body: JSON.stringify(restaurantObject) },
-      )
-      .then((editedRestaurantResponse) => {
-        editedRestaurantResponse.status === 200
+      fetch('https://us-central1-whatsmyfood.cloudfunctions.net/updateRestaurant',
+        { method: 'POST', body: JSON.stringify(restaurantObject) },)
+        .then((editedRestaurantResponse) => {
+          editedRestaurantResponse.status === 200
             ? navigation.navigate('Home')
             : alert(editedRestaurantResponse.body);
-      })
-      .catch(err => alert(err))
+        })
+        .catch(err => alert(err));
     } else {
       alert('Name cannot be empty');
     }
@@ -215,7 +215,7 @@ export default class EditRestaurant extends Component {
       isConnected,
     } = this.state;
 
-    const { inputText: name, address: location} = restaurantDetails;
+    const { inputText: name, address: location } = restaurantDetails;
 
     return (
       <TouchableWithoutFeedback
