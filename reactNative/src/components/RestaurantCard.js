@@ -109,7 +109,7 @@ export default class RestaurantCard extends Component {
   render() {
     const { restaurant, goToRestaurant, index, disableAnimation } = this.props;
     const { loaded } = this.state;
-    const redGradient = ['rgb(255, 152, 99)', 'rgb(253, 89, 89)'];
+    const redGradient = ['rgb(254, 108, 93)', 'rgb(253, 89, 89)'];
     const shine = ['rgba(255, 255, 255, 0.01)', 'rgba(255, 255, 255, 0.05)', 'rgba(255, 255, 255, 0.03)'];
     const blackOverlay = ['rgba(0, 0, 0, 0.50)', 'rgba(0, 0, 0, 0.55)'];
     return (
