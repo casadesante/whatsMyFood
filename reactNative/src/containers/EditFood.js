@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
+import {StyleSheet,
   View,
   Button,
   StatusBar,
-  NativeModules,
-} from 'react-native';
+  NativeModules,} from 'react-native';
 import PropTypes from 'prop-types';
 import RNFetchBlob from 'react-native-fetch-blob';
 import uuidv4 from 'uuid/v4';
@@ -78,12 +76,12 @@ export default class EditFood extends Component {
     console.log(navigation);
 
     this.state = {
-      uploaded: item.img === '' ? false : true,
+      uploaded: item.img !== '',
       url: item.img || '',
       name: item.name || '',
       rating: item.rating || '',
       uploading: false,
-    }
+    };
   }
 
   cancelImage = () => {
@@ -111,34 +109,34 @@ export default class EditFood extends Component {
   saveDetails = () => {
     const { navigation } = this.props;
     const { firebaseID, createdAt, id: foodID, restaurantID } = this.props.navigation.state.params.item;
-    
+
     const { name: foodName, url: foodPhotoURL, rating } = this.state;
 
     const foodObject = {
-      foodID,	
+      foodID,
       foodName,
       rating,
       restaurantID,
       firebaseID,
       foodPhotoURL,
-      createdAt
+      createdAt,
     };
     if (foodName.length !== 0) {
       fetch('https://us-central1-whatsmyfood.cloudfunctions.net/updateFood', {
         method: 'POST',
-        body: JSON.stringify(foodObject)
+        body: JSON.stringify(foodObject),
       })
-      .then((editedFoodResponse) => {
+        .then((editedFoodResponse) => {
         if(editedFoodResponse.status === 200) {
           return editedFoodResponse.json();
-        } else {
+        } 
           throw new Error({message: "add food error"})
-        }
+        
       })
-      .then((restaurant) => {
-        navigation.navigate('Restaurant', { restaurant, parentPage: 'Home' });
-      })
-      .catch(err => alert(err))
+        .then((restaurant) => {
+          navigation.navigate('Restaurant', { restaurant, parentPage: 'Home' });
+        })
+        .catch(err => alert(err));
     } else {
       alert('Name cannot be empty');
     }
@@ -174,8 +172,8 @@ export default class EditFood extends Component {
       });
   });
 
-  getImage = () => {
-    ImagePicker.openPicker({
+  getImage = (pickValue) => {
+    ImagePicker[pickValue]({
       cropping: true,
       width: 1920,
       height: 1080,

@@ -209,8 +209,8 @@ export default class Addfood extends Component {
       });
   });
 
-  getImage = () => {
-    ImagePicker.openPicker({
+  getImage = (pickValue) => {
+    ImagePicker[pickValue]({
       cropping: true,
       width: 1920,
       height: 1080,
