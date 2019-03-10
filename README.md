@@ -39,6 +39,15 @@ firebase functions:config:set telegram.token="<TELEGRAM-BOT-TOKEN>"
 ### Cron Job
 We need to send a weekly report of users, restuarnts & foods added to our database. This requires cron feature in firebase functions. This is not supported for the moment. So, we have used [cron-jon](https://cronless.com), an external resource to invoke the respective functions which sends a weekly report to telegram group.
 
+### Building ios app and pushing it to Beta Flight Testing
+1. Go the Build settings, increment the version number and build number.
+2. Select `Generic Device` from the phone selection.
+3. Hit `Command + Shift + ,` and make sure release is selected.
+4. In **Xcode**, click `product` and then select `archive`
+5. Once archive is completed, a wizard will open.
+6. In the wizard, click `Validate the App`.
+7. Once Validation is completed, Click `Distribute to the App Store`.
+
 ### NoSQL Documentation:
 - [Users](https://github.com/sharathvignesh/whatsMyFood/blob/master/doc/db/noSQLSchema.md#users)
 - [Restaurants](https://github.com/sharathvignesh/whatsMyFood/blob/master/doc/db/noSQLSchema.md#restaurants)
