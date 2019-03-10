@@ -225,7 +225,7 @@ export default class Addfood extends Component {
           })
           .catch(error => console.log(error));
       })
-      .catch(e => alert(e));
+      .catch(e => console.log(e));
   };
 
   render() {

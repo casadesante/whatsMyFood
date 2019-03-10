@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import {StyleSheet,
+import { StyleSheet,
   View,
   Button,
   StatusBar,
-  NativeModules,} from 'react-native';
+  NativeModules  } from 'react-native';
 import PropTypes from 'prop-types';
 import RNFetchBlob from 'react-native-fetch-blob';
 import uuidv4 from 'uuid/v4';
@@ -127,12 +127,11 @@ export default class EditFood extends Component {
         body: JSON.stringify(foodObject),
       })
         .then((editedFoodResponse) => {
-        if(editedFoodResponse.status === 200) {
-          return editedFoodResponse.json();
-        } 
-          throw new Error({message: "add food error"})
-        
-      })
+          if (editedFoodResponse.status === 200) {
+            return editedFoodResponse.json();
+          }
+          throw new Error({ message: 'add food error' });
+        })
         .then((restaurant) => {
           navigation.navigate('Restaurant', { restaurant, parentPage: 'Home' });
         })
@@ -188,7 +187,7 @@ export default class EditFood extends Component {
           })
           .catch(error => console.log(error));
       })
-      .catch(e => alert(e));
+      .catch(e => console.log(e));
   };
 
   render() {

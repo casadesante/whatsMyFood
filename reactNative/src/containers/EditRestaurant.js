@@ -133,7 +133,7 @@ export default class EditRestaurant extends Component {
           })
           .catch(error => console.log(error));
       })
-      .catch(e => alert(e));
+      .catch(e => console.log(e));
   };
 
   cancelImage = () => {
@@ -167,7 +167,7 @@ export default class EditRestaurant extends Component {
       };
       console.log(restaurantObject);
       fetch('https://us-central1-whatsmyfood.cloudfunctions.net/updateRestaurant',
-        { method: 'POST', body: JSON.stringify(restaurantObject) },)
+        { method: 'POST', body: JSON.stringify(restaurantObject) } )
         .then((editedRestaurantResponse) => {
           editedRestaurantResponse.status === 200
             ? navigation.navigate('Home')
