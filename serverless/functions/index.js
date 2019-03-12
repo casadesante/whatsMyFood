@@ -1268,6 +1268,8 @@ exports.addFeedbackAndSendNotificationToTelegram = functions.https.onRequest((re
     return res.status(500).send("No userName rating in the request");
   } else if (!parsedRequest.hasOwnProperty("emailID")) {
     return res.status(500).send("No emailID in the request");
+  } else if (!parsedRequest.hasOwnProperty("firebaseID")) {
+    return res.status(500).send("No firebaseID in the request");
   }
 
   var feedbacksRef = db.ref('/feedbacks');
@@ -1277,7 +1279,8 @@ exports.addFeedbackAndSendNotificationToTelegram = functions.https.onRequest((re
   var feedback = {
     feedback: parsedRequest.feedback,
     userName: parsedRequest.userName,
-    emailID: parsedRequest.emailID
+    emailID: parsedRequest.emailID,
+    firebaseID: parsedRequest.firebaseID
   };
 
   async.waterfall([
