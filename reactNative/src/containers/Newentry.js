@@ -66,7 +66,7 @@ export default class Newentry extends Component {
               paddingRight: widthPercentageToDP('2.7%'),
             }}
           >
-            Save
+            Next
           </Text>
         </TouchableOpacity>
       ),
