@@ -60,24 +60,29 @@ export default class Feedback extends Component {
         onPress={() => {
           const { firebaseID, emailID, displayName } = navigation.state.params.user;
           const { reportMessage } = navigation.state.params;
-          const feedbackReqJson = {
-            firebaseID,
-            emailID,
-            userName: displayName,
-            feedback: reportMessage,
-          };
-          fetch('https://us-central1-whatsmyfood.cloudfunctions.net/addFeedbackAndSendNotificationToTelegram', {
-            method: 'POST',
-            body: JSON.stringify(feedbackReqJson),
-          })
-            .then((sendFeedbackResponse) => {
-              if (sendFeedbackResponse.status === 200) {
-                Alert.alert('Thank you for your feedback', null, [{ text: 'OK', onPress: () => navigation.pop() }]);
-                return null;
-              }
-              throw new Error({ message: 'Error encountered while sending feedback.' });
+          // When nothing is typed in the feedback input, reportMessage is undefined
+          if (reportMessage === undefined || (reportMessage.length === 0)) {
+            Alert.alert('Feedback message cannot be empty');
+          } else {
+            const feedbackReqJson = {
+              firebaseID,
+              emailID,
+              userName: displayName,
+              feedback: reportMessage,
+            };
+            fetch('https://us-central1-whatsmyfood.cloudfunctions.net/addFeedbackAndSendNotificationToTelegram', {
+              method: 'POST',
+              body: JSON.stringify(feedbackReqJson),
             })
-            .catch(err => alert(JSON.stringify(err)));
+              .then((sendFeedbackResponse) => {
+                if (sendFeedbackResponse.status === 200) {
+                  Alert.alert('Thank you for your feedback', null, [{ text: 'OK', onPress: () => navigation.pop() }]);
+                  return null;
+                }
+                throw new Error({ message: 'Error encountered while sending feedback.' });
+              })
+              .catch(err => console.log(`Error encountered while sending feedback.${JSON.stringify(err)}`));
+          }
         }}
       >
         <Ionicons
