@@ -96,7 +96,7 @@ export default class Home extends Component {
       const retrievedItem = await AsyncStorage.getItem('restaurants');
       if (retrievedItem !== null) {
         this.setState({ restaurants: JSON.parse(retrievedItem), loading: false });
-      } 
+      }
       this.fetchRestaurantsAndFood();
     } catch (error) {
       console.error(`Async store : ${error}`);
@@ -113,7 +113,7 @@ export default class Home extends Component {
       this.setState({ restaurants, loading: false });
       return true;
     } catch (error) {
-      alert('Async store error');
+      console.log('Async store error');
       return false;
     }
   };

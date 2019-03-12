@@ -45,7 +45,7 @@ export default class App extends Component {
       });
       return true;
     } catch (error) {
-      alert('Async store error');
+      console.log('Async store error');
       return false;
     }
   };

@@ -8,6 +8,7 @@ import {
   Image,
   Linking,
   ActivityIndicator,
+  Alert,
   NetInfo } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import PropTypes from 'prop-types';
@@ -120,7 +121,7 @@ export default class Profile extends Component {
       if (res) {
         navigation.navigate('SignedOut');
       } else {
-        alert('Logout error. Please contact through Feedback if the problem persists.');
+        Alert.alert('Logout error. Please contact through Feedback if the problem persists.');
       }
     });
   };

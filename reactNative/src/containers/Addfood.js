@@ -3,7 +3,8 @@ import { StyleSheet,
   View,
   Button,
   StatusBar,
-  NativeModules } from 'react-native';
+  NativeModules,
+  Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import RNFetchBlob from 'react-native-fetch-blob';
 import uuidv4 from 'uuid/v4';
@@ -130,9 +131,12 @@ export default class Addfood extends Component {
             this.addNewFoodToRestaurant(addFoodDetails);
           }
         })
-        .catch(err => alert(err));
+        .catch(err => {
+          Alert.alert('Error encountered while fetching user profile');
+          console.log(`Error encountered while fetching user profile: ${err}`);
+        });
     } else {
-      alert('Name cannot be empty');
+      Alert.alert('Food name cannot be empty');
     }
   }
 
@@ -152,7 +156,10 @@ export default class Addfood extends Component {
       .then((restaurantObject) => {
         this.getRestaurant(restaurantObject, 'addNewRestaurantAndFood');
       })
-      .catch(err => alert(err));
+      .catch(err => {
+        Alert.alert('Error encountered while adding new restaurant and its food');
+        console.log(`Error encountered while adding new restaurant and its food: ${err}`);
+      });
   }
 
   addNewFoodToRestaurant = (addFoodDetails) => {
@@ -170,7 +177,10 @@ export default class Addfood extends Component {
       .then((restaurantObject) => {
         this.getRestaurant(restaurantObject, 'addNewFoodToRestaurant');
       })
-      .catch(err => alert(err));
+      .catch(err => {
+        Alert.alert('Error encountered while adding new food');
+        console.log(`Error encountered while adding new food: ${err}`);
+      });
   }
 
   getRestaurant = (restaurant, navigatedFrom) => {

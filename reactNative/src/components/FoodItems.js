@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import { Text, View, ScrollView, StyleSheet, ActionSheetIOS } from 'react-native';
+import React, { Component } from 'react';
+import { Text, View, ScrollView, StyleSheet, ActionSheetIOS, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import RF from 'react-native-responsive-fontsize';
 import SmallFoodCard from './SmallFoodCard';
@@ -28,8 +28,7 @@ class FoodItems extends Component {
       },
       buttonIndex => {
         if (buttonIndex === 1) {
-          console.log(item);
-          navigation.navigate('EditFood', { item: item });
+          navigation.navigate('EditFood', { item });
         } else if (buttonIndex === 2) {
           this.deleteFood(item);
           // navigation.navigate('EditRestaurant', { restaurantData: restaurant });
@@ -37,51 +36,52 @@ class FoodItems extends Component {
       },
     );
   }
-  
+
   deleteFood = (item) => {
     const { navigation } = this.props;
     const deleteFoodRequest = {
       foodID: item.id,
       firebaseID: item.firebaseID,
-      restaurantID: item.restaurantID
-     };
+      restaurantID: item.restaurantID,
+    };
 
     fetch('https://us-central1-whatsmyfood.cloudfunctions.net/deleteFood',
-     { 
-       method: 'POST', 
-       body: JSON.stringify(deleteFoodRequest) 
-     },
-    )
-    .then(foodAdded => {
-      if(foodAdded.status === 200) {
-        return foodAdded.json()
-      } else {
-        throw new Error({message: "add food error"})
-      }
-    })
-    .then((restaurant) => {
-      navigation.navigate('Restaurant', { restaurant, parentPage: 'Home' });
-    })
-    .catch(err => alert(err));
+      {
+        method: 'POST',
+        body: JSON.stringify(deleteFoodRequest),
+      })
+      .then(foodAdded => {
+        if (foodAdded.status === 200) {
+          return foodAdded.json();
+        }
+        throw new Error({ message: 'add food error' });
+      })
+      .then((restaurant) => {
+        navigation.navigate('Restaurant', { restaurant, parentPage: 'Home' });
+      })
+      .catch(err => {
+        Alert.alert('Error encountered while deleting food');
+        console.log(`Error encountered while deleting food: ${err}`);
+      });
   }
 
   render() {
-  const { title, navigation, items, restaurantName } = this.props;
-  this.navigation = navigation;
+    const { title, navigation, items, restaurantName } = this.props;
+    this.navigation = navigation;
 
     return (
-    <View style={styles.container}>
-      <Text style={styles.categoryLabelStyle}>{title}</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {items.map(item => {
-          const foodImgLink = item.img || null;
-          return (
-            <SmallFoodCard foodAction={this.foodActionSheet} item={item} restaurantName={restaurantName} key={item.id} foodID={item.id} foodName={item.name} foodImage={foodImgLink} />
-          );
-        })}
-      </ScrollView>
-    </View>
-    )
+      <View style={styles.container}>
+        <Text style={styles.categoryLabelStyle}>{title}</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {items.map(item => {
+            const foodImgLink = item.img || null;
+            return (
+              <SmallFoodCard foodAction={this.foodActionSheet} item={item} restaurantName={restaurantName} key={item.id} foodID={item.id} foodName={item.name} foodImage={foodImgLink} />
+            );
+          })}
+        </ScrollView>
+      </View>
+    );
   }
 }
 

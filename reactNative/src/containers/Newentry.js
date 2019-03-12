@@ -6,7 +6,8 @@ import { StyleSheet,
   TouchableWithoutFeedback,
   StatusBar,
   NativeModules,
-  NetInfo } from 'react-native';
+  NetInfo,
+  Alert } from 'react-native';
 
 import RNFetchBlob from 'react-native-fetch-blob';
 import PropTypes from 'prop-types';
@@ -153,7 +154,7 @@ export default class Newentry extends Component {
       };
       navigation.navigate('Addfood', { restaurantData: restaurantObject });
     } else {
-      alert('Name cannot be empty');
+      Alert.alert('Restaurant name cannot be empty');
     }
   };
 

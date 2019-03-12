@@ -3,7 +3,8 @@ import { StyleSheet,
   View,
   Button,
   StatusBar,
-  NativeModules  } from 'react-native';
+  NativeModules,
+  Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import RNFetchBlob from 'react-native-fetch-blob';
 import uuidv4 from 'uuid/v4';
@@ -135,9 +136,12 @@ export default class EditFood extends Component {
         .then((restaurant) => {
           navigation.navigate('Restaurant', { restaurant, parentPage: 'Home' });
         })
-        .catch(err => alert(err));
+        .catch(err => {
+          Alert.alert('Error encountered while updating food');
+          console.log(`Error encountered while updating food: ${err}`);
+        });
     } else {
-      alert('Name cannot be empty');
+      Alert.alert('Food name cannot be empty');
     }
   };
 

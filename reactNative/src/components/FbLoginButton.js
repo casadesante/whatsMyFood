@@ -4,7 +4,7 @@ import { StyleSheet,
   TouchableOpacity,
   Text,
   View,
-  AsyncStorage } from 'react-native';
+  Alert } from 'react-native';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Config from 'react-native-config';
@@ -85,7 +85,7 @@ class FacebookLoginButton extends Component {
             'email',
           ]);
         } catch (webError) {
-          alert(`Some error occured: ${webError}`);
+          Alert.alert(`Some error occured: ${webError}`);
           // show error message to the user if none of the FB screens
           // did not open
         }
@@ -93,7 +93,7 @@ class FacebookLoginButton extends Component {
 
       if (result.isCancelled) {
         self.setState({ FbLoginLoading: false });
-        alert('Login was cancelled');
+        console.log('Login was cancelled');
       } else {
         AccessToken.getCurrentAccessToken().then(
           accessTokenData => {
@@ -121,10 +121,9 @@ class FacebookLoginButton extends Component {
                   )
                     .then(() => {
                       saveInAsyncStorage().then(res => {
-                        console.log(res);
                         res
                           ? navigation.navigate('Home')
-                          : alert('Async store Error');
+                          : console.log('Async store Error');
                       });
                     })
                     .catch(err => {

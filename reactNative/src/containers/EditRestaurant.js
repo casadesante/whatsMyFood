@@ -6,7 +6,8 @@ import { StyleSheet,
   TouchableWithoutFeedback,
   StatusBar,
   NativeModules,
-  NetInfo } from 'react-native';
+  NetInfo,
+  Alert } from 'react-native';
 
 import RNFetchBlob from 'react-native-fetch-blob';
 import PropTypes from 'prop-types';
@@ -165,17 +166,18 @@ export default class EditRestaurant extends Component {
         restaurantPhotoURL: url,
         createdAt,
       };
-      console.log(restaurantObject);
       fetch('https://us-central1-whatsmyfood.cloudfunctions.net/updateRestaurant',
-        { method: 'POST', body: JSON.stringify(restaurantObject) } )
+        { method: 'POST', body: JSON.stringify(restaurantObject) })
         .then((editedRestaurantResponse) => {
-          editedRestaurantResponse.status === 200
-            ? navigation.navigate('Home')
-            : alert(editedRestaurantResponse.body);
+          if (editedRestaurantResponse.status === 200) navigation.navigate('Home');
+          else throw editedRestaurantResponse;
         })
-        .catch(err => alert(err));
+        .catch(err => {
+          Alert.alert('Error encountered while updating restaurant');
+          console.log(`Error encountered while updating restaurant: ${err}`);
+        });
     } else {
-      alert('Name cannot be empty');
+      Alert.alert('Resturant name cannot be empty');
     }
   };
 

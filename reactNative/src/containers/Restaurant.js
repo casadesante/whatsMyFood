@@ -12,6 +12,7 @@ import { StyleSheet,
   Image,
   TouchableOpacity,
   ActionSheetIOS,
+  Alert,
   NetInfo } from 'react-native';
 import PropTypes from 'prop-types';
 import RF from '../../node_modules/react-native-responsive-fontsize';
@@ -227,7 +228,10 @@ export default class Restaurant extends Component {
       .then(deletedRestaurant => {
         if (deletedRestaurant.status === 200) { navigation.navigate('Home'); } else { alert('Error while removing restaurant'); }
       })
-      .catch(err => alert(err));
+      .catch(err => {
+        Alert.alert('Error encountered while deleting restaurant');
+        console.log(`Error encountered while deleting restaurant: ${err}`);
+      });
   }
 
   segregateFoodItems = (foodItems, createdAt) => {

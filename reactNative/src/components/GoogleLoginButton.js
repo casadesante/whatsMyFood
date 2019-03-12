@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
+import {StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
   Text,
-  View,
-} from 'react-native';
+  View,} from 'react-native';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Config from 'react-native-config';
@@ -85,7 +83,7 @@ class GoogleLoginButton extends Component {
             'email',
           ]);
         } catch (webError) {
-          alert(`Some error occured: ${webError}`);
+          console.log(`Some error occured: ${webError}`);
           // show error message to the user if none of the FB screens
           // did not open
         }
