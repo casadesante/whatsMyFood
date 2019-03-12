@@ -6,6 +6,7 @@ import {
   View,
   StatusBar,
   Image,
+  Linking,
   ActivityIndicator,
   NetInfo } from 'react-native';
 import { ListItem } from 'react-native-elements';
@@ -136,7 +137,7 @@ export default class Profile extends Component {
       },
       {
         id: 2,
-        title: 'Third party software list',
+        title: 'Privacy policy',
       },
       {
         id: 3,
@@ -180,6 +181,14 @@ export default class Profile extends Component {
             <ListItem
               onPress={() => {
                 switch (item.id) {
+                  case 1:
+                    Linking.openURL('https://wmftermsandcond.glitch.me/');
+                    break;
+
+                  case 2:
+                    Linking.openURL('https://wmftermsandcond.glitch.me/');
+                    break;
+
                   case 3:
                     navigation.navigate('Feedback', { user });
                     break;
