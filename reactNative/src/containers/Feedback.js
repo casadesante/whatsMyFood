@@ -7,6 +7,7 @@ import {
   View,
   StatusBar,
   NetInfo,
+  Alert,
   TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
@@ -59,7 +60,24 @@ export default class Feedback extends Component {
         onPress={() => {
           const { firebaseID, emailID, displayName } = navigation.state.params.user;
           const { reportMessage } = navigation.state.params;
-          alert(`Message to be sent to API: ${firebaseID} ${emailID} ${displayName} ${reportMessage}`);
+          const feedbackReqJson = {
+            firebaseID,
+            emailID,
+            userName: displayName,
+            feedback: reportMessage,
+          };
+          fetch('https://us-central1-whatsmyfood.cloudfunctions.net/addFeedbackAndSendNotificationToTelegram', {
+            method: 'POST',
+            body: JSON.stringify(feedbackReqJson),
+          })
+            .then((sendFeedbackResponse) => {
+              if (sendFeedbackResponse.status === 200) {
+                Alert.alert('Thank you for your feedback', null, [{ text: 'OK', onPress: () => navigation.pop() }]);
+                return null;
+              }
+              throw new Error({ message: 'Error encountered while sending feedback.' });
+            })
+            .catch(err => alert(JSON.stringify(err)));
         }}
       >
         <Ionicons
@@ -106,14 +124,6 @@ export default class Feedback extends Component {
     });
   };
 
-  componentWillUnmount() {
-    NetInfo.isConnected.removeEventListener(
-      'connectionChange',
-      this.handleConnectivityChange,
-    );
-    this._navListener.remove();
-  }
-
   handleConnectivityChange = isConnected => {
     if (isConnected) {
       this.setState({ isConnected });
@@ -129,13 +139,6 @@ export default class Feedback extends Component {
       reportMessage: KeyWord,
     });
   };
-
-  sendFeedbackToFirebase = () => {
-    const { navigation } = this.props;
-    const { user } = navigation.getParam('user');
-    alert(`Waiting for Feedback API ${user}`);
-  };
-
 
   render() {
     const { isConnected, reportMessage } = this.state;

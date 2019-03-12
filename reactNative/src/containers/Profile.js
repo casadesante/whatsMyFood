@@ -95,7 +95,7 @@ export default class Profile extends Component {
         };
         this.setState({ user });
       })
-      .catch(err => alert(err));
+      .catch(err => console.log(err));
   };
 
   componentWillUnmount() {
@@ -120,7 +120,7 @@ export default class Profile extends Component {
       if (res) {
         navigation.navigate('SignedOut');
       } else {
-        alert('Logout error');
+        alert('Logout error. Please contact through Feedback if the problem persists.');
       }
     });
   };
@@ -194,7 +194,7 @@ export default class Profile extends Component {
                     break;
 
                   default:
-                    alert(item.title);
+                    console.log(`Option ${item.title} doesn't exist`);
                     break;
                 }
               }}
