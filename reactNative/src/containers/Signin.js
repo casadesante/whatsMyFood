@@ -4,7 +4,8 @@ import { StyleSheet,
   Image,
   ImageBackground,
   View,
-  StatusBar } from 'react-native';
+  StatusBar,
+  Linking } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import PropTypes from 'prop-types';
 import SplashScreen from 'react-native-splash-screen';
@@ -101,10 +102,9 @@ export default class Signin extends Component {
               </View>
               <Text style={styles.footerText}>
                 By signing up, I agree with WhatsMyFood’s{'\n'}
-                <Text style={{ color: '#FF4444' }}>
-                  Terms of Service
-                  <Text style={{ color: 'white' }}> and </Text>Privacy policy.
-                </Text>
+                <Text style={{ color: '#FF4444' }} onPress={() => Linking.openURL('https://wmftermsandcond.glitch.me/')}>Terms of Service</Text>
+                <Text style={styles.footerText}> and </Text>
+                <Text style={{ color: '#FF4444' }} onPress={() => Linking.openURL('https://wmfprivacypolicy.glitch.me/')}>Privacy policy</Text>
               </Text>
             </View>
           </View>
