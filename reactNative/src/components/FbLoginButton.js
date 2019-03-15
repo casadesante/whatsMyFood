@@ -102,7 +102,7 @@ class FacebookLoginButton extends Component {
             );
             firebase
               .auth()
-              .signInWithCredential(credential)
+              .signInAndRetrieveDataWithCredential(credential)
               .then(
                 user => {
                   const userObj = {
