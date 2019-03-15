@@ -9,7 +9,7 @@ import { StyleSheet,
   NetInfo,
   Alert } from 'react-native';
 
-import RNFetchBlob from 'react-native-fetch-blob';
+import RNFetchBlob from 'rn-fetch-blob';
 import PropTypes from 'prop-types';
 /* eslint import/no-unresolved: */
 import uuidv4 from 'uuid/v4';

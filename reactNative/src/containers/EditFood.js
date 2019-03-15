@@ -6,7 +6,7 @@ import { StyleSheet,
   NativeModules,
   Alert } from 'react-native';
 import PropTypes from 'prop-types';
-import RNFetchBlob from 'react-native-fetch-blob';
+import RNFetchBlob from 'rn-fetch-blob';
 import uuidv4 from 'uuid/v4';
 
 import Header from '../components/Header';
@@ -17,7 +17,6 @@ import { heightPercentageToDP } from '../lib/Responsive';
 import Optional from '../components/Optional';
 import EmojiPicker from '../components/EmojiPicker';
 import firebase from '../lib/FirebaseClient';
-import { getProfileInfo } from '../lib/Auth';
 
 const ImagePicker = NativeModules.ImageCropPicker;
 

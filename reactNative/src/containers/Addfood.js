@@ -6,7 +6,7 @@ import { StyleSheet,
   NativeModules,
   Alert } from 'react-native';
 import PropTypes from 'prop-types';
-import RNFetchBlob from 'react-native-fetch-blob';
+import RNFetchBlob from 'rn-fetch-blob';
 import uuidv4 from 'uuid/v4';
 
 import Header from '../components/Header';
