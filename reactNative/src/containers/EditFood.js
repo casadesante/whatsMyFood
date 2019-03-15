@@ -84,10 +84,6 @@ export default class EditFood extends Component {
     };
   }
 
-  cancelImage = () => {
-    this.setState({ uploaded: false, uploading: false, url: '' });
-  };
-
   componentDidMount() {
     const { navigation } = this.props;
     const { restaurantName } = navigation.state.params.item;
@@ -101,6 +97,10 @@ export default class EditFood extends Component {
   componentWillUnmount() {
     this._navListener.remove();
   }
+
+  cancelImage = () => {
+    this.setState({ uploaded: false, uploading: false, url: '' });
+  };
 
   onPress = () => {
     console.log('pressed');
