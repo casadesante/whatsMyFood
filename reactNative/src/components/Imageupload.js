@@ -62,7 +62,7 @@ const Imageupload = params => {
     <View style={styles.container}>
       <LinearGradient
         style={styles.gradientBox}
-        colors={['rgb(255, 152, 99)', 'rgb(253, 89, 89)']}
+        colors={['rgb(254, 108, 93)', 'rgb(253, 89, 89)']}
       >
         <View>
           <ActivityIndicator size="large" color="#FFFFFF" />
