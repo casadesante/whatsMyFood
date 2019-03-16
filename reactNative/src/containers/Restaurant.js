@@ -13,7 +13,9 @@ import { StyleSheet,
   TouchableOpacity,
   ActionSheetIOS,
   Alert,
-  NetInfo } from 'react-native';
+  NetInfo,
+  Modal,
+  ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import RF from '../../node_modules/react-native-responsive-fontsize';
 import { getProfileInfo } from '../lib/Auth';
@@ -23,6 +25,23 @@ import OfflineNotice from '../components/Nointernet';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
 
 const styles = StyleSheet.create({
+  modalContents: {
+    height: heightPercentageToDP('100%'),
+    width: widthPercentageToDP('100%'),
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loaderContainer: {
+    height: widthPercentageToDP('25%'),
+    width: widthPercentageToDP('25%'),
+    backgroundColor: 'white',
+    borderRadius: widthPercentageToDP('2%'),
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     height: heightPercentageToDP('100%'),
   },
@@ -162,6 +181,7 @@ export default class Restaurant extends Component {
   state = {
     isConnected: true,
     loaded: false,
+    modalVisible: false,
   };
 
   componentDidMount() {
@@ -215,6 +235,7 @@ export default class Restaurant extends Component {
   };
 
   deleteRestaurant = (restaurantID) => {
+    this.setState({ modalVisible: true });
     const { navigation } = this.props;
     getProfileInfo()
       .then(user => user.uid)
@@ -226,9 +247,11 @@ export default class Restaurant extends Component {
         },
       ))
       .then(deletedRestaurant => {
+        this.setState({ modalVisible: false });
         if (deletedRestaurant.status === 200) { navigation.navigate('Home'); } else { alert('Error while removing restaurant'); }
       })
       .catch(err => {
+        this.setState({ modalVisible: false });
         Alert.alert('Error encountered while deleting restaurant');
         console.log(`Error encountered while deleting restaurant: ${err}`);
       });
@@ -262,7 +285,7 @@ export default class Restaurant extends Component {
 
   render() {
     const { navigation } = this.props;
-    const { isConnected, loaded } = this.state;
+    const { isConnected, loaded, modalVisible } = this.state;
     const restaurant = navigation.getParam('restaurant');
     const restaurantFoodDetails = this.segregateFoodItems(restaurant.foods, restaurant.createdAt);
 
@@ -354,6 +377,21 @@ export default class Restaurant extends Component {
             ) : null}
           </View>
         </HeaderImageScrollView>
+        <Modal
+          animationType="fade"
+          transparent
+          visible={modalVisible}
+        >
+          <View style={styles.modalContents}>
+            <View style={styles.loaderContainer}>
+              <ActivityIndicator
+                size="large"
+                color="#FF4444"
+                style={styles.activityIndicator}
+              />
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }
