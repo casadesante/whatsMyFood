@@ -4,7 +4,9 @@ import { StyleSheet,
   Button,
   StatusBar,
   NativeModules,
-  Alert } from 'react-native';
+  Alert,
+  Modal,
+  ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import RNFetchBlob from 'rn-fetch-blob';
 import uuidv4 from 'uuid/v4';
@@ -14,7 +16,7 @@ import Header from '../components/Header';
 import Textbox from '../components/Textbox';
 import Imageupload from '../components/Imageupload';
 import Imageuploader from '../components/Imageuploader';
-import { heightPercentageToDP } from '../lib/Responsive';
+import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
 import Optional from '../components/Optional';
 import EmojiPicker from '../components/EmojiPicker';
 import firebase from '../lib/FirebaseClient';
@@ -48,6 +50,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
+  modalContents: {
+    height: heightPercentageToDP('100%'),
+    width: widthPercentageToDP('100%'),
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loaderContainer: {
+    height: widthPercentageToDP('25%'),
+    width: widthPercentageToDP('25%'),
+    backgroundColor: 'white',
+    borderRadius: widthPercentageToDP('2%'),
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default class Addfood extends Component {
@@ -75,6 +94,7 @@ export default class Addfood extends Component {
     name: '',
     rating: 5,
     uploading: false,
+    modalVisible: false,
   };
 
   componentDidMount() {
@@ -143,6 +163,7 @@ export default class Addfood extends Component {
 
   addNewRestaurantAndFood = (restaurantAndFood) => {
     const { navigation } = this.props;
+    this.setState({ modalVisible: true });
     fetch('https://us-central1-whatsmyfood.cloudfunctions.net/addRestaurantAndFood',
       {
         method: 'POST',
@@ -158,12 +179,14 @@ export default class Addfood extends Component {
         this.getRestaurant(restaurantObject, 'addNewRestaurantAndFood');
       })
       .catch(err => {
+        this.setState({ modalVisible: false });
         Alert.alert('Error encountered while adding new restaurant and its food');
         console.log(`Error encountered while adding new restaurant and its food: ${err}`);
       });
   }
 
   addNewFoodToRestaurant = (addFoodDetails) => {
+    this.setState({ modalVisible: true });
     fetch('https://us-central1-whatsmyfood.cloudfunctions.net/addFood',
       {
         method: 'POST',
@@ -179,12 +202,14 @@ export default class Addfood extends Component {
         this.getRestaurant(restaurantObject, 'addNewFoodToRestaurant');
       })
       .catch(err => {
+        this.setState({ modalVisible: false });
         Alert.alert('Error encountered while adding new food');
         console.log(`Error encountered while adding new food: ${err}`);
       });
   }
 
   getRestaurant = (restaurant, navigatedFrom) => {
+    this.setState({ modalVisible: false });
     const { navigation } = this.props;
     const resetAction = StackActions.reset({
       index: 1,
@@ -245,7 +270,7 @@ export default class Addfood extends Component {
   };
 
   render() {
-    const { rating, uploaded, url, uploading, name } = this.state;
+    const { rating, uploaded, url, uploading, name, modalVisible } = this.state;
     console.log(`Selected rating: ${rating}`);
     return (
       <View style={styles.container}>
@@ -272,6 +297,21 @@ export default class Addfood extends Component {
             </View>
           )}
         </View>
+        <Modal
+          animationType="fade"
+          transparent
+          visible={modalVisible}
+        >
+          <View style={styles.modalContents}>
+            <View style={styles.loaderContainer}>
+              <ActivityIndicator
+                size="large"
+                color="#FF4444"
+                style={styles.activityIndicator}
+              />
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }
