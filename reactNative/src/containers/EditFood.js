@@ -73,10 +73,8 @@ export default class EditFood extends Component {
     const { navigation } = props;
 
     const item = navigation.getParam('item');
-    console.log(navigation);
-
     this.state = {
-      uploaded: item.img !== '',
+      uploaded: !(item.img === '' || item.img == null),
       url: item.img || '',
       name: item.name || '',
       rating: item.rating || '',
@@ -102,10 +100,6 @@ export default class EditFood extends Component {
     this.setState({ uploaded: false, uploading: false, url: '' });
   };
 
-  onPress = () => {
-    console.log('pressed');
-  };
-
   saveDetails = () => {
     const { navigation } = this.props;
     const { firebaseID, createdAt, id: foodID, restaurantID } = this.props.navigation.state.params.item;
@@ -121,6 +115,7 @@ export default class EditFood extends Component {
       foodPhotoURL,
       createdAt,
     };
+
     if (foodName.length !== 0) {
       fetch('https://us-central1-whatsmyfood.cloudfunctions.net/updateFood', {
         method: 'POST',
@@ -181,12 +176,10 @@ export default class EditFood extends Component {
       height: 1080,
     })
       .then(response => {
-        console.log(response.path);
         this.setState({ uploading: true });
         this.uploadImage(response.path)
           .then(url => {
             this.setState({ uploaded: true, uploading: false, url });
-            console.log(url);
           })
           .catch(error => console.log(error));
       })
@@ -195,7 +188,6 @@ export default class EditFood extends Component {
 
   render() {
     const { rating, uploaded, url, uploading, name } = this.state;
-    console.log(`Selected rating: ${rating}`);
     return (
       <View style={styles.container}>
         <Header text="Edit food" />
