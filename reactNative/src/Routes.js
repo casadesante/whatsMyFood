@@ -1,7 +1,8 @@
 import React from 'react';
 import { createStackNavigator,
   createBottomTabNavigator,
-  createSwitchNavigator } from 'react-navigation';
+  createSwitchNavigator,
+  StackActions } from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Material from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
@@ -97,6 +98,9 @@ export const SignedIn = createBottomTabNavigator(
       path: '',
       navigationOptions: {
         tabBarIcon: NewEntryTabBarIcon,
+        tabBarOnPress: ({ navigation }) => {
+          navigation.dispatch(StackActions.popToTop());
+        },
       },
     },
     Search: {
@@ -116,6 +120,9 @@ export const SignedIn = createBottomTabNavigator(
       path: '',
       navigationOptions: {
         tabBarIcon: SearchTabBarIcon,
+        tabBarOnPress: ({ navigation }) => {
+          navigation.dispatch(StackActions.popToTop());
+        },
       },
     },
     Profile: {
@@ -133,6 +140,9 @@ export const SignedIn = createBottomTabNavigator(
       path: '',
       navigationOptions: {
         tabBarIcon: ProfileTabBarIcon,
+        tabBarOnPress: ({ navigation }) => {
+          navigation.dispatch(StackActions.popToTop());
+        },
       },
     },
   },
