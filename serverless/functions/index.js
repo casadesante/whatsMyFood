@@ -227,7 +227,16 @@ exports.addRestaurantAndFood = functions.https.onRequest((req, res) => {
         console.log(`error: ${err}`);
         res.status(500).send(err);
       }
-      console.log(`foodID: ${foodID}`);
+      // console.log(`foodID: ${foodID}`);
+      // console.log('====================================');
+      // console.log(`typeof(foodID): ${typeof(foodID)}`);
+      // console.log('====================================');
+      let foodIDString = foodID.toString();
+      let extractedFoodID = foodIDString.substring('https://whatsmyfood.firebaseio.com/foods/'.length);
+      // console.log('====================================');
+      // console.log(`extractedFoodID: ${extractedFoodID}`);
+      // console.log('====================================');
+
       // Building the restaurant object
       let restaurantResponseObject = {
         "restaurantName": parsedRequest.restaurantName,
@@ -246,7 +255,7 @@ exports.addRestaurantAndFood = functions.https.onRequest((req, res) => {
             "restaurantID": restaurantID,
             "createdAt": admin.database.ServerValue.TIMESTAMP,
             "foodPhotoURL": parsedRequest.food.foodPhotoURL || null,
-            "foodId": foodID
+            "foodId": extractedFoodID
           }
         ]
       }
