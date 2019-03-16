@@ -187,7 +187,7 @@ export default class Profile extends Component {
                     break;
 
                   case 2:
-                    Linking.openURL('https://wmftermsandcond.glitch.me/');
+                    Linking.openURL('https://wmfprivacypolicy.glitch.me/');
                     break;
 
                   case 3:
