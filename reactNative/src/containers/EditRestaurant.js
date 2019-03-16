@@ -7,7 +7,9 @@ import { StyleSheet,
   StatusBar,
   NativeModules,
   NetInfo,
-  Alert } from 'react-native';
+  Alert,
+  Modal,
+  ActivityIndicator } from 'react-native';
 
 import RNFetchBlob from 'rn-fetch-blob';
 import PropTypes from 'prop-types';
@@ -42,6 +44,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: heightPercentageToDP('2.97%'),
+  },
+  modalContents: {
+    height: heightPercentageToDP('100%'),
+    width: widthPercentageToDP('100%'),
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loaderContainer: {
+    height: widthPercentageToDP('25%'),
+    width: widthPercentageToDP('25%'),
+    backgroundColor: 'white',
+    borderRadius: widthPercentageToDP('2%'),
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
@@ -94,6 +113,7 @@ export default class EditRestaurant extends Component {
       },
       isConnected: true,
       uploading: false,
+      modalVisible: false,
     };
   }
 
@@ -158,6 +178,7 @@ export default class EditRestaurant extends Component {
       restaurantDetails.hasOwnProperty('inputText')
       && restaurantDetails.inputText.length !== 0
     ) {
+      this.setState({ modalVisible: true });
       const restaurantObject = {
         restaurantID,
         googlePlacesID: restaurantDetails.placeID,
@@ -169,10 +190,12 @@ export default class EditRestaurant extends Component {
       fetch('https://us-central1-whatsmyfood.cloudfunctions.net/updateRestaurant',
         { method: 'POST', body: JSON.stringify(restaurantObject) })
         .then((editedRestaurantResponse) => {
-          if (editedRestaurantResponse.status === 200) navigation.navigate('Home');
+          this.setState({ modalVisible: false });
+          if (editedRestaurantResponse.status === 200) navigation.pop();
           else throw editedRestaurantResponse;
         })
         .catch(err => {
+          this.setState({ modalVisible: false });
           Alert.alert('Error encountered while updating restaurant');
           console.log(`Error encountered while updating restaurant: ${err}`);
         });
@@ -215,6 +238,7 @@ export default class EditRestaurant extends Component {
       restaurantDetails,
       uploading,
       isConnected,
+      modalVisible,
     } = this.state;
 
     const { inputText: name, address: location } = restaurantDetails;
@@ -248,6 +272,21 @@ export default class EditRestaurant extends Component {
               </View>
             )}
           </View>
+          <Modal
+            animationType="fade"
+            transparent
+            visible={modalVisible}
+          >
+            <View style={styles.modalContents}>
+              <View style={styles.loaderContainer}>
+                <ActivityIndicator
+                  size="large"
+                  color="#FF4444"
+                  style={styles.activityIndicator}
+                />
+              </View>
+            </View>
+          </Modal>
         </View>
       </TouchableWithoutFeedback>
     );
