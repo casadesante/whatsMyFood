@@ -8,6 +8,7 @@ import { StyleSheet,
 import PropTypes from 'prop-types';
 import RNFetchBlob from 'rn-fetch-blob';
 import uuidv4 from 'uuid/v4';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 import Header from '../components/Header';
 import Textbox from '../components/Textbox';
@@ -185,8 +186,13 @@ export default class Addfood extends Component {
 
   getRestaurant = (restaurant, navigatedFrom) => {
     const { navigation } = this.props;
-    console.log(navigation);
-    navigation.navigate('Restaurant', { restaurant, parentPage: 'Home', navigatedFrom }); // parentPage must be dynamic. Change parentpage string based on stack.
+    const resetAction = StackActions.reset({
+      index: 1,
+      actions: [
+        NavigationActions.navigate({ routeName: 'Newentry' }),
+        NavigationActions.navigate({ routeName: 'Restaurant', params: { restaurant, parentPage: 'Home', navigatedFrom } })], // parentPage must be dynamic. Change parentpage string based on stack.
+    });
+    navigation.dispatch(resetAction);
   };
 
   selectedEmoji = newRating => {

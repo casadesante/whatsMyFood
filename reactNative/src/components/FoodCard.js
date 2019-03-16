@@ -36,8 +36,35 @@ const styles = StyleSheet.create({
     color: 'white',
     marginTop: heightPercentageToDP('1%'),
     fontFamily: 'SFProText-Medium',
-    fontSize: RF(5.5),
+    fontSize: RF(5),
     textAlign: 'center',
+  },
+  loader: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  loader1: {
+    borderRadius: 10,
+    position: 'absolute',
+    height: '100%',
+    width: '25%',
+    left: '10%',
+    transform: [
+      { skewX: '5deg' },
+    ],
+  },
+  loader2: {
+    borderRadius: 10,
+    position: 'absolute',
+    height: '100%',
+    width: '15%',
+    left: '40%',
+    transform: [
+      { skewX: '5deg' },
+    ],
   },
 });
 
@@ -74,8 +101,8 @@ export default class FoodCard extends Component {
     console.log(food);
     const { loaded } = this.state;
     const redGradient = ['rgb(254, 108, 93)', 'rgb(253, 89, 89)'];
+    const shine = ['rgba(255, 255, 255, 0.01)', 'rgba(255, 255, 255, 0.05)', 'rgba(255, 255, 255, 0.03)'];
     const blackOverlay = ['rgba(0, 0, 0, 0.50)', 'rgba(0, 0, 0, 0.55)'];
-    const shine = ['rgba(255, 255, 255, 0.03)', 'rgba(255, 255, 255, 0.16)', 'rgba(255, 255, 255, 0.08)'];
     return (
       <Animatable.View animation={undefined}>
         <TouchableOpacity
@@ -98,19 +125,19 @@ export default class FoodCard extends Component {
             >
               <View>
                 { !loaded ? (
-                  <Animatable.View duration={2000} delay={600} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
+                  <Animatable.View duration={2300} delay={600} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
                     <LinearGradient colors={shine} style={styles.loader1} />
                     <LinearGradient colors={shine} style={styles.loader2} />
                   </Animatable.View>
                 ) : (true)}
                 <View style={styles.details}>
-                  <Text style={styles.foodRating}>{emojiList[food.rating - 1]}</Text>
                   <Text style={styles.foodName} numberOfLines={2}>
-                    {loaded ? food.foodName : 'Loading'}
+                    {food.foodName}
                   </Text>
                   <Text style={styles.foodName} numberOfLines={2}>
                     in {food.restaurantName}
                   </Text>
+                  <Text style={styles.foodRating}>{emojiList[food.rating - 1]}</Text>
                 </View>
               </View>
             </LinearGradient>

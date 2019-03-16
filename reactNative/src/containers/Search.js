@@ -119,8 +119,6 @@ export default class Search extends Component {
   getRestaurantsFromAsyncStorage = async () => {
     try {
       const retrievedItem = await AsyncStorage.getItem('restaurants');
-      console.log(`Async store restaurants : ${retrievedItem}`);
-      // return JSON.parse(retrievedItem);
       const restaurants = JSON.parse(retrievedItem);
       const foods = [];
       restaurants.forEach((hotel) => {
@@ -326,7 +324,7 @@ export default class Search extends Component {
                         .includes((searchKeyword).toLowerCase())),
                   ).map(foodInfo => (
                     <FoodCard
-                      key={foodInfo.restaurantID}
+                      key={foodInfo.foodId}
                       goToRestaurant={this.getRestaurantFromFood}
                       food={foodInfo}
                     />
