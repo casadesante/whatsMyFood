@@ -211,13 +211,17 @@ export default class Addfood extends Component {
   getRestaurant = (restaurant, navigatedFrom) => {
     this.setState({ modalVisible: false });
     const { navigation } = this.props;
-    const resetAction = StackActions.reset({
-      index: 1,
-      actions: [
-        NavigationActions.navigate({ routeName: 'Newentry' }),
-        NavigationActions.navigate({ routeName: 'Restaurant', params: { restaurant, parentPage: 'Home', navigatedFrom } })], // parentPage must be dynamic. Change parentpage string based on stack.
-    });
-    navigation.dispatch(resetAction);
+    if (navigatedFrom === 'addNewRestaurantAndFood') {
+      const resetAction = StackActions.reset({
+        index: 1,
+        actions: [
+          NavigationActions.navigate({ routeName: 'Newentry' }),
+          NavigationActions.navigate({ routeName: 'Restaurant', params: { restaurant, parentPage: 'Home', navigatedFrom } })], // parentPage must be dynamic. Change parentpage string based on stack.
+      });
+      navigation.dispatch(resetAction);
+    } else {
+      navigation.navigate('Restaurant', { restaurant, parentPage: 'Home', navigatedFrom }); // parentPage must be dynamic. Change parentpage string based on stack.
+    }
   };
 
   selectedEmoji = newRating => {
