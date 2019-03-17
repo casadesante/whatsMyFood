@@ -410,7 +410,7 @@ export default class Restaurant extends Component {
             {restaurantFoodDetails['2'].length !== 0 ? (
               <FoodItems
                 navigation={navigation}
-                title="☹️ Not satisfied"
+                title="👎🏼 Not satisfied"
                 items={restaurantFoodDetails['2']}
                 restaurantName={restaurant.restaurantName}
                 showModal={this.showModal}
