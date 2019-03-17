@@ -216,11 +216,11 @@ export default class Addfood extends Component {
         index: 1,
         actions: [
           NavigationActions.navigate({ routeName: 'Newentry' }),
-          NavigationActions.navigate({ routeName: 'Restaurant', params: { restaurant, parentPage: 'Home', navigatedFrom } })], // parentPage must be dynamic. Change parentpage string based on stack.
+          NavigationActions.navigate({ routeName: 'Restaurant', params: { restaurant, parentPage: 'Home', navigatedFrom } })],
       });
       navigation.dispatch(resetAction);
     } else {
-      navigation.navigate('Restaurant', { restaurant, parentPage: 'Home', navigatedFrom }); // parentPage must be dynamic. Change parentpage string based on stack.
+      navigation.navigate('Restaurant', { restaurant, parentPage: 'Back', navigatedFrom });
     }
   };
 

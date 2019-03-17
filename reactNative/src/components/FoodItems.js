@@ -59,7 +59,7 @@ class FoodItems extends Component {
       })
       .then((restaurant) => {
         showModal(false);
-        navigation.navigate('Restaurant', { restaurant, parentPage: 'Home' });
+        navigation.navigate('Restaurant', { restaurant, parentPage: 'Back' });
       })
       .catch(err => {
         showModal(false);

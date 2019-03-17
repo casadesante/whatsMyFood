@@ -8,6 +8,8 @@ import {
   StatusBar,
   NetInfo,
   Alert,
+  ActivityIndicator,
+  Modal,
   TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
@@ -47,6 +49,23 @@ const styles = StyleSheet.create({
     color: '#666',
     letterSpacing: 0.41,
   },
+  modalContents: {
+    height: heightPercentageToDP('100%'),
+    width: widthPercentageToDP('100%'),
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loaderContainer: {
+    height: widthPercentageToDP('25%'),
+    width: widthPercentageToDP('25%'),
+    backgroundColor: 'white',
+    borderRadius: widthPercentageToDP('2%'),
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default class Feedback extends Component {
@@ -59,11 +78,12 @@ export default class Feedback extends Component {
       <TouchableOpacity
         onPress={() => {
           const { firebaseID, emailID, displayName } = navigation.state.params.user;
-          const { reportMessage } = navigation.state.params;
+          const { reportMessage, showModal } = navigation.state.params;
           // When nothing is typed in the feedback input, reportMessage is undefined
           if (reportMessage === undefined || (reportMessage.length === 0)) {
             Alert.alert('Feedback message cannot be empty');
           } else {
+            showModal(true);
             const feedbackReqJson = {
               firebaseID,
               emailID,
@@ -76,12 +96,15 @@ export default class Feedback extends Component {
             })
               .then((sendFeedbackResponse) => {
                 if (sendFeedbackResponse.status === 200) {
-                  Alert.alert('Thank you for your feedback', null, [{ text: 'OK', onPress: () => navigation.pop() }]);
+                  Alert.alert('Thank you for your feedback', null, [{ text: 'OK', onPress: () => { showModal(false); navigation.pop(); } }]);
                   return null;
                 }
                 throw new Error({ message: 'Error encountered while sending feedback.' });
               })
-              .catch(err => console.log(`Error encountered while sending feedback.${JSON.stringify(err)}`));
+              .catch(err => {
+                showModal(false);
+                console.log(`Error encountered while sending feedback.${JSON.stringify(err)}`);
+              });
           }
         }}
       >
@@ -115,6 +138,7 @@ export default class Feedback extends Component {
   state = {
     isConnected: true,
     reportMessage: '',
+    modalVisible: false,
   };
 
   componentDidMount = () => {
@@ -126,6 +150,9 @@ export default class Feedback extends Component {
     /* eslint no-underscore-dangle: */
     this._navListener = navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('dark-content');
+    });
+    navigation.setParams({
+      showModal: this.showModal,
     });
   };
 
@@ -145,8 +172,12 @@ export default class Feedback extends Component {
     });
   };
 
+  showModal = (visibility) => {
+    this.setState({ modalVisible: visibility });
+  }
+
   render() {
-    const { isConnected, reportMessage } = this.state;
+    const { isConnected, reportMessage, modalVisible } = this.state;
     return (
       <View style={styles.container}>
         {!isConnected ? <OfflineNotice /> : null}
@@ -168,6 +199,21 @@ export default class Feedback extends Component {
           All reports are subject to our Terms of Use.
           </Text>
         </View>
+        <Modal
+          animationType="fade"
+          transparent
+          visible={modalVisible}
+        >
+          <View style={styles.modalContents}>
+            <View style={styles.loaderContainer}>
+              <ActivityIndicator
+                size="large"
+                color="#FF4444"
+                style={styles.activityIndicator}
+              />
+            </View>
+          </View>
+        </Modal>
 
       </View>
     );

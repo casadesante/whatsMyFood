@@ -25,6 +25,7 @@ import OfflineNotice from '../components/Nointernet';
 import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 import Optional from '../components/Optional';
 import RestaurantTextInput from '../components/RestaurantTextInput';
+import { getProfileInfo } from '../lib/Auth';
 
 const ImagePicker = NativeModules.ImageCropPicker;
 
@@ -187,17 +188,32 @@ export default class EditRestaurant extends Component {
         restaurantPhotoURL: url,
         createdAt,
       };
-      fetch('https://us-central1-whatsmyfood.cloudfunctions.net/updateRestaurant',
-        { method: 'POST', body: JSON.stringify(restaurantObject) })
-        .then((editedRestaurantResponse) => {
-          this.setState({ modalVisible: false });
-          if (editedRestaurantResponse.status === 200) navigation.pop();
-          else throw editedRestaurantResponse;
+
+      getProfileInfo()
+        .then(user => user.uid)
+        .then(firebaseID => {
+          restaurantObject.firebaseID = firebaseID;
+          fetch('https://us-central1-whatsmyfood.cloudfunctions.net/updateRestaurant',
+            { method: 'POST', body: JSON.stringify(restaurantObject) })
+            .then((editedRestaurantResponse) => {
+              if (editedRestaurantResponse.status === 200) {
+                return editedRestaurantResponse.json();
+              }
+              throw new Error({ message: 'update restaurant API error' });
+            })
+            .then((restaurant) => {
+              this.setState({ modalVisible: false });
+              navigation.navigate('Restaurant', { restaurant, parentPage: 'Back' });
+            })
+            .catch(err => {
+              this.setState({ modalVisible: false });
+              Alert.alert('Error encountered while updating restaurant');
+              console.log(`Error encountered while updating restaurant: ${err}`);
+            });
         })
         .catch(err => {
-          this.setState({ modalVisible: false });
-          Alert.alert('Error encountered while updating restaurant');
-          console.log(`Error encountered while updating restaurant: ${err}`);
+          Alert.alert('Error encountered while fetching user profile');
+          console.log(`Error encountered while fetching user profile: ${err}`);
         });
     } else {
       Alert.alert('Resturant name cannot be empty');
