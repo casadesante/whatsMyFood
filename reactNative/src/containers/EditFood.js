@@ -146,11 +146,11 @@ export default class EditFood extends Component {
           if (editedFoodResponse.status === 200) {
             return editedFoodResponse.json();
           }
-          throw new Error({ message: 'add food error' });
+          throw new Error({ message: 'update food API error' });
         })
         .then((restaurant) => {
           this.setState({ modalVisible: false });
-          navigation.navigate('Restaurant', { restaurant, parentPage: 'Home' });
+          navigation.navigate('Restaurant', { restaurant, parentPage: 'Back' });
         })
         .catch(err => {
           this.setState({ modalVisible: false });
