@@ -98,9 +98,6 @@ export const SignedIn = createBottomTabNavigator(
       path: '',
       navigationOptions: {
         tabBarIcon: NewEntryTabBarIcon,
-        tabBarOnPress: ({ navigation }) => {
-          navigation.dispatch(StackActions.popToTop());
-        },
       },
     },
     Search: {
@@ -120,9 +117,6 @@ export const SignedIn = createBottomTabNavigator(
       path: '',
       navigationOptions: {
         tabBarIcon: SearchTabBarIcon,
-        tabBarOnPress: ({ navigation }) => {
-          navigation.dispatch(StackActions.popToTop());
-        },
       },
     },
     Profile: {
@@ -140,9 +134,6 @@ export const SignedIn = createBottomTabNavigator(
       path: '',
       navigationOptions: {
         tabBarIcon: ProfileTabBarIcon,
-        tabBarOnPress: ({ navigation }) => {
-          navigation.dispatch(StackActions.popToTop());
-        },
       },
     },
   },
