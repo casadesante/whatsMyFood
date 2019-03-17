@@ -606,10 +606,13 @@ exports.updateRestaurant = functions.https.onRequest((req, res) => {
     return res.status(500).send("No createdAt in the request");
   } else if (!parsedRequest.hasOwnProperty("restaurantName")) {
     return res.status(500).send("No restaurantName in the request");
+  } else if (!parsedRequest.hasOwnProperty("firebaseID")) {
+    return res.status(500).send("No firebaseID in the request");
   }
 
   var readRestaurantRef = db.ref('/restaurants/' + parsedRequest.restaurantID);
   var restaurantRef = db.ref('/restaurants');
+  var readFoodsRef = db.ref("/foods");
 
   async.waterfall([
     (callback) => {
@@ -644,8 +647,49 @@ exports.updateRestaurant = functions.https.onRequest((req, res) => {
         if (updatedRestaurantError) {
           return callback(updatedFoodError);
         } else {
-          return callback(null, updatedRestaurant);
+          // fetching restaurant based on reastaurantID
+          db.ref("/restaurants/" + parsedRequest.restaurantID).once("value", (snapshot, readRestaurantError) => {
+            if (readRestaurantError) {
+              return callback(readRestaurantError);
+            }
+            let snapshotRestaurant = snapshot.val();
+            // console.log('====================================');
+            // console.log(`typeof: ${typeof(snapshotRestaurant)}`);      
+            // console.log(`Specific Restaurant: ${JSON.stringify(snapshotRestaurant)}`);
+            // console.log('====================================');
+            snapshotRestaurant["restaurantID"] = parsedRequest.restaurantID;
+            console.log('====================================');
+            console.log(JSON.stringify('Printing the restaurant here'));
+            console.log(JSON.stringify(snapshotRestaurant));
+            console.log('====================================');  
+            return callback(null, snapshotRestaurant);
+          });
         }
+      });
+    },
+    (userRestaurant, callback) => {
+      // fetching foods based on restaurantID & firebaseID
+      readFoodsRef.orderByChild("firebaseID").equalTo(parsedRequest.firebaseID).once("value", (snapshot, readFoodsError) => {
+        if (readFoodsError) {
+          console.log(`readFoodsError: ${readFoodsError}`);
+          throw readFoodsError;
+        }
+        console.log(`Snapshot of foods: ${snapshot}`);
+        let foods = snapshot.val();
+        console.log(`foods: ${JSON.stringify(foods)}`);
+        let filteredFoods = [];
+        for (var key in foods) {
+          if (foods.hasOwnProperty(key)) {
+            let modifiedFood = foods[key];
+            console.log(`modified food: ${JSON.stringify(modifiedFood)}`);
+            if (modifiedFood["restaurantID"] === parsedRequest.restaurantID) {
+              modifiedFood["foodId"] = key;
+              filteredFoods.push(modifiedFood);
+            }
+          }
+        }  
+        userRestaurant["foods"] = filteredFoods;
+        return callback(null, userRestaurant);
       });
     }
   ], (err, result) => {
