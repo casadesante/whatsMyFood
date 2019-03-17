@@ -96,14 +96,39 @@ export default class Feedback extends Component {
             })
               .then((sendFeedbackResponse) => {
                 if (sendFeedbackResponse.status === 200) {
-                  Alert.alert('Thank you for your feedback', null, [{ text: 'OK', onPress: () => { showModal(false); navigation.pop(); } }]);
+                  Alert.alert(
+                    'Sent to WhatsMyFood Team',
+                    'Thanks for your feedback.',
+                    [
+                      { text: 'OK',
+                        onPress: () => { showModal(false); navigation.pop(); } },
+                    ],
+                  );
                   return null;
                 }
                 throw new Error({ message: 'Error encountered while sending feedback.' });
               })
               .catch(err => {
-                showModal(false);
-                console.log(`Error encountered while sending feedback.${JSON.stringify(err)}`);
+                if (err._bodyText) {
+                  Alert.alert(
+                    'Error',
+                    err._bodyText,
+                    [{ text: 'OK',
+                      onPress: () => {
+                        showModal(false);
+                      } }],
+                  );
+                } else {
+                  Alert.alert(
+                    'Unexpected Error',
+                    'Something went wrong. Email your problem to diwaakartg@gmail.com.',
+                    [{ text: 'OK',
+                      onPress: () => {
+                        showModal(false);
+                      } }],
+                  );
+                }
+                console.log(`Error encountered while deleting restaurant: ${JSON.stringify(err)}`);
               });
           }
         }}
