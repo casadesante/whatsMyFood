@@ -38,7 +38,8 @@ class FoodItems extends Component {
   }
 
   deleteFood = (item) => {
-    const { navigation } = this.props;
+    const { navigation, showModal } = this.props;
+    showModal(true);
     const deleteFoodRequest = {
       foodID: item.id,
       firebaseID: item.firebaseID,
@@ -57,9 +58,11 @@ class FoodItems extends Component {
         throw new Error({ message: 'add food error' });
       })
       .then((restaurant) => {
+        showModal(false);
         navigation.navigate('Restaurant', { restaurant, parentPage: 'Home' });
       })
       .catch(err => {
+        showModal(false);
         Alert.alert('Error encountered while deleting food');
         console.log(`Error encountered while deleting food: ${err}`);
       });
@@ -86,7 +89,12 @@ class FoodItems extends Component {
 }
 
 FoodItems.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+  showModal: PropTypes.func.isRequired,
   title: PropTypes.string,
+  restaurantName: PropTypes.string,
   items: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
@@ -97,6 +105,7 @@ FoodItems.propTypes = {
 FoodItems.defaultProps = {
   title: '',
   items: [],
+  restaurantName: '',
 };
 
 export default FoodItems;
