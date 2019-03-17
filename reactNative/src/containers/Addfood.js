@@ -170,6 +170,7 @@ export default class Addfood extends Component {
       })
       .then(addRestaurantAndFoodApiResponse => {
         if (addRestaurantAndFoodApiResponse.status === 200) {
+          this.setState({ modalVisible: false });
           return addRestaurantAndFoodApiResponse.json();
         }
         throw addRestaurantAndFoodApiResponse;
@@ -210,12 +211,12 @@ export default class Addfood extends Component {
       })
       .then(addRestaurantAndFoodApiResponse => {
         if (addRestaurantAndFoodApiResponse.status === 200) {
+          this.setState({ modalVisible: false });
           return addRestaurantAndFoodApiResponse.json();
         }
         throw addRestaurantAndFoodApiResponse;
       })
       .then((restaurantObject) => {
-        this.setState({ modalVisible: false });
         this.getRestaurant(restaurantObject, 'addNewFoodToRestaurant');
       })
       .catch(err => {
