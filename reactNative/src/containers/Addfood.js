@@ -162,26 +162,42 @@ export default class Addfood extends Component {
   }
 
   addNewRestaurantAndFood = (restaurantAndFood) => {
-    const { navigation } = this.props;
     this.setState({ modalVisible: true });
     fetch('https://us-central1-whatsmyfood.cloudfunctions.net/addRestaurantAndFood',
       {
         method: 'POST',
         body: JSON.stringify(restaurantAndFood),
       })
-      .then(restaurantAndFoodAdded => {
-        if (restaurantAndFoodAdded.status === 200) {
-          return restaurantAndFoodAdded.json();
+      .then(addRestaurantAndFoodApiResponse => {
+        if (addRestaurantAndFoodApiResponse.status === 200) {
+          return addRestaurantAndFoodApiResponse.json();
         }
-        throw new Error({ message: 'add restaurant and food error' });
+        throw addRestaurantAndFoodApiResponse;
       })
       .then((restaurantObject) => {
         this.getRestaurant(restaurantObject, 'addNewRestaurantAndFood');
       })
       .catch(err => {
-        this.setState({ modalVisible: false });
-        Alert.alert('Error encountered while adding new restaurant and its food');
-        console.log(`Error encountered while adding new restaurant and its food: ${err}`);
+        if (err._bodyText) {
+          Alert.alert(
+            'Error',
+            err._bodyText,
+            [{ text: 'OK',
+              onPress: () => {
+                this.setState({ modalVisible: false });
+              } }],
+          );
+        } else {
+          Alert.alert(
+            'Unexpected Error',
+            'Something went wrong. Please report this error.',
+            [{ text: 'OK',
+              onPress: () => {
+                this.setState({ modalVisible: false });
+              } }],
+          );
+        }
+        console.log(`Error encountered while adding new restaurant and food: ${JSON.stringify(err)}`);
       });
   }
 
@@ -192,11 +208,11 @@ export default class Addfood extends Component {
         method: 'POST',
         body: JSON.stringify(addFoodDetails),
       })
-      .then(addFoodApiResponse => {
-        if (addFoodApiResponse.status === 200) {
-          return addFoodApiResponse.json();
+      .then(addRestaurantAndFoodApiResponse => {
+        if (addRestaurantAndFoodApiResponse.status === 200) {
+          return addRestaurantAndFoodApiResponse.json();
         }
-        throw addFoodApiResponse;
+        throw addRestaurantAndFoodApiResponse;
       })
       .then((restaurantObject) => {
         this.setState({ modalVisible: false });
@@ -214,8 +230,8 @@ export default class Addfood extends Component {
           );
         } else {
           Alert.alert(
+            'Unexpected Error',
             'Something went wrong. Please report this error.',
-            null,
             [{ text: 'OK',
               onPress: () => {
                 this.setState({ modalVisible: false });

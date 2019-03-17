@@ -164,8 +164,8 @@ export default class EditFood extends Component {
             );
           } else {
             Alert.alert(
+              'Unexpected Error',
               'Something went wrong. Please report this error.',
-              null,
               [{ text: 'OK',
                 onPress: () => {
                   this.setState({ modalVisible: false });
