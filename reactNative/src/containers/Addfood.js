@@ -192,19 +192,37 @@ export default class Addfood extends Component {
         method: 'POST',
         body: JSON.stringify(addFoodDetails),
       })
-      .then(foodAdded => {
-        if (foodAdded.status === 200) {
-          return foodAdded.json();
+      .then(addFoodApiResponse => {
+        if (addFoodApiResponse.status === 200) {
+          return addFoodApiResponse.json();
         }
-        throw new Error({ message: 'add food error' });
+        throw addFoodApiResponse;
       })
       .then((restaurantObject) => {
+        this.setState({ modalVisible: false });
         this.getRestaurant(restaurantObject, 'addNewFoodToRestaurant');
       })
       .catch(err => {
-        this.setState({ modalVisible: false });
-        Alert.alert('Error encountered while adding new food');
-        console.log(`Error encountered while adding new food: ${err}`);
+        if (err._bodyText) {
+          Alert.alert(
+            'Error',
+            err._bodyText,
+            [{ text: 'OK',
+              onPress: () => {
+                this.setState({ modalVisible: false });
+              } }],
+          );
+        } else {
+          Alert.alert(
+            'Error encountered while adding food.',
+            null,
+            [{ text: 'OK',
+              onPress: () => {
+                this.setState({ modalVisible: false });
+              } }],
+          );
+        }
+        console.log(`Error encountered while adding food: ${JSON.stringify(err)}`);
       });
   }
 
@@ -273,6 +291,10 @@ export default class Addfood extends Component {
       })
       .catch(e => console.log(e));
   };
+
+  showModal = (visibility) => {
+    this.setState({ modalVisible: visibility });
+  }
 
   render() {
     const { rating, uploaded, url, uploading, name, modalVisible } = this.state;
