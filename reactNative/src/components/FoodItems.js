@@ -51,20 +51,37 @@ class FoodItems extends Component {
         method: 'POST',
         body: JSON.stringify(deleteFoodRequest),
       })
-      .then(foodAdded => {
-        if (foodAdded.status === 200) {
-          return foodAdded.json();
+      .then(deleteFoodApiResponse => {
+        if (deleteFoodApiResponse.status === 200) {
+          showModal(false);
+          return deleteFoodApiResponse.json();
         }
-        throw new Error({ message: 'add food error' });
+        throw deleteFoodApiResponse;
       })
       .then((restaurant) => {
-        showModal(false);
         navigation.navigate('Restaurant', { restaurant, parentPage: 'Back' });
       })
       .catch(err => {
-        showModal(false);
-        Alert.alert('Error encountered while deleting food');
-        console.log(`Error encountered while deleting food: ${err}`);
+        if (err._bodyText) {
+          Alert.alert(
+            'Error',
+            err._bodyText,
+            [{ text: 'OK',
+              onPress: () => {
+                showModal(false);
+              } }],
+          );
+        } else {
+          Alert.alert(
+            'Unexpected Error',
+            'Something went wrong. Please report this error.',
+            [{ text: 'OK',
+              onPress: () => {
+                showModal(false);
+              } }],
+          );
+        }
+        console.log(`Error encountered while deleting restaurant: ${JSON.stringify(err)}`);
       });
   }
 
