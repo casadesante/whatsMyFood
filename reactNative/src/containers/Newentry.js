@@ -7,7 +7,9 @@ import { StyleSheet,
   StatusBar,
   NativeModules,
   NetInfo,
-  Alert } from 'react-native';
+  Alert,
+  Modal,
+  ActivityIndicator } from 'react-native';
 
 import RNFetchBlob from 'rn-fetch-blob';
 import PropTypes from 'prop-types';
@@ -43,6 +45,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: heightPercentageToDP('2.97%'),
   },
+  modalContents: {
+    height: heightPercentageToDP('100%'),
+    width: widthPercentageToDP('100%'),
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loaderContainer: {
+    height: widthPercentageToDP('25%'),
+    width: widthPercentageToDP('25%'),
+    backgroundColor: 'white',
+    marginTop: heightPercentageToDP('15%'),
+    borderRadius: widthPercentageToDP('2%'),
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default class Newentry extends Component {
@@ -75,13 +95,11 @@ export default class Newentry extends Component {
 
   state = {
     uploaded: false,
-    // nameError: true,
     url: '',
-    // lat: '',
-    // long: '',
     restaurantDetails: {},
     isConnected: true,
     uploading: false,
+    modalVisible: false,
   };
 
   componentDidMount() {
@@ -112,14 +130,15 @@ export default class Newentry extends Component {
       height: 1080,
     })
       .then(response => {
-        console.log(response.path);
-        this.setState({ uploading: true });
+        this.setState({ uploading: true, modalVisible: true });
         this.uploadImage(response.path)
           .then(url => {
-            this.setState({ uploaded: true, uploading: false, url });
-            console.log(url);
+            this.setState({ uploaded: true, modalVisible: false, uploading: false, url });
           })
-          .catch(error => console.log(error));
+          .catch(error => {
+            this.setState({ uploaded: false, modalVisible: false, uploading: false });
+            console.log(error);
+          });
       })
       .catch(e => console.log(e));
   };
@@ -192,6 +211,7 @@ export default class Newentry extends Component {
       name,
       uploading,
       isConnected,
+      modalVisible,
     } = this.state;
 
     return (
@@ -222,6 +242,21 @@ export default class Newentry extends Component {
               </View>
             )}
           </View>
+          <Modal
+            animationType="fade"
+            transparent
+            visible={modalVisible}
+          >
+            <View style={styles.modalContents}>
+              <View style={styles.loaderContainer}>
+                <ActivityIndicator
+                  size="large"
+                  color="#FF4444"
+                  style={styles.activityIndicator}
+                />
+              </View>
+            </View>
+          </Modal>
         </View>
       </TouchableWithoutFeedback>
     );
