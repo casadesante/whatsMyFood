@@ -80,7 +80,9 @@ export default class Imageuploader extends Component {
               colors={['rgb(254, 108, 93)', 'rgb(253, 89, 89)']}
             >
               <View>
-                <ActivityIndicator size="large" color="#FFFFFF" />
+                <Text style={styles.uploadText}>
+                  Uploading image
+                </Text>
               </View>
             </LinearGradient>
           </View>
