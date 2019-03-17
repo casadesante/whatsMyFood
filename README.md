@@ -52,3 +52,17 @@ We need to send a weekly report of users, restuarnts & foods added to our databa
 - [Users](https://github.com/sharathvignesh/whatsMyFood/blob/master/doc/db/noSQLSchema.md#users)
 - [Restaurants](https://github.com/sharathvignesh/whatsMyFood/blob/master/doc/db/noSQLSchema.md#restaurants)
 - [User-Restaurant-Menus](https://github.com/sharathvignesh/whatsMyFood/blob/master/doc/db/noSQLSchema.md#user-restaurant-menus)
+
+### XCode Build Issues:
+
+#### FBSDK issue
+```
+'FBSDKShareKit/FBSDKShareKit.h' file not found
+```
+If you find the above issue, do the following steps:
+1. Click the Project Navigator icon.
+2. Under Libraries, Find `RCTFBSDK.xcodeproj` & double click it.
+3. On the Build Settings in the right, In **Framework Search Paths**, add this `$(HOME)/Documents/FacebookSDK`
+4. Now running the build, will solve the problem. 
+
+Happy Hacking!
