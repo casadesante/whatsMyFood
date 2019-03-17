@@ -393,7 +393,7 @@ exports.addFood = functions.https.onRequest((req, res) => {
 
   async.waterfall([
     (callback) => {
-      // Checking if specific food already exists under the restaurant
+      // fetching foods based on the restaurantID
       readFoodsRef.orderByChild("restaurantID").equalTo(parsedRequest.restaurantID).once("value", (snapshot, readFoodsError) => {
         if (readFoodsError) {
           console.log(`readFoodsError: ${readFoodsError}`);
@@ -504,28 +504,6 @@ exports.updateFood = functions.https.onRequest((req, res) => {
 
   async.waterfall([
     (callback) => {
-      // Checking if specific food already exists under the restaurant
-      readFoodsRef.orderByChild("restaurantID").equalTo(parsedRequest.restaurantID).once("value", (snapshot, readFoodsError) => {
-        if (readFoodsError) {
-          console.log(`readFoodsError: ${readFoodsError}`);
-          return callback(readFoodsError);
-        }
-        let foods = snapshot.val();
-        console.log('====================================');
-        console.log(`Snapshot of foods: ${JSON.stringify(foods)}`);
-        console.log('====================================');
-        // Make sure the foodName is not duplicated
-        for (var key in foods) {
-          if (foods.hasOwnProperty(key)) {
-            if (foods[key]["foodName"] === parsedRequest.foodName) {
-              return res.status(500).send("This food already exists");
-            }
-          }
-        }  
-        return callback(null, "Proceed to create the Food");
-      });
-    },
-    (emptyString, callback) => {
       // fetch the food based on foodID
       readFoodRef.once("value", (snapshot, readFoodError) => {
         if (readFoodError) {
