@@ -274,7 +274,7 @@ export default class Restaurant extends Component {
               } }],
           );
         }
-        console.log(`Error encountered while adding deleting restaurant: ${JSON.stringify(err)}`);
+        console.log(`Error encountered while deleting restaurant: ${JSON.stringify(err)}`);
       });
   }
 

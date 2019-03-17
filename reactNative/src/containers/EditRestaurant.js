@@ -197,18 +197,35 @@ export default class EditRestaurant extends Component {
             { method: 'POST', body: JSON.stringify(restaurantObject) })
             .then((editedRestaurantResponse) => {
               if (editedRestaurantResponse.status === 200) {
+                this.setState({ modalVisible: false });
                 return editedRestaurantResponse.json();
               }
-              throw new Error({ message: 'update restaurant API error' });
+              throw editedRestaurantResponse;
             })
             .then((restaurant) => {
-              this.setState({ modalVisible: false });
               navigation.navigate('Restaurant', { restaurant, parentPage: 'Back' });
             })
             .catch(err => {
-              this.setState({ modalVisible: false });
-              Alert.alert('Error encountered while updating restaurant');
-              console.log(`Error encountered while updating restaurant: ${err}`);
+              if (err._bodyText) {
+                Alert.alert(
+                  'Error',
+                  err._bodyText,
+                  [{ text: 'OK',
+                    onPress: () => {
+                      this.setState({ modalVisible: false });
+                    } }],
+                );
+              } else {
+                Alert.alert(
+                  'Unexpected Error',
+                  'Something went wrong. Please report this error.',
+                  [{ text: 'OK',
+                    onPress: () => {
+                      this.setState({ modalVisible: false });
+                    } }],
+                );
+              }
+              console.log(`Error encountered while deleting restaurant: ${JSON.stringify(err)}`);
             });
         })
         .catch(err => {
