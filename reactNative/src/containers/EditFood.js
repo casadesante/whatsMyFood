@@ -199,12 +199,15 @@ export default class EditFood extends Component {
       height: 1080,
     })
       .then(response => {
-        this.setState({ uploading: true });
+        this.setState({ uploading: true, modalVisible: true });
         this.uploadImage(response.path)
           .then(url => {
-            this.setState({ uploaded: true, uploading: false, url });
+            this.setState({ uploaded: true, modalVisible: false, uploading: false, url });
           })
-          .catch(error => console.log(error));
+          .catch(error => {
+            this.setState({ uploaded: false, modalVisible: false, uploading: false });
+            console.log(error);
+          });
       })
       .catch(e => console.log(e));
   };
