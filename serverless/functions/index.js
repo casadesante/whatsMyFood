@@ -916,48 +916,69 @@ exports.deleteRestaurant = functions.https.onRequest((req, res) => {
     },
     (emptyString, callback) => {
      // Fetch all the foods associated with the restaurantID
-     readFoodsRef.orderByChild("restaurantID").equalTo(parsedRequest.restaurantID).once("value", (snapshot, readFoodsError) => {
+    readFoodsRef.orderByChild("restaurantID").equalTo(parsedRequest.restaurantID).once("value", (snapshot, readFoodsError) => {
       if (readFoodsError) {
         console.log(`readFoodsError: ${readFoodsError}`);
         return callback(readFoodsError);
       }
       retrievedFoods = snapshot.val();
       console.log(`fetched foods based on ${parsedRequest.restaurantID}: ${JSON.stringify(retrievedFoods)}`);
-      return callback(null, Object.keys(retrievedFoods));
+      if (retrievedFoods === null) {
+        return callback(null, []);         
+      } else {
+        return callback(null, Object.keys(retrievedFoods));
+      }
      });
     },
     (toBeDeletedFoodKeys, callback) => {
       // Delete all the foods with the given key
       let promises = [];
-      toBeDeletedFoodKeys.map((foodID) => {
-        console.log('====================================');
-        console.log(`ToBe deleted FoodID: ${foodID}`);
-        console.log('====================================');
-        promises.push(deleteFoodByFoodID(foodID));      
-      });
-      Promise.all(promises).then((resolvedFoods) => {
-        console.log('====================================');
-        console.log(`printing deleted foods: ${JSON.stringify(resolvedFoods)}`);
-        console.log('====================================');
-        return callback(null, retrievedFoods);
-      })
-      .catch((err) => {
-        console.log('====================================');
-        console.log(`Error in Promise.all: ${err}`);
-        console.log('====================================');
-        return callback(err);
-      });
+      // console.log('====================================');
+      // console.log(`printing the toBeDeletedFoodKeys: ${toBeDeletedFoodKeys}`);
+      // console.log('====================================');
+      if (toBeDeletedFoodKeys.length === 0) {
+        // console.log('====================================');
+        // console.log(`Checking whether null is printed`);
+        // console.log('====================================');
+        return callback(null, {}); 
+      } else {
+        toBeDeletedFoodKeys.map((foodID) => {
+          console.log('====================================');
+          console.log(`ToBe deleted FoodID: ${foodID}`);
+          console.log('====================================');
+          promises.push(deleteFoodByFoodID(foodID));      
+        });
+        Promise.all(promises).then((resolvedFoods) => {
+          console.log('====================================');
+          console.log(`printing deleted foods: ${JSON.stringify(resolvedFoods)}`);
+          console.log('====================================');
+          return callback(null, retrievedFoods);
+        })
+        .catch((err) => {
+          console.log('====================================');
+          console.log(`Error in Promise.all: ${err}`);
+          console.log('====================================');
+          return callback(err);
+        });  
+      }
     },
     (retrievedFoods, callback) => {
       // Save all the deleted foods to /deleteFoods
-      let deleteFoodsRef = db.ref('/deleteFoods');
-      deleteFoodsRef.update(retrievedFoods, deleteFoodsError => {
-        if (deleteFoodsError) {
-          return callback(deleteFoodsError);
-        } else {
-          return callback(null, 'Foods deleted successfully');
-        }
-      });
+      // console.log('====================================');
+      // console.log(`printing retrievedFoods in final step: ${retrievedFoods}`);
+      // console.log('====================================');
+      if (Object.keys(retrievedFoods).length === 0) {
+        return callback(null, 'Restaurant Deletion Successful');
+      } else {
+        let deleteFoodsRef = db.ref('/deleteFoods');
+        deleteFoodsRef.update(retrievedFoods, deleteFoodsError => {
+          if (deleteFoodsError) {
+            return callback(deleteFoodsError);
+          } else {
+            return callback(null, 'Restaurant Deletion Successful');
+          }
+        });  
+      }
     }
   ], (err, result) => {
     if (err) {
