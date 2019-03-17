@@ -248,7 +248,7 @@ export default class Restaurant extends Component {
       ))
       .then(deletedRestaurant => {
         this.setState({ modalVisible: false });
-        if (deletedRestaurant.status === 200) { navigation.navigate('Home'); } else { alert('Error while removing restaurant'); }
+        if (deletedRestaurant.status === 200) { navigation.pop(); } else { alert('Error while removing restaurant'); }
       })
       .catch(err => {
         this.setState({ modalVisible: false });
