@@ -190,9 +190,14 @@ export default class EditRestaurant extends Component {
       fetch('https://us-central1-whatsmyfood.cloudfunctions.net/updateRestaurant',
         { method: 'POST', body: JSON.stringify(restaurantObject) })
         .then((editedRestaurantResponse) => {
+          if (editedRestaurantResponse.status === 200) {
+            return editedRestaurantResponse.json();
+          }
+          throw new Error({ message: 'update restaurant API error' });
+        })
+        .then((restaurant) => {
           this.setState({ modalVisible: false });
-          if (editedRestaurantResponse.status === 200) navigation.pop();
-          else throw editedRestaurantResponse;
+          navigation.navigate('Restaurant', { restaurant, parentPage: 'Back' });
         })
         .catch(err => {
           this.setState({ modalVisible: false });
