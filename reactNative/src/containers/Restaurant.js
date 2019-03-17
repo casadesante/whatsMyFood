@@ -247,13 +247,34 @@ export default class Restaurant extends Component {
         },
       ))
       .then(deletedRestaurant => {
-        this.setState({ modalVisible: false });
-        if (deletedRestaurant.status === 200) { navigation.pop(); } else { alert('Error while removing restaurant'); }
+        if (deletedRestaurant.status === 200) {
+          this.setState({ modalVisible: false });
+          navigation.pop();
+        } else {
+          throw deletedRestaurant;
+        }
       })
       .catch(err => {
-        this.setState({ modalVisible: false });
-        Alert.alert('Error encountered while deleting restaurant');
-        console.log(`Error encountered while deleting restaurant: ${err}`);
+        if (err._bodyText) {
+          Alert.alert(
+            'Error',
+            err._bodyText,
+            [{ text: 'OK',
+              onPress: () => {
+                this.setState({ modalVisible: false });
+              } }],
+          );
+        } else {
+          Alert.alert(
+            'Unexpected Error',
+            'Something went wrong. Please report this error.',
+            [{ text: 'OK',
+              onPress: () => {
+                this.setState({ modalVisible: false });
+              } }],
+          );
+        }
+        console.log(`Error encountered while adding deleting restaurant: ${JSON.stringify(err)}`);
       });
   }
 
@@ -401,7 +422,7 @@ export default class Restaurant extends Component {
                 title="🤢 Yuck"
                 items={restaurantFoodDetails['1']}
                 restaurantName={restaurant.restaurantName}
-                showModal={showModal}
+                showModal={this.showModal}
               />
             ) : null}
           </View>
