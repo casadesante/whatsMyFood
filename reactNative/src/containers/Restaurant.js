@@ -283,6 +283,10 @@ export default class Restaurant extends Component {
     this.setState({ loaded: true });
   };
 
+  showModal = (visibility) => {
+    this.setState({ modalVisible: visibility });
+  }
+
   render() {
     const { navigation } = this.props;
     const { isConnected, loaded, modalVisible } = this.state;
@@ -356,13 +360,31 @@ export default class Restaurant extends Component {
             </View>
             {}
             {restaurantFoodDetails['5'].length !== 0 ? (
-              <FoodItems navigation={navigation} title="😍 My fav" items={restaurantFoodDetails['5']} restaurantName={restaurant.restaurantName} />
+              <FoodItems
+                navigation={navigation}
+                title="😍 My fav"
+                items={restaurantFoodDetails['5']}
+                restaurantName={restaurant.restaurantName}
+                showModal={this.showModal}
+              />
             ) : null}
             {restaurantFoodDetails['4'].length !== 0 ? (
-              <FoodItems navigation={navigation} title="👌🏼 Good" items={restaurantFoodDetails['4']} restaurantName={restaurant.restaurantName} />
+              <FoodItems
+                navigation={navigation}
+                title="👌🏼 Good"
+                items={restaurantFoodDetails['4']}
+                restaurantName={restaurant.restaurantName}
+                showModal={this.showModal}
+              />
             ) : null}
             {restaurantFoodDetails['3'].length !== 0 ? (
-              <FoodItems navigation={navigation} title="😐 Meh" items={restaurantFoodDetails['3']} restaurantName={restaurant.restaurantName} />
+              <FoodItems
+                navigation={navigation}
+                title="😐 Meh"
+                items={restaurantFoodDetails['3']}
+                restaurantName={restaurant.restaurantName}
+                showModal={this.showModal}
+              />
             ) : null}
             {restaurantFoodDetails['2'].length !== 0 ? (
               <FoodItems
@@ -370,10 +392,17 @@ export default class Restaurant extends Component {
                 title="☹️ Not satisfied"
                 items={restaurantFoodDetails['2']}
                 restaurantName={restaurant.restaurantName}
+                showModal={this.showModal}
               />
             ) : null}
             {restaurantFoodDetails['1'].length !== 0 ? (
-              <FoodItems navigation={navigation} title="🤢 Yuck" items={restaurantFoodDetails['1']} restaurantName={restaurant.restaurantName} />
+              <FoodItems
+                navigation={navigation}
+                title="🤢 Yuck"
+                items={restaurantFoodDetails['1']}
+                restaurantName={restaurant.restaurantName}
+                showModal={showModal}
+              />
             ) : null}
           </View>
         </HeaderImageScrollView>
