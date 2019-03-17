@@ -1,8 +1,7 @@
 import React from 'react';
 import { createStackNavigator,
   createBottomTabNavigator,
-  createSwitchNavigator,
-  StackActions } from 'react-navigation';
+  createSwitchNavigator } from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Material from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
@@ -106,6 +105,7 @@ export const SignedIn = createBottomTabNavigator(
         Restaurant: { screen: Restaurant },
         Addfood: { screen: Addfood },
         EditRestaurant: { screen: EditRestaurant },
+        EditFood: { screen: EditFood },
       },
       {
         transitionConfig: () => ({
