@@ -146,16 +146,33 @@ export default class EditFood extends Component {
           if (editedFoodResponse.status === 200) {
             return editedFoodResponse.json();
           }
-          throw new Error({ message: 'update food API error' });
+          throw editedFoodResponse;
         })
         .then((restaurant) => {
           this.setState({ modalVisible: false });
           navigation.navigate('Restaurant', { restaurant, parentPage: 'Back' });
         })
         .catch(err => {
-          this.setState({ modalVisible: false });
-          Alert.alert('Error encountered while updating food');
-          console.log(`Error encountered while updating food: ${err}`);
+          if (err._bodyText) {
+            Alert.alert(
+              'Error',
+              err._bodyText,
+              [{ text: 'OK',
+                onPress: () => {
+                  this.setState({ modalVisible: false });
+                } }],
+            );
+          } else {
+            Alert.alert(
+              'Something went wrong. Please report this error.',
+              null,
+              [{ text: 'OK',
+                onPress: () => {
+                  this.setState({ modalVisible: false });
+                } }],
+            );
+          }
+          console.log(`Error encountered while adding food: ${JSON.stringify(err)}`);
         });
     } else {
       Alert.alert('Food name cannot be empty');

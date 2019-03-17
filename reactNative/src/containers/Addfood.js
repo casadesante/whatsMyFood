@@ -214,7 +214,7 @@ export default class Addfood extends Component {
           );
         } else {
           Alert.alert(
-            'Error encountered while adding food.',
+            'Something went wrong. Please report this error.',
             null,
             [{ text: 'OK',
               onPress: () => {
