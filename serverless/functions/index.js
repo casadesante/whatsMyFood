@@ -27,6 +27,16 @@ exports.addUser = functions.https.onRequest((req, res) => {
   var readRef = db.ref('/users/' + firebaseID);
   var user = {};
 
+  if (!parsedRequest.hasOwnProperty('firebaseID')) {
+    return res.status(500).send('No firebaseID in the request');
+  } else if (!parsedRequest.hasOwnProperty('userName')) {
+    return res.status(500).send('No userName in the request');
+  } else if (!parsedRequest.hasOwnProperty('emailID')) {
+    return res.status(500).send('No emailID in the request');
+  } else if (!parsedRequest.hasOwnProperty('profilePicURL')) {
+    return res.status(500).send('No profilePicURL in the request');
+  }
+
   readRef
     .once('value')
     .then((snapshot, readError) => {
