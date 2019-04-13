@@ -110,9 +110,9 @@ export default class RestaurantCard extends Component {
   render() {
     const { restaurant, goToRestaurant, index, disableAnimation } = this.props;
     const { loaded } = this.state;
+    const shine = ['rgba(3, 3, 3, 0.01)', 'rgba(3, 3, 3, 0.05)', 'rgba(3, 3, 3, 0.03)'];
     const redGradient = ['rgb(254, 108, 93)', 'rgb(253, 89, 89)'];
-    const shine = ['rgba(255, 255, 255, 0.01)', 'rgba(255, 255, 255, 0.05)', 'rgba(255, 255, 255, 0.03)'];
-    const blackOverlay = ['rgba(0, 0, 0, 0.50)', 'rgba(0, 0, 0, 0.55)'];
+    const greyOverlay = ['rgba(0, 0, 0, 0.30)', 'rgba(0, 0, 0, 0.35)'];
     return (
       <Animatable.View
         animation={disableAnimation ? undefined : cardStyle}
@@ -122,13 +122,13 @@ export default class RestaurantCard extends Component {
       }
       >
         <TouchableOpacity
+          activeOpacity={0.99}
           onPress={() => {
             goToRestaurant(restaurant);
           }}
         >
           <ImageCacheProvider>
             <CachedImage
-              defaultSource
               style={styles.backgroundImage}
               imageStyle={{ borderRadius: 10 }}
               resizeMode="contain"
@@ -138,7 +138,7 @@ export default class RestaurantCard extends Component {
               }}
             >
               <LinearGradient
-                colors={restaurant.restaurantPhotoURL && loaded ? blackOverlay : redGradient}
+                colors={restaurant.restaurantPhotoURL && loaded ? greyOverlay : redGradient}
                 style={styles.linearGradient}
               >
                 <View>
