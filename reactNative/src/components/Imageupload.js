@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, Image, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { CachedImage,
+  ImageCacheProvider } from 'react-native-cached-image';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import RF from 'react-native-responsive-fontsize';
@@ -45,13 +47,15 @@ const Imageupload = params => {
   console.log(params.url);
   console.log(params.cancel);
   const restaurantImage = params.url ? (
-    <Image
-      source={{
-        uri: params.url,
-      }}
-      resizeMode="cover"
-      style={styles.uploadedImageStyle}
-    />
+    <ImageCacheProvider>
+      <CachedImage
+        source={{
+          uri: params.url,
+        }}
+        resizeMode="cover"
+        style={styles.uploadedImageStyle}
+      />
+    </ImageCacheProvider>
   ) : (
     <Image
       source={require('../assets/img/ImageLinkBroken.png')}
