@@ -123,7 +123,7 @@ export default class FoodCard extends Component {
               onLoadEnd={this.showPic}
             >
               <LinearGradient
-                colors={restaurant.restaurantPhotoURL && loaded ? greyOverlay : redGradient}
+                colors={food.foodPhotoURL && loaded ? greyOverlay : redGradient}
                 style={styles.linearGradient}
               >
                 <View>
