@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Text,
   View,
-  ImageBackground,
   StyleSheet,
   TouchableOpacity } from 'react-native';
+import { CachedImage,
+  ImageCacheProvider } from 'react-native-cached-image';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import PropTypes from 'prop-types';
@@ -125,34 +126,37 @@ export default class RestaurantCard extends Component {
             goToRestaurant(restaurant);
           }}
         >
-          <ImageBackground
-            style={styles.backgroundImage}
-            imageStyle={{ borderRadius: 10 }}
-            resizeMode="contain"
-            onLoadEnd={this.showPic}
-            source={{
-              uri: restaurant.restaurantPhotoURL,
-            }}
-          >
-            <LinearGradient
-              colors={restaurant.restaurantPhotoURL && loaded ? blackOverlay : redGradient}
-              style={styles.linearGradient}
+          <ImageCacheProvider>
+            <CachedImage
+              defaultSource
+              style={styles.backgroundImage}
+              imageStyle={{ borderRadius: 10 }}
+              resizeMode="contain"
+              onLoadEnd={this.showPic}
+              source={{
+                uri: restaurant.restaurantPhotoURL,
+              }}
             >
-              <View>
-                { !loaded ? (
-                  <Animatable.View duration={2300} delay={600} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
-                    <LinearGradient colors={shine} style={styles.loader1} />
-                    <LinearGradient colors={shine} style={styles.loader2} />
-                  </Animatable.View>
-                ) : (true)}
-                <View style={styles.details}>
-                  <Text style={styles.restaurantName} numberOfLines={2}>
-                    {restaurant.restaurantName}
-                  </Text>
+              <LinearGradient
+                colors={restaurant.restaurantPhotoURL && loaded ? blackOverlay : redGradient}
+                style={styles.linearGradient}
+              >
+                <View>
+                  { !loaded ? (
+                    <Animatable.View duration={2300} delay={600} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
+                      <LinearGradient colors={shine} style={styles.loader1} />
+                      <LinearGradient colors={shine} style={styles.loader2} />
+                    </Animatable.View>
+                  ) : (true)}
+                  <View style={styles.details}>
+                    <Text style={styles.restaurantName} numberOfLines={2}>
+                      {restaurant.restaurantName}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            </LinearGradient>
-          </ImageBackground>
+              </LinearGradient>
+            </CachedImage>
+          </ImageCacheProvider>
         </TouchableOpacity>
       </Animatable.View>
     );

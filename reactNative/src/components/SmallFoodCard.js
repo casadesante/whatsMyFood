@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Text,
   View,
-  Image,
   StyleSheet,
   TouchableOpacity } from 'react-native';
+import { CachedImage,
+  ImageCacheProvider } from 'react-native-cached-image';
 import LinearGradient from 'react-native-linear-gradient';
 import PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
@@ -123,11 +124,14 @@ export default class SmallFoodCard extends Component {
               </Animatable.View>
             </LinearGradient>
           ) : (true)}
-          <Image
-            style={styles.foodImage}
-            source={foodImageLink}
-            onLoadEnd={this.showPic}
-          />
+          <ImageCacheProvider>
+            <CachedImage
+              defaultSource
+              style={styles.foodImage}
+              source={foodImageLink}
+              onLoadEnd={this.showPic}
+            />
+          </ImageCacheProvider>
         </View>
         <Text style={styles.foodName} numberOfLines={2}>
           {foodName}

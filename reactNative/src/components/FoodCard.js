@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Text,
   View,
-  ImageBackground,
   StyleSheet,
   TouchableOpacity } from 'react-native';
+import { CachedImage,
+  ImageCacheProvider } from 'react-native-cached-image';
 import LinearGradient from 'react-native-linear-gradient';
 import PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
@@ -110,38 +111,41 @@ export default class FoodCard extends Component {
             goToRestaurant(food.restaurantID);
           }}
         >
-          <ImageBackground
-            style={styles.backgroundImage}
-            imageStyle={{ borderRadius: 10 }}
-            resizeMode="contain"
-            source={{
-              uri: food.foodPhotoURL,
-            }}
-            onLoadEnd={this.showPic}
-          >
-            <LinearGradient
-              colors={food.foodPhotoURL && loaded ? blackOverlay : redGradient}
-              style={styles.linearGradient}
+          <ImageCacheProvider>
+            <CachedImage
+              defaultSource
+              style={styles.backgroundImage}
+              imageStyle={{ borderRadius: 10 }}
+              resizeMode="contain"
+              source={{
+                uri: food.foodPhotoURL,
+              }}
+              onLoadEnd={this.showPic}
             >
-              <View>
-                { !loaded ? (
-                  <Animatable.View duration={2300} delay={600} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
-                    <LinearGradient colors={shine} style={styles.loader1} />
-                    <LinearGradient colors={shine} style={styles.loader2} />
-                  </Animatable.View>
-                ) : (true)}
-                <View style={styles.details}>
-                  <Text style={styles.foodName} numberOfLines={2}>
-                    {food.foodName}
-                  </Text>
-                  <Text style={styles.foodName} numberOfLines={2}>
+              <LinearGradient
+                colors={food.foodPhotoURL && loaded ? blackOverlay : redGradient}
+                style={styles.linearGradient}
+              >
+                <View>
+                  { !loaded ? (
+                    <Animatable.View duration={2300} delay={600} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
+                      <LinearGradient colors={shine} style={styles.loader1} />
+                      <LinearGradient colors={shine} style={styles.loader2} />
+                    </Animatable.View>
+                  ) : (true)}
+                  <View style={styles.details}>
+                    <Text style={styles.foodName} numberOfLines={2}>
+                      {food.foodName}
+                    </Text>
+                    <Text style={styles.foodName} numberOfLines={2}>
                     in {food.restaurantName}
-                  </Text>
-                  <Text style={styles.foodRating}>{emojiList[food.rating - 1]}</Text>
+                    </Text>
+                    <Text style={styles.foodRating}>{emojiList[food.rating - 1]}</Text>
+                  </View>
                 </View>
-              </View>
-            </LinearGradient>
-          </ImageBackground>
+              </LinearGradient>
+            </CachedImage>
+          </ImageCacheProvider>
         </TouchableOpacity>
       </Animatable.View>
     );

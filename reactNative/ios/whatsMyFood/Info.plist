@@ -60,7 +60,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Enable $(PRODUCT_NAME) to access your camera and take restaurant/food photo and upload it, so that you can recollect them easily.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to your microphone (for videos)</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
