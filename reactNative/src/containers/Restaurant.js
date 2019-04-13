@@ -316,15 +316,16 @@ export default class Restaurant extends Component {
     const restaurantFoodDetails = this.segregateFoodItems(restaurant.foods, restaurant.createdAt);
 
     console.log(restaurant);
-    const shine = ['rgba(255, 255, 255, 0.03)', 'rgba(255, 255, 255, 0.16)', 'rgba(255, 255, 255, 0.08)'];
-    const redGradient = ['rgb(254, 108, 93)', 'rgb(253, 89, 89)'];
+    const shine = ['rgba(3, 3, 3, 0.01)', 'rgba(3, 3, 3, 0.05)', 'rgba(3, 3, 3, 0.03)'];
+    const blackOverlay = ['rgba(0, 0, 0, 0.50)', 'rgba(0, 0, 0, 0.55)'];
+    const greyOverlay = ['rgba(0, 0, 0, 0.30)', 'rgba(0, 0, 0, 0.35)'];
 
     const uploadedRestaurantImage = (
       <View>
         {loaded
           ? (true) : (
             <LinearGradient
-              colors={redGradient}
+              colors={restaurant.restaurantPhotoURL && loaded ? blackOverlay : greyOverlay}
               style={styles.linearGradient}
             >
               <Animatable.View duration={2000} delay={600} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
@@ -334,7 +335,6 @@ export default class Restaurant extends Component {
             </LinearGradient>
           )}
         <CachedImage
-          defaultSource
           source={{ uri: restaurant.restaurantPhotoURL }}
           style={styles.headerImage}
           onLoadEnd={this.showPic}
