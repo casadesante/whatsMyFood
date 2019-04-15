@@ -3,8 +3,7 @@
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
-* You need to have `React Native` installed in your system. Please follow the instructions
-[here](http://facebook.github.io/react-native/docs/getting-started.html) to install `react-native-cli`.
+* Install node version 10.6.0 (Use nvm to install 10.6.0 and set default version by `nvm alias default 10.6.0`)
 
 * Open `Xcode > Preferences`. Go to the `locations` panel and select most recent version of Xcode in `Command Line Tools`. Below is the reference.
 
@@ -18,8 +17,14 @@ These instructions will get you a copy of the project up and running on your loc
 
 * Install dependencies for React Native.
 ```bash
-$ cd whatsMyFood/reactNative
-$ npm install
+$ cd whatsMyFood
+$ npm i
+$ cd wahtsMyFood/reactNative
+$ npm i
+$ npm i -g babel-upgrade react-native-git-upgrade
+$ babel-upgrade
+$ react-native-git-upgrade
+
 ```
 
 * Link react-native-fbsdk with the Below command
@@ -31,11 +36,10 @@ $ react-native link react-native-fbsdk
 
 * Click on the project on the left pane and you will see menus appearing on the right pane.
 
-* Click `Build settings` and search for `Framework Search Paths` and add the path to your FacebookSDK that you downloaded above. Below is the reference image.
+* Go to RCTFBSDK.xcodeproj then build settings->framework search paths. And change `~/Documents/FacebookSDK` to `$(HOME)/Documents/FacebookSDK`
 
-![FacebookSDK link](assets/xcode.png)
-
-* Now run the app.
+* Now run the app using command line
 ```bash
 $ react-native run-ios
 ```
+(or) using Xcode left top build button (play icon).
