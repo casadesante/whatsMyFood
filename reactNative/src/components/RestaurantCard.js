@@ -4,8 +4,8 @@ import { Text,
   StyleSheet,
   TouchableOpacity,
   ImageBackground } from 'react-native';
-// import { CachedImage,
-//   ImageCacheProvider } from 'react-native-cached-image';
+import { CachedImage,
+  ImageCacheProvider } from 'react-native-cached-image';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import PropTypes from 'prop-types';
@@ -117,49 +117,96 @@ export default class RestaurantCard extends Component {
     const redGradient = ['rgb(254, 108, 93)', 'rgb(253, 89, 89)'];
     const greyOverlay = ['rgba(0, 0, 0, 0.30)', 'rgba(0, 0, 0, 0.35)'];
     return (
-      <Animatable.View
-        animation={disableAnimation ? undefined : cardStyle}
-        delay={
+      <React.Fragment>
+        <Animatable.View
+          animation={disableAnimation ? undefined : cardStyle}
+          delay={
         index * 150
         // List index
       }
-      >
-        <TouchableOpacity
-          activeOpacity={0.99}
-          onPress={() => {
-            goToRestaurant(restaurant);
-          }}
         >
-          <ImageBackground
-            style={styles.backgroundImage}
-            imageStyle={{ borderRadius: 10 }}
-            resizeMode="contain"
-            onLoadEnd={this.showPic}
-            source={{
-              uri: restaurant.restaurantPhotoURL,
+          <TouchableOpacity
+            activeOpacity={0.99}
+            onPress={() => {
+              goToRestaurant(restaurant);
             }}
           >
-            <LinearGradient
-              colors={restaurant.restaurantPhotoURL && loaded ? greyOverlay : greyOverlay}
-              style={styles.linearGradient}
+            <ImageCacheProvider>
+              <CachedImage
+                style={styles.backgroundImage}
+                imageStyle={{ borderRadius: 10 }}
+                resizeMode="contain"
+                onLoadEnd={this.showPic}
+                source={{
+                  uri: restaurant.restaurantPhotoURL,
+                }}
+              >
+                <LinearGradient
+                  colors={restaurant.restaurantPhotoURL && loaded ? redGradient : greyOverlay}
+                  style={styles.linearGradient}
+                >
+                  <View>
+                    { !loaded ? (
+                      <Animatable.View duration={2300} delay={600} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
+                        <LinearGradient colors={shine} style={styles.loader1} />
+                        <LinearGradient colors={shine} style={styles.loader2} />
+                      </Animatable.View>
+                    ) : (true)}
+                    <View style={styles.details}>
+                      <Text style={styles.restaurantName} numberOfLines={2}>
+                        {restaurant.restaurantName}
+                      </Text>
+                    </View>
+                  </View>
+                </LinearGradient>
+              </CachedImage>
+            </ImageCacheProvider>
+          </TouchableOpacity>
+        </Animatable.View>
+        <Animatable.View
+          animation={disableAnimation ? undefined : cardStyle}
+          delay={
+        index * 150
+        // List index
+      }
+        >
+          <TouchableOpacity
+            activeOpacity={0.99}
+            onPress={() => {
+              goToRestaurant(restaurant);
+            }}
+          >
+            <ImageBackground
+              style={styles.backgroundImage}
+              imageStyle={{ borderRadius: 10 }}
+              resizeMode="contain"
+              onLoadEnd={this.showPic}
+              source={{
+                uri: restaurant.restaurantPhotoURL,
+              }}
             >
-              <View>
-                { !loaded ? (
-                  <Animatable.View duration={2300} delay={600} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
-                    <LinearGradient colors={shine} style={styles.loader1} />
-                    <LinearGradient colors={shine} style={styles.loader2} />
-                  </Animatable.View>
-                ) : (true)}
-                <View style={styles.details}>
-                  <Text style={styles.restaurantName} numberOfLines={2}>
-                    {restaurant.restaurantName}
-                  </Text>
+              <LinearGradient
+                colors={restaurant.restaurantPhotoURL && loaded ? greyOverlay : greyOverlay}
+                style={styles.linearGradient}
+              >
+                <View>
+                  { !loaded ? (
+                    <Animatable.View duration={2300} delay={600} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
+                      <LinearGradient colors={shine} style={styles.loader1} />
+                      <LinearGradient colors={shine} style={styles.loader2} />
+                    </Animatable.View>
+                  ) : (true)}
+                  <View style={styles.details}>
+                    <Text style={styles.restaurantName} numberOfLines={2}>
+                      {restaurant.restaurantName}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            </LinearGradient>
-          </ImageBackground>
-        </TouchableOpacity>
-      </Animatable.View>
+              </LinearGradient>
+            </ImageBackground>
+          </TouchableOpacity>
+        </Animatable.View>
+      </React.Fragment>
     );
   }
 }
