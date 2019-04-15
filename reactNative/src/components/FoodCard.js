@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { Text,
   View,
   StyleSheet,
-  TouchableOpacity } from 'react-native';
-import { CachedImage,
-  ImageCacheProvider } from 'react-native-cached-image';
+  TouchableOpacity,
+  ImageBackground } from 'react-native';
+// import { CachedImage,
+//   ImageCacheProvider } from 'react-native-cached-image';
 import LinearGradient from 'react-native-linear-gradient';
 import PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
@@ -97,6 +98,8 @@ export default class FoodCard extends Component {
     this.setState({ loaded: true });
   }
 
+  returnNull = () => null;
+
   render() {
     const { food, goToRestaurant } = this.props;
     console.log(food);
@@ -112,40 +115,38 @@ export default class FoodCard extends Component {
             goToRestaurant(food.restaurantID);
           }}
         >
-          <ImageCacheProvider>
-            <CachedImage
-              style={styles.backgroundImage}
-              imageStyle={{ borderRadius: 10 }}
-              resizeMode="contain"
-              source={{
-                uri: food.foodPhotoURL,
-              }}
-              onLoadEnd={this.showPic}
+          {/* <ImageCacheProvider> */}
+          <ImageBackground
+            style={styles.backgroundImage}
+            imageStyle={{ borderRadius: 10 }}
+            resizeMode="contain"
+            source={{ uri: food.foodPhotoURL }}
+            onLoadEnd={this.showPic}
+          >
+            <LinearGradient
+              colors={food.foodPhotoURL && loaded ? greyOverlay : redGradient}
+              style={styles.linearGradient}
             >
-              <LinearGradient
-                colors={food.foodPhotoURL && loaded ? greyOverlay : redGradient}
-                style={styles.linearGradient}
-              >
-                <View>
-                  { !loaded ? (
-                    <Animatable.View duration={2300} delay={600} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
-                      <LinearGradient colors={shine} style={styles.loader1} />
-                      <LinearGradient colors={shine} style={styles.loader2} />
-                    </Animatable.View>
-                  ) : (true)}
-                  <View style={styles.details}>
-                    <Text style={styles.foodName} numberOfLines={2}>
-                      {food.foodName}
-                    </Text>
-                    <Text style={styles.foodName} numberOfLines={2}>
+              <View>
+                { !loaded ? (
+                  <Animatable.View duration={2300} delay={600} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
+                    <LinearGradient colors={shine} style={styles.loader1} />
+                    <LinearGradient colors={shine} style={styles.loader2} />
+                  </Animatable.View>
+                ) : (true)}
+                <View style={styles.details}>
+                  <Text style={styles.foodName} numberOfLines={2}>
+                    {food.foodName}
+                  </Text>
+                  <Text style={styles.foodName} numberOfLines={2}>
                     in {food.restaurantName}
-                    </Text>
-                    <Text style={styles.foodRating}>{emojiList[food.rating - 1]}</Text>
-                  </View>
+                  </Text>
+                  <Text style={styles.foodRating}>{emojiList[food.rating - 1]}</Text>
                 </View>
-              </LinearGradient>
-            </CachedImage>
-          </ImageCacheProvider>
+              </View>
+            </LinearGradient>
+          </ImageBackground>
+          {/* </ImageCacheProvider> */}
         </TouchableOpacity>
       </Animatable.View>
     );

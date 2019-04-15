@@ -12,11 +12,12 @@ import { StyleSheet,
   TouchableOpacity,
   ActionSheetIOS,
   Alert,
+  Image,
   NetInfo,
   Modal,
   ActivityIndicator } from 'react-native';
-import { CachedImage,
-  ImageCacheProvider } from 'react-native-cached-image';
+// import { CachedImage,
+//   ImageCacheProvider } from 'react-native-cached-image';
 import PropTypes from 'prop-types';
 import RF from '../../node_modules/react-native-responsive-fontsize';
 import { getProfileInfo } from '../lib/Auth';
@@ -334,7 +335,7 @@ export default class Restaurant extends Component {
               </Animatable.View>
             </LinearGradient>
           )}
-        <CachedImage
+        <Image
           source={{ uri: restaurant.restaurantPhotoURL }}
           style={styles.headerImage}
           onLoadEnd={this.showPic}
@@ -344,12 +345,10 @@ export default class Restaurant extends Component {
     const restaurantImage = restaurant.restaurantPhotoURL ? (
       uploadedRestaurantImage
     ) : (
-      <ImageCacheProvider>
-        <CachedImage
-          source={require('../assets/img/default_restaurantImg.png')}
-          style={styles.headerImage}
-        />
-      </ImageCacheProvider>
+      <Image
+        source={require('../assets/img/default_restaurantImg.png')}
+        style={styles.headerImage}
+      />
     );
     return (
       <View style={styles.container}>
