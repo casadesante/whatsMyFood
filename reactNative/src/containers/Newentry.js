@@ -96,6 +96,7 @@ export default class Newentry extends Component {
   state = {
     uploaded: false,
     url: '',
+    tempURL: '',
     restaurantDetails: {},
     isConnected: true,
     uploading: false,
@@ -178,6 +179,7 @@ export default class Newentry extends Component {
   };
 
   uploadImage = (uri, mime = 'application/octet-stream') => new Promise((resolve, reject) => {
+    this.setState({ tempURL: uri });
     const uploadUri = uri.replace('file://', '');
     let uploadBlob = null;
     const uniqueID = uuidv4();
@@ -207,7 +209,7 @@ export default class Newentry extends Component {
   render() {
     const {
       uploaded,
-      url,
+      tempURL,
       name,
       uploading,
       isConnected,
@@ -234,7 +236,7 @@ export default class Newentry extends Component {
           <View>
             {uploaded ? (
               <View style={styles.imageUploaderLayout}>
-                <Imageupload url={url} cancel={this.cancelImage} />
+                <Imageupload url={tempURL} cancel={this.cancelImage} />
               </View>
             ) : (
               <View style={styles.imageUploaderLayout}>
