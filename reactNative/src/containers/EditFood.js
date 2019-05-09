@@ -94,6 +94,7 @@ export default class EditFood extends Component {
     const item = navigation.getParam('item');
     this.state = {
       uploaded: !(item.img === '' || item.img == null),
+      tempURL: item.img || '',
       url: item.img || '',
       name: item.name || '',
       rating: item.rating || '',
@@ -184,6 +185,7 @@ export default class EditFood extends Component {
   };
 
   uploadImage = (uri, mime = 'application/octet-stream') => new Promise((resolve, reject) => {
+    this.setState({ tempURL: uri });
     const uploadUri = uri.replace('file://', '');
     let uploadBlob = null;
     const uniqueID = uuidv4();
@@ -230,7 +232,7 @@ export default class EditFood extends Component {
   };
 
   render() {
-    const { rating, uploaded, url, uploading, name, modalVisible } = this.state;
+    const { rating, uploaded, tempURL, uploading, name, modalVisible } = this.state;
     return (
       <View style={styles.container}>
         <Header text="Edit food" />
@@ -248,7 +250,7 @@ export default class EditFood extends Component {
         <View>
           {uploaded ? (
             <View style={styles.imageUploaderLayout}>
-              <Imageupload url={url} cancel={this.cancelImage} />
+              <Imageupload url={tempURL} cancel={this.cancelImage} />
             </View>
           ) : (
             <View style={styles.imageUploaderLayout}>
