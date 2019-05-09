@@ -322,11 +322,13 @@ export default class Search extends Component {
                     (food) => (
                       (food.foodName).toLowerCase()
                         .includes((searchKeyword).toLowerCase())),
-                  ).map(foodInfo => (
+                  ).map((foodInfo, index) => (
                     <FoodCard
                       key={foodInfo.foodId}
                       goToRestaurant={this.getRestaurantFromFood}
                       food={foodInfo}
+                      index={index}
+                      disableAnimation
                     />
                   )))}
             </View>
