@@ -91,6 +91,7 @@ export default class Addfood extends Component {
   state = {
     uploaded: false,
     url: '',
+    tempURL: '',
     name: '',
     rating: 5,
     uploading: false,
@@ -264,6 +265,7 @@ export default class Addfood extends Component {
   };
 
   uploadImage = (uri, mime = 'application/octet-stream') => new Promise((resolve, reject) => {
+    this.setState({ tempURL: uri });
     const uploadUri = uri.replace('file://', '');
     let uploadBlob = null;
     const uniqueID = uuidv4();
@@ -314,7 +316,7 @@ export default class Addfood extends Component {
   }
 
   render() {
-    const { rating, uploaded, url, uploading, name, modalVisible } = this.state;
+    const { rating, uploaded, tempURL, uploading, name, modalVisible } = this.state;
     console.log(`Selected rating: ${rating}`);
     return (
       <View style={styles.container}>
@@ -333,7 +335,7 @@ export default class Addfood extends Component {
         <View>
           {uploaded ? (
             <View style={styles.imageUploaderLayout}>
-              <Imageupload url={url} cancel={this.cancelImage} />
+              <Imageupload url={tempURL} cancel={this.cancelImage} />
             </View>
           ) : (
             <View style={styles.imageUploaderLayout}>
