@@ -151,10 +151,13 @@ export default class EditRestaurant extends Component {
         this.setState({ uploading: true, modalVisible: true });
         this.uploadImage(response.path)
           .then(url => {
-            this.setState({ uploaded: true, uploading: false, url });
+            this.setState({ uploaded: true, modalVisible: false, uploading: false, url });
             console.log(url);
           })
-          .catch(error => console.log(error));
+          .catch(error => {
+            this.setState({ uploaded: false, modalVisible: false, uploading: false });
+            console.log(error);
+          });
       })
       .catch(e => console.log(e));
   };
