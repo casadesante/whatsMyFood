@@ -317,16 +317,16 @@ export default class Restaurant extends Component {
     const restaurantFoodDetails = this.segregateFoodItems(restaurant.foods, restaurant.createdAt);
 
     console.log(restaurant);
-    const shine = ['rgba(3, 3, 3, 0.01)', 'rgba(3, 3, 3, 0.05)', 'rgba(3, 3, 3, 0.03)'];
-    const blackOverlay = ['rgba(0, 0, 0, 0.50)', 'rgba(0, 0, 0, 0.55)'];
-    const greyOverlay = ['rgba(0, 0, 0, 0.30)', 'rgba(0, 0, 0, 0.35)'];
+    const shine = ['rgba(255, 255, 255, 0.01)', 'rgba(255, 255, 255, 0.05)', 'rgba(255, 255, 255, 0.03)'];
+    const redGradient = ['rgb(254, 108, 93)', 'rgb(253, 89, 89)'];
+    const blackOverlay = ['rgba(0, 0, 0, 0.8)', 'rgba(0, 0, 0, 0.85)'];
 
     const uploadedRestaurantImage = (
       <View>
         {loaded
           ? (true) : (
             <LinearGradient
-              colors={restaurant.restaurantPhotoURL && loaded ? blackOverlay : greyOverlay}
+              colors={restaurant.restaurantPhotoURL && loaded ? blackOverlay : redGradient}
               style={styles.linearGradient}
             >
               <Animatable.View duration={2000} delay={600} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
