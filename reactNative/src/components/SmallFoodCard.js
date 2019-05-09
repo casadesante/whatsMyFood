@@ -108,9 +108,9 @@ export default class SmallFoodCard extends Component {
     const foodImageLink = foodImage ? { uri: foodImage } : require('../assets/img/default_foodImg.png');
 
     const { loaded } = this.state;
-    const shine = ['rgba(3, 3, 3, 0.01)', 'rgba(3, 3, 3, 0.05)', 'rgba(3, 3, 3, 0.03)'];
+    const shine = ['rgba(255, 255, 255, 0.01)', 'rgba(255, 255, 255, 0.05)', 'rgba(255, 255, 255, 0.03)'];
     const redGradient = ['rgb(254, 108, 93)', 'rgb(253, 89, 89)'];
-    const greyOverlay = ['rgba(0, 0, 0, 0.30)', 'rgba(0, 0, 0, 0.35)'];
+    const blackOverlay = ['rgba(0, 0, 0, 0.8)', 'rgba(0, 0, 0, 0.85)'];
     return (
       <TouchableOpacity
         onPress={() => { foodAction(item, restaurantName); }}
@@ -118,7 +118,7 @@ export default class SmallFoodCard extends Component {
         <View style={styles.imageHolder}>
           { !loaded ? (
             <LinearGradient
-              colors={foodImageLink && loaded ? redGradient : greyOverlay}
+              colors={foodImageLink && loaded ? blackOverlay : redGradient}
               style={styles.foodImage}
             >
               <Animatable.View duration={2300} delay={600} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
