@@ -104,6 +104,7 @@ export default class EditRestaurant extends Component {
 
     this.state = {
       uploaded: !!restaurantData.restaurantPhotoURL,
+      tempURL: restaurantData.restaurantPhotoURL || '',
       url: restaurantData.restaurantPhotoURL || '',
       restaurantID: restaurantData.restaurantID,
       createdAt: restaurantData.createdAt,
@@ -238,6 +239,7 @@ export default class EditRestaurant extends Component {
   };
 
   uploadImage = (uri, mime = 'application/octet-stream') => new Promise((resolve, reject) => {
+    this.setState({ tempURL: uri });
     const uploadUri = uri.replace('file://', '');
     let uploadBlob = null;
     const uniqueID = uuidv4();
@@ -267,7 +269,7 @@ export default class EditRestaurant extends Component {
   render() {
     const {
       uploaded,
-      url,
+      tempURL,
       restaurantDetails,
       uploading,
       isConnected,
@@ -297,7 +299,7 @@ export default class EditRestaurant extends Component {
           <View>
             {uploaded ? (
               <View style={styles.imageUploaderLayout}>
-                <Imageupload url={url} cancel={this.cancelImage} />
+                <Imageupload url={tempURL} cancel={this.cancelImage} />
               </View>
             ) : (
               <View style={styles.imageUploaderLayout}>
