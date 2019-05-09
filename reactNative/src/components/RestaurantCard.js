@@ -165,49 +165,6 @@ export default class RestaurantCard extends Component {
             </ImageCacheProvider>
           </TouchableOpacity>
         </Animatable.View>
-        {/* <Animatable.View
-          animation={disableAnimation ? undefined : cardStyle}
-          delay={
-        index * 150
-        // List index
-      }
-        >
-          <TouchableOpacity
-            activeOpacity={0.99}
-            onPress={() => {
-              goToRestaurant(restaurant);
-            }}
-          >
-            <ImageBackground
-              style={styles.backgroundImage}
-              imageStyle={{ borderRadius: 10 }}
-              resizeMode="contain"
-              onLoadEnd={this.showPic}
-              source={{
-                uri: restaurant.restaurantPhotoURL,
-              }}
-            >
-              <LinearGradient
-                colors={restaurant.restaurantPhotoURL && loaded ? greyOverlay : greyOverlay}
-                style={styles.linearGradient}
-              >
-                <View>
-                  { !loaded ? (
-                    <Animatable.View duration={2300} delay={600} animation={loaderAnimation} iterationCount="infinite" style={styles.loader}>
-                      <LinearGradient colors={shine} style={styles.loader1} />
-                      <LinearGradient colors={shine} style={styles.loader2} />
-                    </Animatable.View>
-                  ) : (true)}
-                  <View style={styles.details}>
-                    <Text style={styles.restaurantName} numberOfLines={2}>
-                      {restaurant.restaurantName}
-                    </Text>
-                  </View>
-                </View>
-              </LinearGradient>
-            </ImageBackground>
-          </TouchableOpacity>
-        </Animatable.View> */}
       </React.Fragment>
     );
   }
