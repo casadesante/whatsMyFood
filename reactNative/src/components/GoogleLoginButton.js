@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import {StyleSheet,
+import { StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
   Text,
-  View,} from 'react-native';
-import { LoginManager, AccessToken } from 'react-native-fbsdk';
+  View } from 'react-native';
+import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Config from 'react-native-config';
 import firebase from 'firebase';
 import RF from 'react-native-responsive-fontsize';
 import PropTypes from 'prop-types';
 
+import { saveInAsyncStorage } from '../lib/Auth';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
 
 const config = {
@@ -60,6 +61,15 @@ class GoogleLoginButton extends Component {
 
   componentDidMount() {
     this.setState({ GoogleLoginLoading: false });
+    GoogleSignin.configure();
+    GoogleSignin.configure({
+      scopes: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'], // what API you want to access on behalf of the user, default is email and profile
+      webClientId: '150563096063-q1eou06raefk65v5umsdl7l927v6ka9p.apps.googleusercontent.com',
+      offlineAccess: true,
+      hostedDomain: '', // specifies a hosted domain restriction
+      loginHint: '', // [iOS] The user's ID, or email address, to be prefilled in the authentication UI if possible. [See docs here](https://developers.google.com/identity/sign-in/ios/api/interface_g_i_d_sign_in.html#a0a68c7504c31ab0b728432565f6e33fd)
+      iosClientId: '150563096063-q1eou06raefk65v5umsdl7l927v6ka9p.apps.googleusercontent.com', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+    });
     if (!firebase.apps.length) {
       firebase.initializeApp(config);
     }
@@ -70,54 +80,88 @@ class GoogleLoginButton extends Component {
       let result;
       try {
         self.setState({ GoogleLoginLoading: true });
-        LoginManager.setLoginBehavior('native');
-        result = await LoginManager.logInWithReadPermissions([
-          'public_profile',
-          'email',
-        ]);
-      } catch (nativeError) {
-        try {
-          LoginManager.setLoginBehavior('web');
-          result = await LoginManager.logInWithReadPermissions([
-            'public_profile',
-            'email',
-          ]);
-        } catch (webError) {
-          console.log(`Some error occured: ${webError}`);
-          // show error message to the user if none of the FB screens
-          // did not open
+        await GoogleSignin.hasPlayServices();
+        result = await GoogleSignin.signIn();
+      } catch (error) {
+        if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+          // user cancelled the login flow
+        } else if (error.code === statusCodes.IN_PROGRESS) {
+          // operation (f.e. sign in) is in progress already
+        } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+          // play services not available or outdated
+        } else {
+          // some other error happened
         }
       }
 
-      if (result.isCancelled) {
+      if (!result) {
         self.setState({ GoogleLoginLoading: false });
-        alert('Login was cancelled');
+        console.log('Google login was cancelled');
       } else {
-        AccessToken.getCurrentAccessToken().then(
-          accessTokenData => {
-            const credential = firebase.auth.FacebookAuthProvider.credential(
-              accessTokenData.accessToken,
-            );
-            firebase
-              .auth()
-              .signInWithCredential(credential)
-              .then(
-                () => {
-                  navigation.navigate('Home');
-                },
-                // eslint-disable-next-line no-unused-vars
-                err => {
-                  alert('Error while loggin in');
-                },
-              );
-          },
-          err => {
-            alert(`Some error occured: ${err}`);
-          },
+        console.log('result');
+        console.log(result);
+        const credential = firebase.auth.GoogleAuthProvider.credential(
+          result.idToken,
         );
+        firebase
+          .auth()
+          .signInAndRetrieveDataWithCredential(credential)
+          .then(
+            ({ user }) => {
+              console.log('user');
+              console.log(user);
+              const userObj = {
+                firebaseID: user.uid,
+                userName: user.displayName,
+                emailID: user.email,
+                profilePicURL: user.photoURL,
+              };
+              console.log('userObj');
+              console.log(userObj);
+              fetch(
+                'https://us-central1-whatsmyfood.cloudfunctions.net/addUser',
+                {
+                  method: 'POST',
+                  body: JSON.stringify(userObj),
+                },
+              )
+                .then(() => {
+                  saveInAsyncStorage().then(res => {
+                    res ? navigation.navigate('Home') : console.log('Async store Error');
+                  });
+                })
+                .catch(err => {
+                  alert(err);
+                });
+            },
+            // eslint-disable-next-line no-unused-vars
+            err => {
+              // TODO: handle error
+              alert('Error while logging in');
+            },
+          );
       }
     }
     AsyncLogin(this);
+  };
+
+  signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log(userInfo);
+      // this.setState({ userInfo });
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (f.e. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
   };
 
   render() {

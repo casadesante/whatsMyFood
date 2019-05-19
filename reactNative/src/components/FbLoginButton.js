@@ -1,59 +1,57 @@
-import React, { Component } from "react";
-import {
-  StyleSheet,
+import React, { Component } from 'react';
+import { StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
   Text,
   View,
-  Alert
-} from "react-native";
-import { LoginManager, AccessToken } from "react-native-fbsdk";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import Config from "react-native-config";
-import firebase from "firebase";
-import RF from "react-native-responsive-fontsize";
-import PropTypes from "prop-types";
+  Alert } from 'react-native';
+import { LoginManager, AccessToken } from 'react-native-fbsdk';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Config from 'react-native-config';
+import firebase from 'firebase';
+import RF from 'react-native-responsive-fontsize';
+import PropTypes from 'prop-types';
 
-import { heightPercentageToDP, widthPercentageToDP } from "../lib/Responsive";
-import { saveInAsyncStorage } from "../lib/Auth";
+import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
+import { saveInAsyncStorage } from '../lib/Auth';
 
 const config = {
   apiKey: Config.API_KEY,
   authDomain: Config.AUTH_DOMAIN,
   databaseURL: Config.DB_URL,
-  storageBucket: "gs://whatsmyfood.appspot.com"
+  storageBucket: 'gs://whatsmyfood.appspot.com',
 };
 
 const styles = StyleSheet.create({
   loginButton: {
-    width: widthPercentageToDP("89%"),
-    height: heightPercentageToDP("7%"),
-    backgroundColor: "#3B5998",
-    borderRadius: heightPercentageToDP("7%") / 5,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center"
+    width: widthPercentageToDP('89%'),
+    height: heightPercentageToDP('7%'),
+    backgroundColor: '#3B5998',
+    borderRadius: heightPercentageToDP('7%') / 5,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   container: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center"
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   facebookLogo: {
-    marginLeft: widthPercentageToDP("1%")
+    marginLeft: widthPercentageToDP('1%'),
   },
   loadingSpinner: {
-    marginRight: widthPercentageToDP("2%")
+    marginRight: widthPercentageToDP('2%'),
   },
   label: {
-    color: "white",
+    color: 'white',
     fontSize: RF(2.5),
-    fontFamily: "SFProText-Light",
-    marginRight: widthPercentageToDP("12%")
-  }
+    fontFamily: 'SFProText-Light',
+    marginRight: widthPercentageToDP('12%'),
+  },
 });
 
 class FacebookLoginButton extends Component {
@@ -74,17 +72,17 @@ class FacebookLoginButton extends Component {
       let result;
       try {
         self.setState({ FbLoginLoading: true });
-        LoginManager.setLoginBehavior("native");
+        LoginManager.setLoginBehavior('native');
         result = await LoginManager.logInWithReadPermissions([
-          "public_profile",
-          "email"
+          'public_profile',
+          'email',
         ]);
       } catch (nativeError) {
         try {
-          LoginManager.setLoginBehavior("web");
+          LoginManager.setLoginBehavior('web');
           result = await LoginManager.logInWithReadPermissions([
-            "public_profile",
-            "email"
+            'public_profile',
+            'email',
           ]);
         } catch (webError) {
           Alert.alert(`Some error occured: ${webError}`);
@@ -95,12 +93,12 @@ class FacebookLoginButton extends Component {
 
       if (result.isCancelled) {
         self.setState({ FbLoginLoading: false });
-        console.log("Login was cancelled");
+        console.log('Facebook login was cancelled');
       } else {
         AccessToken.getCurrentAccessToken().then(
           accessTokenData => {
             const credential = firebase.auth.FacebookAuthProvider.credential(
-              accessTokenData.accessToken
+              accessTokenData.accessToken,
             );
             firebase
               .auth()
@@ -111,21 +109,21 @@ class FacebookLoginButton extends Component {
                     firebaseID: user.uid,
                     userName: user.displayName,
                     emailID: user.email,
-                    profilePicURL: user.photoURL
+                    profilePicURL: user.photoURL,
                   };
                   console.log(userObj);
                   fetch(
-                    "https://us-central1-whatsmyfood.cloudfunctions.net/addUser",
+                    'https://us-central1-whatsmyfood.cloudfunctions.net/addUser',
                     {
-                      method: "POST",
-                      body: JSON.stringify(userObj)
-                    }
+                      method: 'POST',
+                      body: JSON.stringify(userObj),
+                    },
                   )
                     .then(() => {
                       saveInAsyncStorage().then(res => {
                         res
-                          ? navigation.navigate("Home")
-                          : console.log("Async store Error");
+                          ? navigation.navigate('Home')
+                          : console.log('Async store Error');
                       });
                     })
                     .catch(err => {
@@ -135,13 +133,13 @@ class FacebookLoginButton extends Component {
                 // eslint-disable-next-line no-unused-vars
                 err => {
                   // TODO: handle error
-                  alert("Error while logging in");
-                }
+                  alert('Error while logging in');
+                },
               );
           },
           err => {
             alert(`Some error occured: ${err}`);
-          }
+          },
         );
       }
     }
@@ -155,13 +153,13 @@ class FacebookLoginButton extends Component {
       <TouchableOpacity
         style={[
           styles.loginButton,
-          { marginTop: heightPercentageToDP(marginTopPercent) }
+          { marginTop: heightPercentageToDP(marginTopPercent) },
         ]}
         onPress={() => this.facebookLogin(navigation)}
       >
         {// Facebook login in process? Show loading spinner : else show sign in button
         FbLoginLoading ? (
-          <View style={[styles.container, { justifyContent: "center" }]}>
+          <View style={[styles.container, { justifyContent: 'center' }]}>
             <ActivityIndicator
               style={styles.loadingSpinner}
               size="small"
@@ -189,11 +187,11 @@ export default FacebookLoginButton;
 
 FacebookLoginButton.propTypes = {
   navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired
+    navigate: PropTypes.func.isRequired,
   }).isRequired,
-  marginTopPercent: PropTypes.string
+  marginTopPercent: PropTypes.string,
 };
 
 FacebookLoginButton.defaultProps = {
-  marginTopPercent: "0%"
+  marginTopPercent: '0%',
 };

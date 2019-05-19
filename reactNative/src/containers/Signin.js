@@ -12,6 +12,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 import RF from '../../node_modules/react-native-responsive-fontsize';
 import FacebookLoginButton from '../components/FbLoginButton';
+import GoogleLoginButton from '../components/GoogleLoginButton';
 
 const styles = StyleSheet.create({
   linearGradient: {
@@ -51,9 +52,12 @@ const styles = StyleSheet.create({
     height: widthPercentageToDP('60%'),
     marginTop: heightPercentageToDP('5%'),
   },
-  loginButton: {
-    marginTop: heightPercentageToDP('20%'),
-    marginBottom: heightPercentageToDP('5%'),
+  googleLoginButton: {
+    marginTop: heightPercentageToDP('10%'),
+  },
+  fbLoginButton: {
+    marginTop: heightPercentageToDP('3%'),
+    marginBottom: heightPercentageToDP('4%'),
   },
   footerText: {
     color: 'white',
@@ -74,6 +78,7 @@ export default class Signin extends Component {
 
   render() {
     const { navigation } = this.props;
+
     return (
       <ImageBackground
         source={require('../assets/img/stockPic.png')}
@@ -97,7 +102,10 @@ export default class Signin extends Component {
               <Text style={styles.appTitle}>WhatsMyFood</Text>
             </View>
             <View style={styles.splitContainer}>
-              <View style={styles.loginButton}>
+              <View style={styles.googleLoginButton}>
+                <GoogleLoginButton navigation={navigation} />
+              </View>
+              <View style={styles.fbLoginButton}>
                 <FacebookLoginButton navigation={navigation} />
               </View>
               <Text style={styles.footerText}>
