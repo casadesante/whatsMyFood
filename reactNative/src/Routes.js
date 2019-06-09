@@ -17,6 +17,7 @@ import Restaurant from './containers/Restaurant';
 import EditRestaurant from './containers/EditRestaurant';
 import EditFood from './containers/EditFood';
 import Feedback from './containers/Feedback';
+import OnBoarding from './containers/OnBoarding';
 
 export const SignedOut = createStackNavigator({
   SignIn: {
@@ -99,6 +100,12 @@ export const SignedIn = createBottomTabNavigator(
         tabBarIcon: NewEntryTabBarIcon,
       },
     },
+    OnBoarding: {
+      screen: createStackNavigator({
+        OnBoarding: { screen: OnBoarding },
+      }),
+      path: '',
+    },
     Search: {
       screen: createStackNavigator({
         Search: { screen: Search },
@@ -115,9 +122,6 @@ export const SignedIn = createBottomTabNavigator(
         }),
       }),
       path: '',
-      navigationOptions: {
-        tabBarIcon: SearchTabBarIcon,
-      },
     },
     Profile: {
       screen: createStackNavigator({

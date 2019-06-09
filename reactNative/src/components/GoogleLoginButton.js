@@ -107,14 +107,14 @@ class GoogleLoginButton extends Component {
           .auth()
           .signInAndRetrieveDataWithCredential(credential)
           .then(
-            ({ user }) => {
+            ({ user, additionalUserInfo }) => {
               console.log('user');
               console.log(user);
               const userObj = {
                 firebaseID: user.uid,
-                userName: user.displayName,
-                emailID: user.email,
-                profilePicURL: user.photoURL,
+                userName: result.user.name,
+                emailID: result.user.email,
+                profilePicURL: result.user.photo,
               };
               console.log('userObj');
               console.log(userObj);
@@ -127,7 +127,10 @@ class GoogleLoginButton extends Component {
               )
                 .then(() => {
                   saveInAsyncStorage().then(res => {
-                    res ? navigation.navigate('Home') : console.log('Async store Error');
+                  // eslint-disable-next-line no-unused-expressions
+                    additionalUserInfo.isNewUser
+                      ? navigation.navigate('OnBoarding')
+                      : navigation.navigate('Home');
                   });
                 })
                 .catch(err => {
@@ -149,6 +152,7 @@ class GoogleLoginButton extends Component {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
+      console.log('userinfo');
       console.log(userInfo);
       // this.setState({ userInfo });
     } catch (error) {

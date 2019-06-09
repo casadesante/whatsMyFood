@@ -104,14 +104,14 @@ class FacebookLoginButton extends Component {
               .auth()
               .signInAndRetrieveDataWithCredential(credential)
               .then(
-                ({ user }) => {
+                ({ user, additionalUserInfo }) => {
                   const userObj = {
                     firebaseID: user.uid,
                     userName: user.displayName,
                     emailID: user.email,
                     profilePicURL: user.photoURL,
                   };
-                  console.log(userObj);
+                  console.log(additionalUserInfo.isNewUser);
                   fetch(
                     'https://us-central1-whatsmyfood.cloudfunctions.net/addUser',
                     {
@@ -121,9 +121,10 @@ class FacebookLoginButton extends Component {
                   )
                     .then(() => {
                       saveInAsyncStorage().then(res => {
-                        res
-                          ? navigation.navigate('Home')
-                          : console.log('Async store Error');
+                        // eslint-disable-next-line no-unused-expressions
+                        additionalUserInfo.isNewUser
+                          ? navigation.navigate('OnBoarding')
+                          : navigation.navigate('Home');
                       });
                     })
                     .catch(err => {
