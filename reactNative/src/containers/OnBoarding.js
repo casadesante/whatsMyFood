@@ -4,10 +4,36 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
   Button } from 'react-native';
+import AppIntroSlider from 'react-native-app-intro-slider';
 import PropTypes from 'prop-types';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
 import RF from '../../node_modules/react-native-responsive-fontsize';
+
+const slides = [
+  {
+    key: 'somethun',
+    title: 'Title 1',
+    text: 'Description.\nSay something cool',
+    image: require('../assets/img/onBoarding/1.jpg'),
+    backgroundColor: '#59b2ab',
+  },
+  {
+    key: 'somethun-dos',
+    title: 'Title 2',
+    text: 'Other cool stuff',
+    image: require('../assets/img/onBoarding/1.jpg'),
+    backgroundColor: '#febe29',
+  },
+  {
+    key: 'somethun1',
+    title: 'Rocket guy',
+    text: 'I\'m already out of descriptions\n\nLorem ipsum bla bla bla',
+    image: require('../assets/img/onBoarding/1.jpg'),
+    backgroundColor: '#22bcb5',
+  },
+];
 
 
 const styles = StyleSheet.create({
@@ -48,23 +74,25 @@ const styles = StyleSheet.create({
 });
 
 export default class OnBoarding extends Component {
+  static navigationOptions = {
+    header: null,
+  };
+
    navigateToHome = () => {
      const { props: { navigation } } = this;
      navigation.navigate('Home');
    }
-     
+  
+   renderItem = (item) => (
+     <View style={styles.slide}>
+       <Image source={item.image} />
+       <Text style={styles.text}>{item.text}</Text>
+     </View>
+   )
+
    render() {
-     const { navigateToHome } = this;
      return (
-       <View style={styles.container}>
-         <Text>
-          on boarding screen
-         </Text>
-         <Button
-           onPress={navigateToHome}
-           title="home"
-         />
-       </View>
+       <AppIntroSlider renderItem={this.renderItem} slides={slides} onDone={this.navigateToHome} />
      );
    }
 }

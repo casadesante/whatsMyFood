@@ -25,6 +25,13 @@ export const SignedOut = createStackNavigator({
   },
 });
 
+export const OnBoardingScreen = createStackNavigator({
+  OnBoarding: {
+    screen: OnBoarding,
+  },
+});
+
+
 const HomeTabBarIcon = ({ tintColor }) => (
   <Material name="home" size={35} color={tintColor} />
 );
@@ -100,12 +107,6 @@ export const SignedIn = createBottomTabNavigator(
         tabBarIcon: NewEntryTabBarIcon,
       },
     },
-    OnBoarding: {
-      screen: createStackNavigator({
-        OnBoarding: { screen: OnBoarding },
-      }),
-      path: '',
-    },
     Search: {
       screen: createStackNavigator({
         Search: { screen: Search },
@@ -165,6 +166,13 @@ export const createRootNavigator = signedIn => createSwitchNavigator(
     },
     SignedOut: {
       screen: SignedOut,
+      navigationOptions: {
+        gesturesEnabled: false,
+      },
+    },
+    OnBoarding: {
+      screen: OnBoardingScreen,
+      path: '',
       navigationOptions: {
         gesturesEnabled: false,
       },
