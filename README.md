@@ -1,5 +1,15 @@
-# whatsMyFood
-A mobile app to remember your fav food at each restaurant you eat.
+# WhatsMyFood
+
+[WhatsMyFood](https://whatsmyfood.glitch.me)
+Personal food review tracking made easy.
+
+We chance upon various restaurants in which some dishes are great, whilst some are terrible, and it’s hard to remember all of them. When we revisit those restaurants, WMF will happily help you recall those good and terrible dishes.
+
+### Why WhatsMyFood
+![WMF Illustration](./doc/imgs/illustrations.png)
+
+### Landing Page
+[WhatsMyFood](https://whatsmyfood.glitch.me)
 
 ### Setting up React native:
 1. Please follow the instructions [here](/doc/reactNative/setup.md) to set up React Native.
