@@ -6,7 +6,7 @@ Personal food review tracking made easy.
 We chance upon various restaurants in which some dishes are great, whilst some are terrible, and it’s hard to remember all of them. When we revisit those restaurants, WMF will happily help you recall those good and terrible dishes.
 
 ### Why WhatsMyFood
-![WMF Illustration](./doc/imgs/illustrations.png)
+![WMF Illustration](https://raw.githubusercontent.com/sharathvignesh/whatsMyFood/master/doc/imgs/Illustrations.png)
 
 ### Landing Page
 [WhatsMyFood](https://whatsmyfood.glitch.me)
