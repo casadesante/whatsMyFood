@@ -5,11 +5,14 @@ Personal food review tracking made easy.
 
 We chance upon various restaurants in which some dishes are great, whilst some are terrible, and it’s hard to remember all of them. When we revisit those restaurants, WMF will happily help you recall those good and terrible dishes.
 
-### Why WhatsMyFood
+### Why WhatsMyFood?
 ![WMF Illustration](https://raw.githubusercontent.com/sharathvignesh/whatsMyFood/master/doc/imgs/Illustrations.png)
 
-### Landing Page
+### Landing Page:
 [WhatsMyFood](https://whatsmyfood.glitch.me)
+
+### How it Looks in Mobile:
+![WMF GIF](https://raw.githubusercontent.com/sharathvignesh/whatsMyFood/master/doc/imgs/wmfgif.gif)
 
 ### Setting up React native:
 1. Please follow the instructions [here](/doc/reactNative/setup.md) to set up React Native.
