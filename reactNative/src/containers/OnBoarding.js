@@ -15,22 +15,22 @@ const slides = [
   {
     key: 'somethun',
     title: 'Title 1',
-    text: 'Description.\nSay something cool',
-    image: require('../assets/img/onBoarding/1.jpg'),
+    text: 'Add the restaurant',
+    image: require('../assets/img/onBoarding/Addres2.gif'),
     backgroundColor: '#59b2ab',
   },
   {
     key: 'somethun-dos',
     title: 'Title 2',
-    text: 'Other cool stuff',
-    image: require('../assets/img/onBoarding/1.jpg'),
+    text: 'Rate your food',
+    image: require('../assets/img/onBoarding/AddFood.gif'),
     backgroundColor: '#febe29',
   },
   {
     key: 'somethun1',
     title: 'Rocket guy',
-    text: 'I\'m already out of descriptions\n\nLorem ipsum bla bla bla',
-    image: require('../assets/img/onBoarding/1.jpg'),
+    text: 'Refer when you revisit',
+    image: require('../assets/img/onBoarding/rstaurant.gif'),
     backgroundColor: '#22bcb5',
   },
 ];
@@ -40,36 +40,18 @@ const styles = StyleSheet.create({
   container: {
     height: heightPercentageToDP('100%'),
     backgroundColor: 'white',
-  },
-  headerContainer: {
-    height: heightPercentageToDP('30%'),
-    backgroundColor: 'rgb(248, 248, 248)',
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  ImageShadow: {
-    shadowColor: '#000000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowRadius: 3,
-    shadowOpacity: 0.2,
-    position: 'absolute',
+  image: {
+    height: heightPercentageToDP('60%'),
+    width: widthPercentageToDP('60%'),
   },
-  profileImage: {
-    height: widthPercentageToDP('40%'),
-    width: widthPercentageToDP('40%'),
-    borderRadius: widthPercentageToDP('40%') / 2,
-  },
-  usernameStyle: {
-    fontWeight: 'bold',
-    fontSize: RF(3.8),
-    margin: heightPercentageToDP('2%'),
-  },
-  photoHolder: {
-    height: widthPercentageToDP('40%'),
-    width: widthPercentageToDP('40%'),
+  text: {
+    marginTop: heightPercentageToDP('5%'),
+    color: '#333333',
+    fontSize: RF(2.2),
   },
 });
 
@@ -84,15 +66,25 @@ export default class OnBoarding extends Component {
    }
   
    renderItem = (item) => (
-     <View style={styles.slide}>
-       <Image source={item.image} />
+     <View style={styles.container}>
+       <Image style={styles.image} source={item.image} />
        <Text style={styles.text}>{item.text}</Text>
      </View>
    )
 
    render() {
      return (
-       <AppIntroSlider renderItem={this.renderItem} slides={slides} onDone={this.navigateToHome} />
+       <AppIntroSlider
+         renderItem={this.renderItem}
+         slides={slides}
+         showSkipButton
+         onDone={this.navigateToHome}
+         onSkip={this.navigateToHome}
+         activeDotStyle={{ backgroundColor: '#222222' }}
+         dotStyle={{ backgroundColor: '#dddddd' }}
+         buttonTextStyle={{ color: '#555555' }}
+         skipLabel="SKIP"
+       />
      );
    }
 }
