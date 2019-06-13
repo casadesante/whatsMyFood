@@ -111,7 +111,6 @@ class FacebookLoginButton extends Component {
                     emailID: user.email,
                     profilePicURL: user.photoURL,
                   };
-                  console.log(additionalUserInfo.isNewUser);
                   fetch(
                     'https://us-central1-whatsmyfood.cloudfunctions.net/addUser',
                     {
