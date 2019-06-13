@@ -123,6 +123,9 @@ export const SignedIn = createBottomTabNavigator(
         }),
       }),
       path: '',
+      navigationOptions: {
+        tabBarIcon: SearchTabBarIcon,
+      },
     },
     Profile: {
       screen: createStackNavigator({
