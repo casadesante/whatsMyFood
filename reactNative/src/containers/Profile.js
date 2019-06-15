@@ -175,7 +175,7 @@ export default class Profile extends Component {
           </View>
 
           <Text style={styles.usernameStyle} numberOfLines={2}>
-            {`${user.displayName} Suresh Murali Lakshman`}
+            {user.displayName}
           </Text>
         </View>
         <View>
