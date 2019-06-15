@@ -38,33 +38,48 @@ const slides = [
 
 const styles = StyleSheet.create({
   container: {
-    height: heightPercentageToDP('100%'),
     backgroundColor: 'white',
+    display: 'flex',
+    flexDirection: 'column',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   image: {
-    height: heightPercentageToDP('60%'),
-    width: widthPercentageToDP('60%'),
+    height: heightPercentageToDP('65%'),
+    width: widthPercentageToDP('65%'),
+    marginBottom: heightPercentageToDP('4%'),
   },
   text: {
-    marginTop: heightPercentageToDP('5%'),
     color: '#333333',
-    fontSize: RF(2.2),
+    fontSize: RF(3),
   },
 });
 
 export default class OnBoarding extends Component {
   static navigationOptions = {
-    header: null,
+    headerTintColor: 'white',
+    headerStyle: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      left: 0,
+      elevation: 0,
+      shadowColor: 'transparent',
+      borderBottomWidth: 0,
+      backgroundColor: 'transparent',
+      shadowRadius: 0,
+      shadowOffset: {
+        height: 0,
+      },
+    },
   };
 
    navigateToHome = () => {
      const { props: { navigation } } = this;
      navigation.navigate('Home');
    }
-  
+
    renderItem = (item) => (
      <View style={styles.container}>
        <Image style={styles.image} source={item.image} />
