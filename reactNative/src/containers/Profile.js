@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     borderRadius: widthPercentageToDP('40%') / 2,
   },
   usernameStyle: {
+    textAlign: 'center',
     fontWeight: 'bold',
     fontSize: RF(3.8),
     margin: heightPercentageToDP('2%'),
@@ -174,7 +175,7 @@ export default class Profile extends Component {
           </View>
 
           <Text style={styles.usernameStyle} numberOfLines={2}>
-            {user.displayName}
+            {`${user.displayName} Suresh Murali Lakshman`}
           </Text>
         </View>
         <View>
