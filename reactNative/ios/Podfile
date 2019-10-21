@@ -1,0 +1,38 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '9.0'
+
+target 'whatsMyFood' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for whatsMyFood
+
+  pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+  pod 'React', :path => '../node_modules/react-native', :subspecs => [
+    'Core',
+  ]
+
+  pod 'Firebase/Core', '~> 6.3.0'
+
+  pod 'Firebase/Auth', '~> 6.3.0'
+
+  pod 'Firebase/Storage', '~> 6.3.0'
+
+  pod 'Fabric', '~> 1.10.2'
+  
+  pod 'Crashlytics', '~> 3.13.2'
+
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
+
+  pod 'react-native-netinfo', :path => '../node_modules/@react-native-community/netinfo'
+
+  pod 'GoogleSignIn', '~> 4.4.0'
+
+end
+
+post_install do |installer|
+  rnfirebase = installer.pods_project.targets.find { |target| target.name == 'RNFirebase' }
+  rnfirebase.build_configurations.each do |config|
+    config.build_settings['HEADER_SEARCH_PATHS'] = '$(inherited) ${PODS_ROOT}/Headers/Public/**'
+  end
+end

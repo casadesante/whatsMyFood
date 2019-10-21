@@ -101,7 +101,7 @@ export default class RestaurantTextInput extends Component {
             color="rgb(105, 105, 105)"
           />
           <GoogleAutoComplete
-            apiKey={Config.AUTO_COMPLETE_API_KEY}
+            apiKey={'1234-12341234_123412_123412341234'}
             minLength={2}
             fetchDetails
           >

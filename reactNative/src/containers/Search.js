@@ -6,7 +6,6 @@ import { StyleSheet,
   StatusBar,
   TouchableOpacity,
   TextInput,
-  NetInfo,
   AsyncStorage } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -19,6 +18,7 @@ import FoodCard from '../components/FoodCard';
 import OfflineNotice from '../components/Nointernet';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
 import RF from '../../node_modules/react-native-responsive-fontsize';
+import NetInfo from "@react-native-community/netinfo";
 
 const styles = StyleSheet.create({
   container: {

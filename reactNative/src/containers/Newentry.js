@@ -6,7 +6,6 @@ import { StyleSheet,
   TouchableWithoutFeedback,
   StatusBar,
   NativeModules,
-  NetInfo,
   Alert,
   Modal,
   ActivityIndicator } from 'react-native';
@@ -25,6 +24,8 @@ import OfflineNotice from '../components/Nointernet';
 import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 import Optional from '../components/Optional';
 import RestaurantTextInput from '../components/RestaurantTextInput';
+
+import NetInfo from "@react-native-community/netinfo";
 
 const ImagePicker = NativeModules.ImageCropPicker;
 
@@ -192,7 +193,7 @@ export default class Newentry extends Component {
       .then(data => Blob.build(data, { type: `${mime};BASE64` }))
       .then(blob => {
         uploadBlob = blob;
-        return imageRef.put(blob, { contentType: mime });
+        return imageRef.put(uri, { contentType: mime });
       })
       .then(() => {
         uploadBlob.close();

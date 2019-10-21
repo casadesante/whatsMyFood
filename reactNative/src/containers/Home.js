@@ -4,7 +4,6 @@ import { StyleSheet,
   View,
   ScrollView,
   StatusBar,
-  NetInfo,
   ActivityIndicator,
   AsyncStorage } from 'react-native';
 import PropTypes from 'prop-types';
@@ -14,6 +13,8 @@ import EmptyHome from '../components/EmptyHome';
 import OfflineNotice from '../components/Nointernet';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
 import RF from '../../node_modules/react-native-responsive-fontsize';
+
+import NetInfo from "@react-native-community/netinfo";
 
 const styles = StyleSheet.create({
   container: {

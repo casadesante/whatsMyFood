@@ -1,5 +1,5 @@
 /* eslint-disable implicit-arrow-linebreak */
-import firebase from 'firebase';
+import firebase from 'react-native-firebase';
 import FBSDK from 'react-native-fbsdk';
 import { AsyncStorage } from 'react-native';
 

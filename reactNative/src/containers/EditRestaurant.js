@@ -6,10 +6,11 @@ import { StyleSheet,
   TouchableWithoutFeedback,
   StatusBar,
   NativeModules,
-  NetInfo,
   Alert,
   Modal,
   ActivityIndicator } from 'react-native';
+
+import NetInfo from "@react-native-community/netinfo";
 
 import RNFetchBlob from 'rn-fetch-blob';
 import PropTypes from 'prop-types';

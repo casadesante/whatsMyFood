@@ -277,7 +277,7 @@ export default class Addfood extends Component {
       .then(data => Blob.build(data, { type: `${mime};BASE64` }))
       .then(blob => {
         uploadBlob = blob;
-        return imageRef.put(blob, { contentType: mime });
+        return imageRef.put(uri, { contentType: mime });
       })
       .then(() => {
         uploadBlob.close();

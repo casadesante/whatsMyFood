@@ -1,4 +1,4 @@
-import * as firebase from 'firebase';
+import firebase from 'react-native-firebase';
 import Config from 'react-native-config';
 
 // Initialize Firebase
@@ -9,6 +9,4 @@ const config = {
   storageBucket: 'gs://whatsmyfood.appspot.com',
 };
 
-export default (!firebase.apps.length
-  ? firebase.initializeApp(config)
-  : firebase.app());
+export default firebase.initializeApp(config)

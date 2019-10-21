@@ -6,7 +6,6 @@ import {
   TextInput,
   View,
   StatusBar,
-  NetInfo,
   Alert,
   ActivityIndicator,
   Modal,
@@ -17,6 +16,8 @@ import { NavigationActions } from 'react-navigation';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
 import RF from '../../node_modules/react-native-responsive-fontsize';
 import OfflineNotice from '../components/Nointernet';
+
+import NetInfo from "@react-native-community/netinfo";
 
 const styles = StyleSheet.create({
   container: {

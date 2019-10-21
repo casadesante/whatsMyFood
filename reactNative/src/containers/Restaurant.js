@@ -13,7 +13,6 @@ import { StyleSheet,
   ActionSheetIOS,
   Alert,
   Image,
-  NetInfo,
   Modal,
   ActivityIndicator } from 'react-native';
 import { CachedImage,
@@ -25,6 +24,8 @@ import FoodItems from '../components/FoodItems';
 import OfflineNotice from '../components/Nointernet';
 // import helper from '../lib/Helper';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
+
+import NetInfo from "@react-native-community/netinfo";
 
 const styles = StyleSheet.create({
   modalContents: {

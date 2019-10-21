@@ -7,7 +7,7 @@ import { StyleSheet,
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Config from 'react-native-config';
-import firebase from 'firebase';
+import firebase from 'react-native-firebase';
 import RF from 'react-native-responsive-fontsize';
 import PropTypes from 'prop-types';
 

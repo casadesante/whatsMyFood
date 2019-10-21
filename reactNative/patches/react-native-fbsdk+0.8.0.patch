@@ -1,0 +1,20 @@
+diff --git a/node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj/xcuserdata/ankushrishi.xcuserdatad/xcschemes/xcschememanagement.plist b/node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj/xcuserdata/ankushrishi.xcuserdatad/xcschemes/xcschememanagement.plist
+new file mode 100644
+index 0000000..c21693a
+--- /dev/null
++++ b/node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj/xcuserdata/ankushrishi.xcuserdatad/xcschemes/xcschememanagement.plist
+@@ -0,0 +1,14 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
++<plist version="1.0">
++<dict>
++	<key>SchemeUserState</key>
++	<dict>
++		<key>RCTFBSDK.xcscheme_^#shared#^_</key>
++		<dict>
++			<key>orderHint</key>
++			<integer>5</integer>
++		</dict>
++	</dict>
++</dict>
++</plist>

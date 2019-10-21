@@ -8,8 +8,7 @@ import {
   Image,
   Linking,
   ActivityIndicator,
-  Alert,
-  NetInfo } from 'react-native';
+  Alert } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import { heightPercentageToDP, widthPercentageToDP } from '../lib/Responsive';
@@ -17,6 +16,8 @@ import RF from '../../node_modules/react-native-responsive-fontsize';
 
 import { getProfileInfo, logout } from '../lib/Auth';
 import OfflineNotice from '../components/Nointernet';
+
+import NetInfo from "@react-native-community/netinfo";
 
 const styles = StyleSheet.create({
   container: {
