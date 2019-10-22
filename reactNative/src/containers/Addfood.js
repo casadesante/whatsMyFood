@@ -22,6 +22,8 @@ import EmojiPicker from '../components/EmojiPicker';
 import firebase from '../lib/FirebaseClient';
 import { getProfileInfo } from '../lib/Auth';
 
+import Textarea from 'react-native-textarea';
+
 const ImagePicker = NativeModules.ImageCropPicker;
 
 // Prepare Blob support
@@ -67,6 +69,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  textarea:{
+    borderWidth:1, 
+    padding:5,
+    fontFamily: 'SFProText-Regular', 
+    marginHorizontal:25, 
+    marginVertical:20, 
+    height:100, 
+    borderRadius:5, 
+    borderColor:'rgba(1,1,1,.3)'
+  }
 });
 
 export default class Addfood extends Component {
@@ -96,6 +108,7 @@ export default class Addfood extends Component {
     rating: 5,
     uploading: false,
     modalVisible: false,
+    comment: ''
   };
 
   componentDidMount() {
@@ -128,6 +141,7 @@ export default class Addfood extends Component {
       getProfileInfo()
         .then(user => user.uid)
         .then(firebaseID => {
+          console.log('firebase id ****** ',firebaseID)
           if (restaurantData.addNewRestaurant) {
             const restaurantAndFood = {
               firebaseID,
@@ -138,8 +152,9 @@ export default class Addfood extends Component {
               food: {
                 foodName: name,
                 foodPhotoURL: url,
-                rating,
+                rating
               },
+              comment: this.state.comment
             };
             this.addNewRestaurantAndFood(restaurantAndFood);
           } else {
@@ -149,6 +164,7 @@ export default class Addfood extends Component {
               foodPhotoURL: url,
               rating,
               restaurantID: restaurantData.restaurantID,
+              comment: this.state.comment
             };
             this.addNewFoodToRestaurant(addFoodDetails);
           }
@@ -163,6 +179,7 @@ export default class Addfood extends Component {
   }
 
   addNewRestaurantAndFood = (restaurantAndFood) => {
+    console.log('add restro details object ***** ',restaurantAndFood)
     this.setState({ modalVisible: true });
     fetch('https://us-central1-whatsmyfood.cloudfunctions.net/addRestaurantAndFood',
       {
@@ -204,6 +221,7 @@ export default class Addfood extends Component {
   }
 
   addNewFoodToRestaurant = (addFoodDetails) => {
+    console.log('add food details object ***** ',addFoodDetails)
     this.setState({ modalVisible: true });
     fetch('https://us-central1-whatsmyfood.cloudfunctions.net/addFood',
       {
@@ -317,7 +335,6 @@ export default class Addfood extends Component {
 
   render() {
     const { rating, uploaded, tempURL, uploading, name, modalVisible } = this.state;
-    console.log(`Selected rating: ${rating}`);
     return (
       <View style={styles.container}>
         <Header text="Add food" />
@@ -343,6 +360,20 @@ export default class Addfood extends Component {
             </View>
           )}
         </View>
+
+        <Textarea
+          style={styles.textarea}
+          onChangeText={text => {
+            this.setState({ comment: text },()=>{
+            });
+          }}
+          defaultValue={this.state.text}
+          maxLength={2500}
+          placeholder={'Post your comment 。。。'}
+          placeholderTextColor={'#c7c7c7'}
+          underlineColorAndroid={'transparent'}
+        />
+
         <Modal
           animationType="fade"
           transparent

@@ -217,6 +217,7 @@ exports.addRestaurantAndFood = functions.https.onRequest((req, res) => {
           "rating": parsedRequest.food.rating,
           "firebaseID": parsedRequest.firebaseID,
           "restaurantID": restaurantID,
+          "comment": parsedRequest.comment,
           "createdAt": admin.database.ServerValue.TIMESTAMP
         };
         
@@ -265,9 +266,11 @@ exports.addRestaurantAndFood = functions.https.onRequest((req, res) => {
             "restaurantID": restaurantID,
             "createdAt": admin.database.ServerValue.TIMESTAMP,
             "foodPhotoURL": parsedRequest.food.foodPhotoURL || null,
-            "foodId": extractedFoodID
+            "foodId": extractedFoodID,
+            "comment": parsedRequest.comment
           }
-        ]
+        ],
+        "comment": parsedRequest.comment
       }
 
       res.status(200).send(restaurantResponseObject);
@@ -384,17 +387,20 @@ exports.addFood = functions.https.onRequest((req, res) => {
     return res.status(500).send("No firebaseID in the request");
   } else if (!parsedRequest.hasOwnProperty("restaurantID")) {
     return res.status(500).send("No restaurantID in the request");
-  }
+  } 
 
   var foodsRef = db.ref('/foods');
   var readFoodsRef = db.ref("/foods");
+
+  console.log('parsedRequest ********* ',parsedRequest)
   
   var food = {
     foodName: parsedRequest.foodName,
     rating: parsedRequest.rating,
     firebaseID: parsedRequest.firebaseID,
     restaurantID: parsedRequest.restaurantID,
-    createdAt: admin.database.ServerValue.TIMESTAMP
+    comment: parsedRequest.comment,
+    createdAt: admin.database.ServerValue.TIMESTAMP,
   };
 
   if (parsedRequest.hasOwnProperty("foodPhotoURL")) {
@@ -535,6 +541,7 @@ exports.updateFood = functions.https.onRequest((req, res) => {
         "rating": parsedRequest.rating,
         "firebaseID": parsedRequest.firebaseID,
         "restaurantID": parsedRequest.restaurantID,
+        "comment": parsedRequest.comment,
         "createdAt": parsedRequest.createdAt,
         "updatedAt": admin.database.ServerValue.TIMESTAMP
       };

@@ -8,7 +8,7 @@ import { widthPercentageToDP, heightPercentageToDP } from '../lib/Responsive';
 const styles = StyleSheet.create({
   welcome: {
     fontSize: RF(5),
-    marginTop: heightPercentageToDP('18%'),
+    marginTop: heightPercentageToDP('2%'),
     textAlign: 'center',
     marginLeft: widthPercentageToDP('13.77%'),
     marginRight: widthPercentageToDP('13.77%'),
@@ -88,6 +88,7 @@ const EmptyHome = props => {
   const { navigation } = props;
   return (
     <View style={styles.container}>
+      <Image style={{height:"30%",width:"40%", resizeMode:'contain'}} source={require('../assets/img/logoWhatsMyFood.png')} />
       <Animatable.Text animation="fadeInUp" style={styles.welcome}>
         Add your first restaurant and dish !
       </Animatable.Text>
