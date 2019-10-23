@@ -12,6 +12,10 @@ target 'whatsMyFood' do
     'Core',
   ]
 
+  pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+  pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
+  pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+
   pod 'Firebase/Core', '~> 6.3.0'
 
   pod 'Firebase/Auth', '~> 6.3.0'
@@ -31,8 +35,9 @@ target 'whatsMyFood' do
 end
 
 post_install do |installer|
-  rnfirebase = installer.pods_project.targets.find { |target| target.name == 'RNFirebase' }
-  rnfirebase.build_configurations.each do |config|
-    config.build_settings['HEADER_SEARCH_PATHS'] = '$(inherited) ${PODS_ROOT}/Headers/Public/**'
+  installer.pods_project.targets.each do |target|
+      if target.name == "React"
+          target.remove_from_project
+      end
   end
 end

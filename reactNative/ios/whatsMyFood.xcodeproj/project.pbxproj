@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -19,13 +18,11 @@
 		0EB019522C864981B3DBC06E /* SF-Pro-Display-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 01F8EBFFE633429499CF7308 /* SF-Pro-Display-Bold.otf */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
-		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		18E9AC657AE74AF8962F7FEE /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA732F9D117B460EB61A38EA /* SimpleLineIcons.ttf */; };
 		1C81E3143C93447097189B64 /* SF-Pro-Display-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = A49B9B1ECB0245D2952C92DF /* SF-Pro-Display-Heavy.otf */; };
 		1CAE90C6B51E411FAB5544FE /* SF-Pro-Display-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = DF6979024E1242A1AAE1646C /* SF-Pro-Display-LightItalic.otf */; };
@@ -71,6 +68,9 @@
 		7A7E92A4235C7DAE00BB920F /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A7E92A0235C7DAE00BB920F /* FBSDKCoreKit.framework */; };
 		7A7E92A5235C7DAE00BB920F /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A7E92A1235C7DAE00BB920F /* FBSDKShareKit.framework */; };
 		7A7E932A235C803500BB920F /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A7E9329235C802400BB920F /* libRCTFBSDK.a */; };
+		7A801D7723600E39009CB4E3 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
+		7A801DC6236015D6009CB4E3 /* libcxxreact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA91DF850E9000B6D8A /* libcxxreact.a */; };
+		7A801DC7236015E4009CB4E3 /* libjschelpers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EAD1DF850E9000B6D8A /* libjschelpers.a */; };
 		7ACD0564235D76B0003675B7 /* GoogleAppMeasurement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A300BD3235D5E1D0010BC78 /* GoogleAppMeasurement.framework */; };
 		7EEFCE2CE9F044C2A0713D7A /* SF-Pro-Display-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = A57244B1F4E94202A0DB229C /* SF-Pro-Display-Medium.otf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
@@ -547,6 +547,7 @@
 		7A7E92A0235C7DAE00BB920F /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		7A7E92A1235C7DAE00BB920F /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		7A7E9324235C802400BB920F /* RCTFBSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTFBSDK.xcodeproj; path = "../node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj"; sourceTree = "<group>"; };
+		7A801D912360118A009CB4E3 /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AE16FC570084CC290CEFE55 /* libSplashScreen.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSplashScreen.a; sourceTree = "<group>"; };
 		7F8450AA13164EB79E2E9E2C /* libRNCamera.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCamera.a; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -619,11 +620,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
+				7A801DC6236015D6009CB4E3 /* libcxxreact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				7A56378A235C753F007D0C10 /* AddressBook.framework in Frameworks */,
 				7A300BCF235D5BCB0010BC78 /* Fabric.framework in Frameworks */,
-				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
+				7A801DC7236015E4009CB4E3 /* libjschelpers.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
@@ -633,10 +635,10 @@
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				E4000FCE2127C3D30046B47B /* RSKImageCropper.framework in Frameworks */,
+				7A801D7723600E39009CB4E3 /* libRCTWebSocket.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				7ACD0564235D76B0003675B7 /* GoogleAppMeasurement.framework in Frameworks */,
 				7A7E92A5235C7DAE00BB920F /* FBSDKShareKit.framework in Frameworks */,
-				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				20165B8F011745FE9B86BC56 /* libReactNativeConfig.a in Frameworks */,
 				7A7E92A4235C7DAE00BB920F /* FBSDKCoreKit.framework in Frameworks */,
 				7A300BD2235D5D0B0010BC78 /* FIRAnalyticsConnector.framework in Frameworks */,
@@ -852,6 +854,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7A801D912360118A009CB4E3 /* libReact.a */,
 				7A300BCE235D5BCB0010BC78 /* Crashlytics.framework */,
 				7A300B9B235D5BCA0010BC78 /* Fabric.framework */,
 				7A7E929F235C7DAE00BB920F /* Bolts.framework */,
@@ -1176,7 +1179,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 6A8R6N7XRB;
+						DevelopmentTeam = GA8Y4K2TW7;
 						ProvisioningStyle = Manual;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -1968,11 +1971,11 @@
 			baseConfigurationReference = 793FB6985C7E8F4D78E25700 /* Pods-whatsMyFood.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Manpreet Singh (VLBF4UT2XK)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 6A8R6N7XRB;
+				DEVELOPMENT_TEAM = GA8Y4K2TW7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(HOME)/Documents/FacebookSDK\"",
 					"$(PROJECT_DIR)",
@@ -2013,7 +2016,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hi5fx.whatsmyfood;
 				PRODUCT_NAME = whatsMyFood;
-				PROVISIONING_PROFILE_SPECIFIER = WhatsMyFood;
+				PROVISIONING_PROFILE_SPECIFIER = WhatsMyFoodDev;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -2023,10 +2026,10 @@
 			baseConfigurationReference = 94316C6334F67A1F9B7D0AD6 /* Pods-whatsMyFood.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Manpreet Singh (VLBF4UT2XK)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6A8R6N7XRB;
+				DEVELOPMENT_TEAM = GA8Y4K2TW7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(HOME)/Documents/FacebookSDK\"",
 					"$(PROJECT_DIR)",
@@ -2068,7 +2071,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hi5fx.whatsmyfood;
 				PRODUCT_NAME = whatsMyFood;
-				PROVISIONING_PROFILE_SPECIFIER = WhatsMyFood;
+				PROVISIONING_PROFILE_SPECIFIER = WhatsMyFoodDev;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -2232,7 +2235,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Manpreet Singh (VLBF4UT2XK)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Manpreet Singh (VLBF4UT2XK)";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2273,7 +2277,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Manpreet Singh (VLBF4UT2XK)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Manpreet Singh (VLBF4UT2XK)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
