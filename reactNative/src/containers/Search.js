@@ -205,6 +205,8 @@ export default class Search extends Component {
 
   render() {
     const { tabState, searchKeyword, isConnected, restaurants, foods } = this.state;
+
+    console.log('foods are here **** ',foods)
     return (
       <View style={styles.container}>
         {!isConnected ? <OfflineNotice /> : null}
@@ -306,7 +308,7 @@ export default class Search extends Component {
               {foods
                 .filter(
                   (food) => (
-                    (food.foodName).toLowerCase()
+                    (food.foodName || food.comment).toLowerCase()
                       .includes((searchKeyword).toLowerCase())),
                 ).length === 0
                 ? (
@@ -320,7 +322,7 @@ export default class Search extends Component {
                 : (foods
                   .filter(
                     (food) => (
-                      (food.foodName).toLowerCase()
+                      (food.foodName || food.comment).toLowerCase()
                         .includes((searchKeyword).toLowerCase())),
                   ).map((foodInfo, index) => (
                     <FoodCard

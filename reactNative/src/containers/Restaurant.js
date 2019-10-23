@@ -290,6 +290,7 @@ export default class Restaurant extends Component {
       5: [],
     };
     foodItems.forEach(item => {
+      console.log('item from restaurant js ******* ',item)
       items[item.rating].push({
         name: item.foodName,
         img: item.foodPhotoURL,
@@ -298,6 +299,7 @@ export default class Restaurant extends Component {
         restaurantID: item.restaurantID,
         createdAt,
         rating: item.rating,
+        comment: item.comment
       });
     });
     return items;

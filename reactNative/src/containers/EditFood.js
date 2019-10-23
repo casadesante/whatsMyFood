@@ -20,6 +20,8 @@ import Optional from '../components/Optional';
 import EmojiPicker from '../components/EmojiPicker';
 import firebase from '../lib/FirebaseClient';
 
+import Textarea from 'react-native-textarea';
+
 const ImagePicker = NativeModules.ImageCropPicker;
 
 // Prepare Blob support
@@ -65,6 +67,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  textarea:{
+    borderWidth:1, 
+    padding:5,
+    fontFamily: 'SFProText-Regular', 
+    marginHorizontal:25, 
+    marginVertical:20, 
+    height:100, 
+    borderRadius:5, 
+    borderColor:'rgba(1,1,1,.3)'
+  }
 });
 
 export default class EditFood extends Component {
@@ -92,12 +104,16 @@ export default class EditFood extends Component {
     const { navigation } = props;
 
     const item = navigation.getParam('item');
+
+    console.log('item ******** ',item)
+
     this.state = {
       uploaded: !(item.img === '' || item.img == null),
       tempURL: item.img || '',
       url: item.img || '',
       name: item.name || '',
       rating: item.rating || '',
+      comment: item.comment || '',
       uploading: false,
       modalVisible: false,
     };
@@ -125,12 +141,13 @@ export default class EditFood extends Component {
     const { navigation } = this.props;
     const { firebaseID, createdAt, id: foodID, restaurantID } = this.props.navigation.state.params.item;
 
-    const { name: foodName, url: foodPhotoURL, rating } = this.state;
+    const { name: foodName, url: foodPhotoURL, rating, comment } = this.state;
 
     const foodObject = {
       foodID,
       foodName,
       rating,
+      comment,
       restaurantID,
       firebaseID,
       foodPhotoURL,
@@ -258,6 +275,21 @@ export default class EditFood extends Component {
             </View>
           )}
         </View>
+
+        <Textarea
+          style={styles.textarea}
+          onChangeText={text => {
+            this.setState({ comment: text },()=>{
+            });
+          }}
+          defaultValue={this.state.text}
+          maxLength={2500}
+          placeholder={'Post your comment 。。。'}
+          placeholderTextColor={'#c7c7c7'}
+          underlineColorAndroid={'transparent'}
+          value={this.state.comment}
+        />
+
         <Modal
           animationType="fade"
           transparent
