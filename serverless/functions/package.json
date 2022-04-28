@@ -10,7 +10,7 @@
     "logs": "firebase functions:log"
   },
   "dependencies": {
-    "async": "^2.6.1",
+    "async": "^2.6.4",
     "firebase-admin": "~6.0.0",
     "firebase-functions": "^2.0.0",
     "telegraf": "^3.22.2",
